@@ -1,4 +1,5 @@
-# music-app
+# Music-app
+基于Vue的音乐播放器
 
 ## Project setup
 ```
@@ -20,22 +21,20 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 
 ### 使用到的工具有：
- . Vue
- . Vuex
- . Vue-Router
- . Vue-cli
- . Stylus
- . Axios
- . animate
+ - Vue
+ - Vuex
+ - Vue-Router
+ - Vue-cli
+ - Axios
+ - animate
 
- ### 接口：
+ ### 接口（来源：https://github.com/Binaryify/NeteaseCloudMusicApi）：
 
-### banner
-说明 : 调用此接口 , 可获取 banner( 轮播图 ) 数据
+### banner( 轮播图 )接口
 
-可选参数 :
+- 可选参数 :
 
-type:资源类型,对应以下类型,默认为 0 即PC
+- type:资源类型,对应以下类型,默认为 0 即PC
 
 0: pc
 
@@ -44,21 +43,21 @@ type:资源类型,对应以下类型,默认为 0 即PC
 2: iphone
 
 3: ipad
-接口地址 : /banner
+- 接口地址 : /banner
 
-调用例子 : /banner, /banner?type=2
+- 调用例子 : /banner, /banner?type=2
 
- - 推荐新音乐：
+ ### 推荐新音乐：
 
  接口地址 : /personalized/newsong
 
-- 所有榜单：
+### 所有榜单：
 
 说明 : 调用此接口,可获取所有榜单 接口地址 : /toplist
 
 调用例子 : /toplist
 
-- 排行榜
+### 排行榜
 
 说明 : 调用此接口 , 传入数字 idx, 可获取不同排行榜
 
@@ -134,11 +133,12 @@ type:资源类型,对应以下类型,默认为 0 即PC
 "33": 说唱TOP榜
 ```
 
-接口地址 : /top/list
+- 接口地址 : /top/list
 
-调用例子 : /top/list?idx=6
+- 调用例子 : /top/list?idx=6
 
 ### 所有榜单内容摘要
+
 说明 : 调用此接口,可获取所有榜单内容摘要 接口地址 : /toplist/detail
 
 调用例子 : /toplist/detail
@@ -203,6 +203,7 @@ category Code 取值:
 调用例子 : /artist/list?cat=1001
 
 ### 获取歌手描述
+
 说明 : 调用此接口 , 传入歌手 id, 可获得歌手描述
 
 必选参数 : id: 歌手 id
@@ -212,6 +213,7 @@ category Code 取值:
 调用例子 : /artist/desc?id=6452 ( 周杰伦 )
 
 ### 获取歌手单曲
+
 说明 : 调用此接口 , 传入歌手 id, 可获得歌手部分信息和热门歌曲
 
 必选参数 : id: 歌手 id, 可由搜索接口获得
@@ -221,11 +223,13 @@ category Code 取值:
 调用例子 : /artists?id=6452
 
 ### 默认搜索关键词
+
 说明 : 调用此接口 , 可获取默认搜索关键词
 
 接口地址 : /search/default
 
 ### 热搜列表(简略)
+
 说明 : 调用此接口,可获取热门搜索列表
 
 接口地址 : /search/hot
@@ -233,6 +237,7 @@ category Code 取值:
 调用例子 : /search/hot
 
 ### 搜索多重匹配
+
 说明 : 调用此接口 , 传入搜索关键词可获得搜索结果
 
 必选参数 : keywords : 关键词
@@ -242,6 +247,7 @@ category Code 取值:
 调用例子 : /search/multimatch?keywords= 海阔天空
 
 ### 获取歌曲详情
+
 说明 : 调用此接口 , 传入音乐 id(支持多个 id, 用 , 隔开), 可获得歌曲详情(注意:歌曲封面现在需要通过专辑内容接口获取)
 
 必选参数 : ids: 音乐 id, 如 ids=347230
@@ -251,6 +257,7 @@ category Code 取值:
 调用例子 : /song/detail?ids=347230,/song/detail?ids=347230,347231
 
 ### 获取歌词
+
 说明 : 调用此接口 , 传入音乐 id 可获得对应音乐的歌词 ( 不需要登录 )
 
 必选参数 : id: 音乐 id
@@ -260,6 +267,7 @@ category Code 取值:
 调用例子 : /lyric?id=33894312
 
 ### 手机登录
+
 必选参数 : phone: 手机号码 password: 密码
 
 接口地址 : /login/cellphone
@@ -269,6 +277,7 @@ category Code 取值:
 调用例子 : /login/cellphone?phone=xxx&password=yyy
 
 ### 发送验证码
+
 说明 : 调用此接口 ,传入手机号码, 可发送验证码
 
 必选参数 : phone: 手机号码
@@ -280,6 +289,7 @@ category Code 取值:
 调用例子 : /captcha/sent?phone=13xxx
 
 ### 验证验证码
+
 说明 : 调用此接口 ,传入手机号码和验证码, 可校验验证码是否正确
 
 必选参数 : phone: 手机号码
@@ -295,6 +305,7 @@ ctcode: 国家区号,默认86即中国
 调用例子 : /captcha/verify?phone=13xxx&captcha=1597
 
 ### 注册(修改密码)
+
 说明 : 调用此接口 ,传入手机号码和验证码,密码,昵称, 可注册网易云音乐账号(同时可修改密码)
 
 必选参数 :
@@ -312,12 +323,15 @@ nickname: 昵称
 调用例子 : /register/cellphone?phone=13xxx&password=xxxxx&captcha=1234&nickname=binary1345
 
 ### 检测手机号码是否已注册
+
 说明 : 调用此接口 ,可检测手机号码是否已注册 必选参数 : phone : 手机号码
+
 可选参数 : countrycode: 国家码，用于国外手机号，例如美国传入：1 接口地址 : /cellphone/existence/check
 
 调用例子 : /cellphone/existence/check?phone=13xxx
 
 ### 初始化昵称
+
 说明 : 刚注册的账号(需登录),调用此接口 ,可初始化昵称 必选参数 : nickname : 昵称
 
 接口地址 : /activate/init/profile
@@ -325,11 +339,13 @@ nickname: 昵称
 调用例子 : /activate/init/profile?nickname=testUser2019
 
 ### 退出登录
+
 说明 : 调用此接口 , 可退出登录
 
 调用例子 : /logout
 
 ### 登录状态
+
 说明 : 调用此接口,可获取登录状态
 
 接口地址 : /login/status 
