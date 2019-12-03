@@ -28,7 +28,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
  - Axios
  - animate
 
- ### 接口（来源：https://github.com/Binaryify/NeteaseCloudMusicApi）：
+ ### 接口（来源： https://github.com/Binaryify/NeteaseCloudMusicApi ）：
 
 ### banner( 轮播图 )接口
 
