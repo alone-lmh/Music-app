@@ -8,11 +8,11 @@
       </div>
       <div class="navList" ref="container">
         <van-sticky :container="container">
-          <van-tabs v-model="active" v-show="!flag">
-            <van-tab title="新歌" :to="{name:'NewMusic',query:{active:0}}"></van-tab>
-            <van-tab title="排行" :to="{name:'RankingList',query:{active:1}}"></van-tab>
-            <van-tab title="歌单" :to="{name:'SongList',query:{active:2}}"></van-tab>
-            <van-tab title="歌手" :to="{name:'Singer',query:{active:3}}"></van-tab>
+          <van-tabs v-model="active" v-show="!flag" @click="navActiveChange">
+            <van-tab title="新歌" :to="{name:'NewMusic'}"></van-tab>
+            <van-tab title="排行" :to="{name:'RankingList'}"></van-tab>
+            <van-tab title="歌单" :to="{name:'SongList'}"></van-tab>
+            <van-tab title="歌手" :to="{name:'Singer'}"></van-tab>
           </van-tabs>
           <van-nav-bar v-show="flag" title="搜索" left-text left-arrow @click-left="index" />
         </van-sticky>
@@ -27,7 +27,7 @@ export default {
   data() {
     return {
       container: null,
-      active: 0,
+      active:Number(localStorage.getItem('count')),
       flag: false
     };
   },
@@ -43,6 +43,9 @@ export default {
       this.flag = false;
       this.active = 0;
       this.$router.push({ path: "/" });
+    },
+    navActiveChange(e) {
+      this.$store.commit("changeNavCount", { num: e });
     }
   }
 };

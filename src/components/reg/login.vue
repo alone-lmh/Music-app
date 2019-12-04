@@ -17,11 +17,6 @@
 </template>
 <script>
 export default {
-  data() {
-    return {
-      active: 2
-    };
-  },
   methods: {
     next() {
       this.$emit("to-parent", this.active);

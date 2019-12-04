@@ -52,7 +52,4 @@ export default {
 img {
   width: 100%;
 }
-.van-swipe{
-  width:100%;
-}
 </style>
