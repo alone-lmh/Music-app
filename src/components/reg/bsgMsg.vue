@@ -22,7 +22,6 @@ export default {
   methods: {
     next() {
       this.$router.push({ path: "/Reg/login" });
-      this.$store.commit("changeRegCount", { number: 2 });
     }
   }
 };

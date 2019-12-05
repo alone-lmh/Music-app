@@ -19,7 +19,6 @@
 export default {
   methods: {
     next() {
-      this.$emit("to-parent", this.active);
       this.$router.push({ path: "/" });
     }
   }

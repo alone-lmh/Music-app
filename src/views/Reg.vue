@@ -13,19 +13,8 @@
 export default {
   data() {
     return {
-      active: Number(localStorage.getItem("regCount")) || 0
+      active: 0
     };
-  },
-  created() {
-    this.changeNum();
-  },
-  methods: {
-    changeNum() {
-      console.log(this.$route.path)
-      if(this.$route.path=='/Reg'||this.$route.path=='/Reg/verify'){
-        localStorage.setItem('regCount', 0)
-      }
-    }
   }
 };
 </script>

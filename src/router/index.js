@@ -6,7 +6,9 @@ import {
 
 
 Vue.use(VueRouter);
-Vue.use(Lazyload);
+Vue.use(Lazyload, {
+  lazyComponent: true
+});
 
 const routes = [{
     path: '/Login',
@@ -59,9 +61,18 @@ const routes = [{
       {
         path: '/Search',
         name: 'Search',
-        component: () => import('../views/Search.vue')
+        component: () => import('../views/Search.vue'),
+        children: [{
+          path: 'searchResult',
+          name: 'searchResult',
+          component: () => import('../components/Search/searchResult.vue')
+        }]
       }
     ]
+  },{
+    path:'/details',
+    name:'details',
+    component:()=>import('../components/banner/index.vue')
   }
 ]
 

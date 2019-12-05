@@ -24,8 +24,6 @@ export default {
   methods: {
     next() {
       this.$router.push({ path: "/Reg/bsgMsg" });
-      this.$emit("to-parent",this.active);
-      this.$store.commit('changeRegCount',{number:1})
     }
   }
 };
