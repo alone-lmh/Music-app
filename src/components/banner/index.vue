@@ -105,14 +105,14 @@ export default {
     },
     back() {
       setTimeout(() => {
-        document.getElementById("listening").style.position = "relative";
-        document.getElementById("listening").style.zIndex = 0;
+        document.getElementById("listening").style.height = 0;
         document.getElementById("top").style.height = 0;
       });
     },
     isPlaying() {
       setTimeout(() => {
         document.getElementById("listening").style.position = "fixed";
+        document.getElementById("listening").style.height =" 100%";
         document.getElementById("listening").style.zIndex = 1000;
         document.getElementById("top").style.height = "auto";
       });

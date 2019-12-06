@@ -5,7 +5,7 @@
     </form>
     <hotSearch v-show="hotFlag" @to-parent="getKeyWords"></hotSearch>
     <tipSearch :m="value" v-show="tipFlag" ref="getFn" @to-parent="getKeyWords"></tipSearch>
-    <searchResult v-show="searchFlag" ref="getResult"></searchResult>
+    <searchResult v-show="searchFlag" ref="getResult" @toParent="getMusicId"></searchResult>
   </div>
 </template>
 <script>
@@ -18,7 +18,8 @@ export default {
       value: "",
       hotFlag: true,
       tipFlag: false,
-      searchFlag: false
+      searchFlag: false,
+      musicId:''
     };
   },
   methods: {
@@ -43,6 +44,9 @@ export default {
         this.searchFlag = false;
         this.$refs.getFn.getTip(this.value);
       }
+    },getMusicId(i){
+      this.musicId=i;
+      this.$emit("to-parent",i);
     }
   },
   components: {

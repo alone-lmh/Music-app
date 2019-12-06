@@ -11,21 +11,16 @@
         <van-icon slot="right-icon" name="music-o" style="line-height: inherit;" size="1.5em" />
       </van-cell>
     </van-list>
-    <listening v-if="flag" :key="getId" :musicId="getId"></listening>
   </div>
 </template>
 <script>
-import listening from '../banner/index.vue'
 export default {
   data() {
     return {
       keyWord: this.$route.query.keyword,
       result: [],
-      flag:false,
       getId:''
     };
-  },components:{
-      listening
   },
   mounted() {
     this.getMusicList(this.keyWord);
@@ -38,8 +33,8 @@ export default {
           this.result = response.data.result.songs;
         });
     },autoPlay(i){
-        this.flag="true";
-        this.getId=i
+        this.getId=i;
+        this.$emit("toParent",i);
     }
   }
 };

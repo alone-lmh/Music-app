@@ -12,33 +12,27 @@
           :key="item.id"
           :title="item.name"
           :label="item.song.artists[0].name"
-          @click="autoplay(item.id)"
+          @click="getMusic(item.id)"
         >
           <van-icon slot="right-icon" name="music-o" style="line-height: inherit;" size="1.5em" />
         </van-cell>
       </van-list>
     </lazy-component>
-    <listening v-if="flag" :key="getId" :musicId="getId"></listening>
   </div>
 </template>
 <script>
-import listening from "../components/banner/index.vue";
 export default {
   data() {
     return {
       active: 1,
       images: [],
       list: [],
-      flag: false,
       getId: ""
     };
   },
   created() {
     this.getBannerImgs();
     this.getNewMusic();
-  },
-  components: {
-    listening
   },
   methods: {
     getBannerImgs() {
@@ -59,14 +53,7 @@ export default {
     },
     getMusic(i) {
       this.getId = i;
-      this.flag = true;
-    },
-    autoplay(i) {
-      this.flag = true;
-      this.getId = i;
-      setTimeout(() => {
-        document.getElementById("listening").style.zIndex = 1000;
-      });
+      this.$emit("to-parent",i);
     }
   }
 };

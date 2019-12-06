@@ -9,38 +9,43 @@
       <div class="navList" ref="container">
         <van-tabs v-model="active" v-show="flag">
           <van-tab title="新歌">
-            <NewMusic></NewMusic>
+            <NewMusic  @to-parent="getMusicId"></NewMusic>
           </van-tab>
           <van-tab title="排行">
-            <RankingList></RankingList>
+            <RankingList  @to-parent="getMusicId"></RankingList>
           </van-tab>
           <van-tab title="歌单">
-            <SongList></SongList>
+            <SongList  @to-parent="getMusicId"></SongList>
           </van-tab>
           <van-tab title="歌手">
-            <Singer></Singer>
+            <Singer  @to-parent="getMusicId"></Singer>
           </van-tab>
         </van-tabs>
         <van-nav-bar v-show="!flag" title="搜索" left-text left-arrow @click-left="index" />
       </div>
-      <Search v-show="!flag"></Search>
+      <Search v-show="!flag"  @to-parent="getMusicId"></Search>
     </div>
+     <listening v-if="listenFlag" :key="getId" :musicId="getId"></listening>
   </div>
 </template>
 
 <script>
+import listening from "../components/banner/index.vue";
 import NewMusic from "./NewMusic.vue";
 import RankingList from "./RankingList.vue";
 import SongList from "./SongList.vue";
 import Singer from "./Singer.vue";
 import Search from "./Search.vue";
 
+
 export default {
   data() {
     return {
       container: null,
       active: 0,
-      flag: true
+      flag: true,
+      getId:'',
+      listenFlag:false
     };
   },
   mounted() {
@@ -52,7 +57,8 @@ export default {
     RankingList,
     SongList,
     Singer,
-    Search
+    Search,
+    listening
   },
   methods: {
     searchHandle() {
@@ -61,6 +67,13 @@ export default {
     index() {
       this.flag = true;
       this.active = 0;
+    },getMusicId(i){
+      this.getId=i
+      this.listenFlag=true;
+      setTimeout(() => {
+        document.getElementById("listening").style.height = 0;
+        document.getElementById("top").style.height = 0;
+      });
     }
   }
 };
