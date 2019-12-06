@@ -15,7 +15,7 @@
       </van-swipe>
     </div>
     <div @click="isPlaying" class="mp3Div">
-      <audio id="mp3" :src="musicSrc" controls="controls"  autoplay="true"></audio>
+      <audio id="mp3" :src="musicSrc" controls="controls" autoplay="false"></audio>
     </div>
     <van-popup v-model="show" round closeable :style="{ width: '80%' }">
       <p>不好意思呢~ o(*￣▽￣*)o</p>
@@ -32,7 +32,7 @@ export default {
       musicSrc: "",
       wordsTime: [],
       initNum: 0,
-      show:false,
+      show: false,
       timer: null
     };
   },
@@ -58,7 +58,12 @@ export default {
       this.$axios
         .get("http://121.41.30.226:3000/lyric?id=" + i)
         .then(response => {
-          if (response.data.lrc && response.data.lrc.lyric !== "") {
+          if (
+            response.data.lrc &&
+            response.data.lrc.lyric !== "" &&
+            response.data.lrc.lyric.includes("[") &&
+            response.data.lrc.lyric.includes("]")
+          ) {
             //将获取到的时间数据转换为几分几秒，然后将它与当前播放时间进行对比来判断应该显示哪句歌词
             let arr = response.data.lrc.lyric.split("\n").filter((v, i) => {
               return v !== "";
@@ -84,9 +89,12 @@ export default {
             });
             this.wordsTime = timeArr;
             this.songWords = musicWords;
-            // console.log(this.wordsTime)
-            // console.log(this.songWords)
+          } else {
+            this.wordsTime = [600];
+            this.songWords = ["没有获取到歌曲信息~"];
           }
+          // console.log(this.wordsTime)
+          // console.log(this.songWords)
         });
     },
     showWords() {
@@ -106,8 +114,8 @@ export default {
         .get("http://121.41.30.226:3000/song/url?id=" + i)
         .then(response => {
           this.musicSrc = response.data.data[0].url;
-          if(!this.musicSrc){
-            this.show=true
+          if (!this.musicSrc) {
+            this.show = true;
           }
         });
     },
@@ -119,7 +127,7 @@ export default {
     },
     isPlaying() {
       setTimeout(() => {
-        document.getElementById("listening").style.height =" 100%";
+        document.getElementById("listening").style.height = " 100%";
         document.getElementById("top").style.height = "100%";
       });
     }
