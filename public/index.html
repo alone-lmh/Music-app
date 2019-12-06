@@ -1,19 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
-    <meta name="format-detection" content="telephone=no，email=no"/>
-    <meta name="misapplication-tap-height" content="no"/>
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <title>music-app</title>
-  </head>
-  <body>
-    <noscript>
-      <strong>We're sorry but music-app doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-    </noscript>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
-  </body>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1, user-scalable=no" />
+  <meta name="format-detection" content="telephone=no，email=no" />
+  <meta name="misapplication-tap-height" content="no" />
+  <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+  <title>music-app</title>
+  <style>
+    body,
+    html {
+      margin: 0;
+      padding: 0;
+      height: 100% !important;
+    }
+    .iptSearch form{position:fixed;width:100%;}
+    .hotSearch{padding-top:54px;}
+    .tip{padding-top:54px;}
+    .searchResult{padding-top:54px;}
+    #listening[data-v-79c6fcbf] {
+      text-align: center;
+      position: relative;
+      top: 0;
+      z-index: 0;
+      height: 100%;
+      background: #fff;
+    }
+    #top{height:0;overflow: hidden;}
+    .van-tabs--line .van-tabs__wrap {
+      z-index: 10;
+      position: fixed;
+      width: 100%;
+      top: 46px;
+      left: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <noscript>
+    <strong>We're sorry but music-app doesn't work properly without JavaScript enabled. Please enable it to
+      continue.</strong>
+  </noscript>
+  <div id="app"></div>
+  <!-- built files will be auto injected -->
+</body>
+
 </html>

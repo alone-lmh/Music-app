@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="searchResult">
     <van-list>
       <van-cell
         v-for="item in result"
@@ -11,11 +11,11 @@
         <van-icon slot="right-icon" name="music-o" style="line-height: inherit;" size="1.5em" />
       </van-cell>
     </van-list>
-    <bottomMusic v-if="flag" :key="getId" :musicId="getId"></bottomMusic>
+    <listening v-if="flag" :key="getId" :musicId="getId"></listening>
   </div>
 </template>
 <script>
-import bottomMusic from '../banner/bottomMusic.vue'
+import listening from '../banner/index.vue'
 export default {
   data() {
     return {
@@ -25,7 +25,7 @@ export default {
       getId:''
     };
   },components:{
-      bottomMusic
+      listening
   },
   mounted() {
     this.getMusicList(this.keyWord);

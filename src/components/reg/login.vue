@@ -19,7 +19,7 @@
 export default {
   methods: {
     next() {
-      this.$router.push({ path: "/" });
+      this.$router.replace({ path: "/" });
     }
   }
 };

@@ -36,43 +36,7 @@ const routes = [{
   {
     path: '/',
     name: 'Home',
-    redirect: '/NewMusic',
-    component: () => import('../views/Home.vue'),
-    children: [{
-        path: '/NewMusic',
-        name: 'NewMusic',
-        component: () => import('../views/NewMusic.vue')
-      },
-      {
-        path: '/RankingList',
-        name: 'RankingList',
-        component: () => import('../views/RankingList.vue')
-      },
-      {
-        path: '/SongList',
-        name: 'SongList',
-        component: () => import('../views/SongList.vue')
-      },
-      {
-        path: '/Singer',
-        name: 'Singer',
-        component: () => import('../views/Singer.vue')
-      },
-      {
-        path: '/Search',
-        name: 'Search',
-        component: () => import('../views/Search.vue'),
-        children: [{
-          path: 'searchResult',
-          name: 'searchResult',
-          component: () => import('../components/Search/searchResult.vue')
-        }]
-      }
-    ]
-  },{
-    path:'/details',
-    name:'details',
-    component:()=>import('../components/banner/index.vue')
+    component: () => import('../views/Home.vue')
   }
 ]
 

@@ -1,21 +1,17 @@
 <template>
-  <div class="search">
-      <form action="/">
-        <van-search
-          placeholder="请输入搜索关键词"
-          v-model="value"
-          @search="onSearch(value)"
-          @input="getTip"
-        />
-      </form>
-    <hotSearch v-show="hotFlag"></hotSearch>
-    <tipSearch :m="value" v-show="tipFlag" ref="getFn"></tipSearch>
-    <router-view v-show="searchFlag" ref="getResult"></router-view>
+  <div class="search iptSearch">
+    <form action="/">
+      <van-search placeholder="请输入搜索关键词" v-model="value" @search="onSearch()" @input="getTip" />
+    </form>
+    <hotSearch v-show="hotFlag" @to-parent="getKeyWords"></hotSearch>
+    <tipSearch :m="value" v-show="tipFlag" ref="getFn" @to-parent="getKeyWords"></tipSearch>
+    <searchResult v-show="searchFlag" ref="getResult"></searchResult>
   </div>
 </template>
 <script>
-import hotSearch from "../components/Search/hotSearch";
-import tipSearch from "../components/Search/tipSearch";
+import hotSearch from "../components/Search/hotSearch.vue";
+import tipSearch from "../components/Search/tipSearch.vue";
+import searchResult from "../components/Search/searchResult.vue";
 export default {
   data() {
     return {
@@ -25,35 +21,22 @@ export default {
       searchFlag: false
     };
   },
-  mounted() {
-    if (this.$route.path == "/Search/searchResult") {
-      this.hotFlag = false;
-      this.tipFlag = false;
-      this.searchFlag = true;
-    }
-  },
   methods: {
-    onSearch(i) {
+    onSearch() {
       this.hotFlag = false;
       this.tipFlag = false;
       this.searchFlag = true;
-      this.$router.push({
-        path: "/Search/searchResult",
-        query: { keyword: i }
-      });
       this.$refs.getResult.getMusicList(this.value);
+    },
+    getKeyWords(i) {
+      this.value = i;
+      this.onSearch();
     },
     getTip() {
       if (this.value == "") {
-        if (this.$route.path == "/Search/searchResult") {
-          this.hotFlag = false;
-          this.tipFlag = false;
-          this.searchFlag = true;
-        } else {
-          this.hotFlag = true;
-          this.tipFlag = false;
-          this.searchFlag = false;
-        }
+        this.hotFlag = true;
+        this.tipFlag = false;
+        this.searchFlag = false;
       } else {
         this.hotFlag = false;
         this.tipFlag = true;
@@ -64,7 +47,8 @@ export default {
   },
   components: {
     hotSearch,
-    tipSearch
+    tipSearch,
+    searchResult
   }
 };
 </script>

@@ -21,7 +21,7 @@
 export default {
   methods: {
     next() {
-      this.$router.push({ path: "/Reg/login" });
+      this.$router.replace({ path: "/Reg/login" });
     }
   }
 };

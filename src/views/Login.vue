@@ -23,7 +23,7 @@ export default {
   },
   methods: {
     loginHandle(){
-      this.$router.push({path:'/'})
+      this.$router.replace({path:'/'})
     }
   },
 }

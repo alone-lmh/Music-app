@@ -34,10 +34,7 @@ export default {
         });
     },
     getMusic(i) {
-      this.$router.push({
-        path: "/Search/searchResult",
-        query: { keyword: i }
-      });
+      this.$emit("to-parent",i)
     }
   }
 };

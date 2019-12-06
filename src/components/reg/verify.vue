@@ -23,7 +23,7 @@
 export default {
   methods: {
     next() {
-      this.$router.push({ path: "/Reg/bsgMsg" });
+      this.$router.replace({ path: "/Reg/bsgMsg" });
     }
   }
 };

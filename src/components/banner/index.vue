@@ -1,19 +1,21 @@
 <template>
   <div id="listening">
-    <van-nav-bar :title="details.name" left-arrow @click-left="back" />
-    <van-image
-      fit="cover"
-      round
-      width="15rem"
-      height="15rem"
-      :src="details.al.picUrl"
-      id="smallImg"
-    />
-    <van-swipe style="height:2rem;" vertical :show-indicators="false" :initial-swipe="initNum">
-      <van-swipe-item v-for="(item,i) in songWords" :key="i">{{item}}</van-swipe-item>
-    </van-swipe>
-    <div @click.capture="isPlaying" class="mp3Div">
-      <audio id="mp3" :src="musicSrc" controls="controls" @click="isPlaying" autoplay="true"></audio>
+    <div id="top">
+      <van-nav-bar :title="details.name" left-arrow @click-left="back" />
+      <van-image
+        fit="cover"
+        round
+        width="15rem"
+        height="15rem"
+        :src="details.al.picUrl"
+        id="smallImg"
+      />
+      <van-swipe style="height:3rem;" vertical :show-indicators="false" :initial-swipe="initNum">
+        <van-swipe-item v-for="(item,i) in songWords" :key="i">{{item}}</van-swipe-item>
+      </van-swipe>
+    </div>
+    <div @click="isPlaying" class="mp3Div">
+      <audio id="mp3" :src="musicSrc" controls="controls"  autoplay="true"></audio>
     </div>
   </div>
 </template>
@@ -29,11 +31,12 @@ export default {
       timer: null
     };
   },
+  props: ["musicId"],
   mounted() {
     this.showWords();
-    this.getSongsDetail(this.$route.query.id);
-    this.getSongWords(this.$route.query.id);
-    this.getMusicSrc(this.$route.query.id);
+    this.getSongsDetail(this.musicId);
+    this.getSongWords(this.musicId);
+    this.getMusicSrc(this.musicId);
   },
   beforeDestroy() {
     clearInterval(this.timer);
@@ -60,16 +63,16 @@ export default {
             let arr0 = arr.map((v, i) => {
               return v.split("]")[0].split("[")[1];
             });
-            
+
             arr0 = arr0.map((v, i) => {
               return v.split(":");
             });
-            
+
             //转化为秒
             let timeArr = arr0.map((v, i) => {
               return v[0] * 60 + parseFloat(v[1]);
             });
-            
+
             //歌词
             let musicWords = arr.map((v, i) => {
               return v.split("]")[1];
@@ -86,11 +89,8 @@ export default {
         // console.log(1)
         let second = document.getElementById("mp3").currentTime;
         //   console.log(second)
-        for (let i=0;i<this.wordsTime.length;i++) {
-          if (
-            second >= this.wordsTime[i] &&
-            second <= this.wordsTime[i + 1]
-          ) {
+        for (let i = 0; i < this.wordsTime.length; i++) {
+          if (second >= this.wordsTime[i] && second <= this.wordsTime[i + 1]) {
             this.initNum = Number(i);
           }
         }
@@ -104,16 +104,18 @@ export default {
         });
     },
     back() {
-      this.$router.push({ path: "/" });
+      setTimeout(() => {
+        document.getElementById("listening").style.position = "relative";
+        document.getElementById("listening").style.zIndex = 0;
+        document.getElementById("top").style.height = 0;
+      });
     },
     isPlaying() {
-      /* if (!document.getElementById("mp3").paused) {
-        console.log("清除");
-        clearInterval(this.timer);
-      } else {
-        console.log("定时器");
-        this.getSongWords();
-      } */
+      setTimeout(() => {
+        document.getElementById("listening").style.position = "fixed";
+        document.getElementById("listening").style.zIndex = 1000;
+        document.getElementById("top").style.height = "auto";
+      });
     }
   }
 };

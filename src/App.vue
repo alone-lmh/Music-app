@@ -10,7 +10,10 @@ export default {
 };
 </script>
 <style  scoped>
-#app{
-  height:100%;
+
+#app {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 </style>
