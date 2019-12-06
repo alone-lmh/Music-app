@@ -10,13 +10,17 @@
         :src="details.al.picUrl"
         id="smallImg"
       />
-      <van-swipe style="height:3rem;" vertical :show-indicators="false" :initial-swipe="initNum">
+      <van-swipe style="height:5rem;" vertical :show-indicators="false" :initial-swipe="initNum">
         <van-swipe-item v-for="(item,i) in songWords" :key="i">{{item}}</van-swipe-item>
       </van-swipe>
     </div>
     <div @click="isPlaying" class="mp3Div">
       <audio id="mp3" :src="musicSrc" controls="controls"  autoplay="true"></audio>
     </div>
+    <van-popup v-model="show" round closeable :style="{ width: '80%' }">
+      <p>不好意思呢~ o(*￣▽￣*)o</p>
+      <p>此歌曲我们还未获得播放版权</p>
+    </van-popup>
   </div>
 </template>
 <script>
@@ -28,6 +32,7 @@ export default {
       musicSrc: "",
       wordsTime: [],
       initNum: 0,
+      show:false,
       timer: null
     };
   },
@@ -53,7 +58,7 @@ export default {
       this.$axios
         .get("http://121.41.30.226:3000/lyric?id=" + i)
         .then(response => {
-          if (response.data.lrc.lyric && response.data.lrc.lyric !== "") {
+          if (response.data.lrc && response.data.lrc.lyric !== "") {
             //将获取到的时间数据转换为几分几秒，然后将它与当前播放时间进行对比来判断应该显示哪句歌词
             let arr = response.data.lrc.lyric.split("\n").filter((v, i) => {
               return v !== "";
@@ -101,6 +106,9 @@ export default {
         .get("http://121.41.30.226:3000/song/url?id=" + i)
         .then(response => {
           this.musicSrc = response.data.data[0].url;
+          if(!this.musicSrc){
+            this.show=true
+          }
         });
     },
     back() {
@@ -111,10 +119,8 @@ export default {
     },
     isPlaying() {
       setTimeout(() => {
-        document.getElementById("listening").style.position = "fixed";
         document.getElementById("listening").style.height =" 100%";
-        document.getElementById("listening").style.zIndex = 1000;
-        document.getElementById("top").style.height = "auto";
+        document.getElementById("top").style.height = "100%";
       });
     }
   }
@@ -127,9 +133,7 @@ export default {
 #smallImg {
   margin: 3rem 0 3rem;
 }
-.van-swipe-item {
-  color: rgb(255, 68, 0);
-}
+
 .mp3Div {
   position: fixed;
   bottom: 0;

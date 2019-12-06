@@ -7,7 +7,7 @@
     </div>
     <div id="content">
       <div class="navList" ref="container">
-        <van-tabs v-model="active" v-show="flag">
+        <van-tabs v-model="active" v-show="flag" animated>
           <van-tab title="新歌">
             <NewMusic  @to-parent="getMusicId"></NewMusic>
           </van-tab>
@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import listening from "../components/banner/index.vue";
+import listening from "../components/playMusic/index.vue";
 import NewMusic from "./NewMusic.vue";
 import RankingList from "./RankingList.vue";
 import SongList from "./SongList.vue";
@@ -73,6 +73,7 @@ export default {
       setTimeout(() => {
         document.getElementById("listening").style.height = 0;
         document.getElementById("top").style.height = 0;
+        document.getElementsByClassName("iptSearch")[0].style.paddingBottom = "65px";
       });
     }
   }
