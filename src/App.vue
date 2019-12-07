@@ -12,8 +12,11 @@ export default {
 <style  scoped>
 
 #app {
+  background:url("../public/bg.png");
+  background-size:100% 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
 }
+
 </style>

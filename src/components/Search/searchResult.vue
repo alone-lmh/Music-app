@@ -28,7 +28,7 @@ export default {
   methods: {
     getMusicList(i) {
       this.$axios
-        .get("http://121.41.30.226:3000/search?limit=88&keywords=" + i)
+        .get("http://121.41.30.226:3000/search?limit=100&keywords=" + i)
         .then(response => {
           this.result = response.data.result.songs;
         });
