@@ -9,6 +9,8 @@
   <meta name="format-detection" content="telephone=no，email=no" />
   <meta name="misapplication-tap-height" content="no" />
   <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+  <link rel="apple-touch-icon" href="./desk.png" />
+  <link rel="apple-touch-icon-precomposed" href="./desk.png" />
   <title>music-app</title>
   <style>
     body,
@@ -33,23 +35,9 @@
     }
 
     .iptSearch form {
-      position: fixed;
-      width: 100%;
       z-index: 10
     }
-
-    .hotSearch {
-      padding-top: 54px;
-    }
-
-    .tip {
-      padding-top: 54px;
-    }
-
-    .searchResult {
-      padding-top: 54px;
-    }
-
+    .searchAbout{flex:1;overflow:auto;}
     .van-swipe-item {
       color: rgb(255, 68, 0);
     }
@@ -63,18 +51,26 @@
       width: 100%;
       background: #fff;
     }
-    #content{background:#fff;}
+
+    #content {
+      background: #fff;
+    }
+
     #top {
       height: 0;
       overflow: hidden;
     }
 
+    .van-tabs__content--animated {
+      overflow: auto!important;
+      flex: 1;
+    }
+    .van-tabs__nav--line{padding-bottom:0!important;}
+    .van-tabs__line{bottom:-1px!important;}
     .van-tabs--line .van-tabs__wrap {
       z-index: 10;
-      position: fixed;
-      width: 100%;
-      top: 46px;
-      left: 0;
+      height: auto !important;
+
     }
   </style>
 </head>

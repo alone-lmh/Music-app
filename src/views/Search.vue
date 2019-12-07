@@ -3,9 +3,11 @@
     <form action="/">
       <van-search placeholder="请输入搜索关键词" v-model="value" @search="onSearch()" @input="getTip" />
     </form>
-    <hotSearch v-show="hotFlag" @to-parent="getKeyWords"></hotSearch>
-    <tipSearch :m="value" v-show="tipFlag" ref="getFn" @to-parent="getKeyWords"></tipSearch>
-    <searchResult v-show="searchFlag" ref="getResult" @toParent="getMusicId"></searchResult>
+    <div class="searchAbout">
+      <hotSearch v-show="hotFlag" @to-parent="getKeyWords"></hotSearch>
+      <tipSearch :m="value" v-show="tipFlag" ref="getFn" @to-parent="getKeyWords"></tipSearch>
+      <searchResult v-show="searchFlag" ref="getResult" @toParent="getMusicId"></searchResult>
+    </div>
   </div>
 </template>
 <script>
@@ -19,7 +21,7 @@ export default {
       hotFlag: true,
       tipFlag: false,
       searchFlag: false,
-      musicId:''
+      musicId: ""
     };
   },
   methods: {
@@ -44,9 +46,10 @@ export default {
         this.searchFlag = false;
         this.$refs.getFn.getTip(this.value);
       }
-    },getMusicId(i){
-      this.musicId=i;
-      this.$emit("to-parent",i);
+    },
+    getMusicId(i) {
+      this.musicId = i;
+      this.$emit("to-parent", i);
     }
   },
   components: {
@@ -56,3 +59,11 @@ export default {
   }
 };
 </script>
+<style scoped>
+  .iptSearch{
+    flex:1;
+    overflow: auto;
+    display:flex;
+    flex-direction: column;
+  }
+</style>
