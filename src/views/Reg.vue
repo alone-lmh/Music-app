@@ -61,6 +61,7 @@ export default {
           this.verifyFlag = true;
           this.bsgMsgFlag = false;
           this.loginFlag = false;
+          this.active=0;
         }
       }
       
