@@ -17,26 +17,24 @@ const routes = [{
   }, {
     path: '/Reg',
     name: 'Reg',
-    redirect: '/Reg/verify',
     component: () => import('../views/Reg.vue'),
-    children: [{
-      path: 'verify',
-      name: 'verify',
-      component: () => import('../components/reg/verify.vue')
-    }, {
-      path: 'login',
-      name: 'login',
-      component: () => import('../components/reg/login.vue')
-    }, {
-      path: 'bsgMsg',
-      name: 'bsgMsg',
-      component: () => import('../components/reg/bsgMsg.vue')
-    }]
   },
   {
     path: '/',
     name: 'Home',
-    component: () => import('../views/Home.vue')
+    component: () => import('../views/Home.vue'),
+    meta: {
+      isLogin: true
+    },
+    beforeEnter: (to, from, next) => {
+      if (localStorage.getItem("token")) {
+        next()
+      } else {
+        next({
+          path: '/Login'
+        })
+      }
+    }
   }
 ]
 

@@ -2,27 +2,53 @@
   <div class="bsgMsg">
     <br />
     <van-cell-group>
-      <van-field required clearable label="用户名" placeholder="请输入用户名" />
+      <van-field v-model="username" required clearable label="用户名" placeholder="请输入用户名" />
       <br />
-      <van-field type="password" label="密码" placeholder="请输入密码" required />
+      <van-field v-model="psw" type="password" label="密码" placeholder="请输入密码" required />
       <br />
-      <van-field type="password" label="验证密码" placeholder="请输入密码" required />
     </van-cell-group>
     <br />
-    <van-button
-      size="large"
-      round
-      color="linear-gradient(to right, #4bb0ff, #6149f6)"
-      @click="next"
-    >注册</van-button>
+    <van-popup class="regModelVer" v-model="warn" round :style="{ width: '80%'}">
+      <P v-show="pFlag">用户名应由字母或汉字组成的3-10位字符</P>
+      <p v-show="!pFlag">密码密码至少包含数字和英文，长度6-18</p>
+    </van-popup>
+    <van-popup v-model="fail" round :style="{ width: '80%'}">
+      注册失败，请重试
+    </van-popup>
   </div>
 </template>
 <script>
 export default {
+  data() {
+    return {fail:false, username: "", psw: "", pFlag: true, warn: false };
+  },
   methods: {
-    next() {
-      this.$router.replace({ path: "/Reg/login" });
+    register() {
+      if (!/^[A-Za-z_-\u2E80-\u9FFF]{3,10}$/.test(this.username)) {
+        this.pFlag = true;
+        this.warn = true;
+      } else if (
+        !/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,18}$/.test(
+          this.psw
+        )
+      ) {
+        this.warn = true;
+        this.pFlag = false;
+      }else{
+        this.$axios.get("http://121.41.30.226:3000/register/cellphone?phone="+this.$parent.phone+"&password="+this.psw+"&captcha="+this.$parent.code+"&nickname="+this.username).then((response)=>{
+          if(response.data.code==200){
+            return true
+          }else{
+            this.fail=true;
+          }
+        })
+      }
     }
   }
 };
 </script>
+<style scoped>
+.van-popup--center {
+  text-align: center;
+}
+</style>

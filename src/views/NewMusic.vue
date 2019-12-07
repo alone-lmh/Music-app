@@ -1,11 +1,10 @@
 <template>
   <div class="NewMusic">
-    <van-swipe :autoplay="3000">
+    <van-swipe >
       <van-swipe-item v-for="(image, index) in images" :key="index">
         <img :src="image.pic" @click="getMusic(image.song.id)" />
       </van-swipe-item>
     </van-swipe>
-    <lazy-component>
       <van-list>
         <van-cell
           v-for="item in list"
@@ -17,7 +16,6 @@
           <van-icon slot="right-icon" name="music-o" style="line-height: inherit;" size="1.5em" />
         </van-cell>
       </van-list>
-    </lazy-component>
   </div>
 </template>
 <script>
@@ -61,6 +59,7 @@ export default {
 <style scoped>
 .van-swipe img {
   width: 100%;
+  display:block;
 }
 .van-tabs__content {
   flex: 1;

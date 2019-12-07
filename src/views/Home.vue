@@ -103,6 +103,7 @@ export default {
 .van-nav-bar{position:fixed;width:100%;}
 .iptSearch{padding-top:44px;}
 .hotSearch{padding-top:54px;}
+
 .van-sticky--fixed {
   background: #fff;
 }
