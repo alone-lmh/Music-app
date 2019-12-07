@@ -127,6 +127,9 @@ export default {
     },
     isPlaying() {
       setTimeout(() => {
+        document.getElementById("listening").style.zIndex = 1000;
+        document.getElementById("listening").style.background = "#fff";
+        document.getElementById("listening").style.position = "fixed";
         document.getElementById("listening").style.height = " 100%";
         document.getElementById("top").style.height = "100%";
       });
