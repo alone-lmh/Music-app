@@ -35,6 +35,7 @@ export default {
 }
 </script>
 <style scoped>
+.hotSearch{overflow: auto;height:100%;}
 .hotSearch p {
   padding-left: 0.5rem;
   font-size: 0.9rem;

@@ -48,7 +48,7 @@ export default {
               if (this.checked) {
                 localStorage.setItem("token",this.phone);
               }
-              localStorage.setItem("token",this.phone);
+              sessionStorage.setItem("token",this.phone);
               this.$router.push({ path: "/" });
             } else {
               this.warn = true;

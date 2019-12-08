@@ -18,7 +18,7 @@
       size="large"
       round
       color="linear-gradient(to right, #4bb0ff, #6149f6)"
-      @click="next"
+      @click="nextType"
     >下一步</van-button>
   </div>
 </template>
@@ -36,7 +36,8 @@ export default {
       phone: "",
       code: "",
       username: "",
-      psw: ""
+      psw: "",
+      next: false
     };
   },
   components: {
@@ -45,39 +46,48 @@ export default {
     login
   },
   methods: {
-    next() {
+    nextType() {
       this.active++;
       if (this.active == 1) {
         //调用验证短信验证码的方法
-        if (this.$refs.getVerify.phoneVerify()) {
-          this.verifyFlag = false;
-          this.bsgMsgFlag = true;
-          this.loginFlag = false;
-          this.phone = this.$refs.getVerify.phone;
-          this.code = this.$refs.getVerify.code;
-          console.log(this.phone,this.code)
-          document.querySelector(".next .van-button__text").innerText = "注册";
-        } else {
-          this.verifyFlag = true;
-          this.bsgMsgFlag = false;
-          this.loginFlag = false;
-          this.active=0;
-        }
+        this.$refs.getVerify.phoneVerify();
+        this.next = this.$refs.getVerify.next;
+        setTimeout(() => {
+          if (this.next) {
+            this.verifyFlag = false;
+            this.bsgMsgFlag = true;
+            this.loginFlag = false;
+            this.phone = this.$refs.getVerify.phone;
+            this.code = this.$refs.getVerify.code;
+            document.querySelector(".next .van-button__text").innerText =
+              "注册";
+          } else {
+            this.verifyFlag = true;
+            this.bsgMsgFlag = false;
+            this.loginFlag = false;
+            this.active = 0;
+          }
+        });
       }
-      
+
       if (this.active == 2) {
         //调用注册方法
-        if (this.$refs.getBsg.register()) {
-          this.verifyFlag = false;
-          this.bsgMsgFlag = false;
-          this.loginFlag = true;
-          document.querySelector(".next .van-button__text").innerText = "登录";
-        } else {
-          this.verifyFlag = false;
-          this.bsgMsgFlag = true;
-          this.loginFlag = false;
-          this.active=1;
-        }
+        this.$refs.getBsg.register();
+        this.next = this.$refs.getBsg.next;
+        setTimeout(() => {
+          if (this.next) {
+            this.verifyFlag = false;
+            this.bsgMsgFlag = false;
+            this.loginFlag = true;
+            document.querySelector(".next .van-button__text").innerText =
+              "登录";
+          } else {
+            this.verifyFlag = false;
+            this.bsgMsgFlag = true;
+            this.loginFlag = false;
+            this.active = 1;
+          }
+        });
       }
       if (this.active == 3) {
         this.$refs.getFn.loginHandle();

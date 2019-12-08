@@ -7,7 +7,7 @@
     </div>
     <div id="content">
       <div class="navList" ref="container">
-        <van-tabs v-model="active" v-show="flag" animated>
+        <van-tabs v-model="active" v-show="flag" swipeable replace>
           <van-tab title="新歌">
             <NewMusic @to-parent="getMusicId"></NewMusic>
           </van-tab>
@@ -23,9 +23,9 @@
         </van-tabs>
         <van-nav-bar v-show="!flag" title="搜索" left-text left-arrow @click-left="index" />
         <Search v-show="!flag" @to-parent="getMusicId"></Search>
+        <listening v-if="listenFlag" :key="getId" :musicId="getId"></listening>
       </div>
     </div>
-    <listening v-if="listenFlag" :key="getId" :musicId="getId"></listening>
   </div>
 </template>
 
@@ -36,6 +36,7 @@ import RankingList from "./RankingList.vue";
 import SongList from "./SongList.vue";
 import Singer from "./Singer.vue";
 import Search from "./Search.vue";
+import { relative } from 'path';
 
 export default {
   data() {
@@ -71,10 +72,9 @@ export default {
       this.getId = i;
       this.listenFlag = true;
       setTimeout(() => {
-        document.getElementById("listening").style.height = 0;
+        document.getElementById("listening").style.position = "relative";
+        document.getElementById("listening").style.height = "auto";
         document.getElementById("top").style.height = 0;
-        document.getElementsByClassName("iptSearch")[0].style.paddingBottom =
-          "65px";
       });
     }
   }

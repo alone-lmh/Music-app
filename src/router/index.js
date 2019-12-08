@@ -27,7 +27,7 @@ const routes = [{
       isLogin: true
     },
     beforeEnter: (to, from, next) => {
-      if (localStorage.getItem("token")) {
+      if (localStorage.getItem("token")||sessionStorage.grtItem("token")) {
         next()
       } else {
         next({

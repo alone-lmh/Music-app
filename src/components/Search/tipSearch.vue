@@ -40,6 +40,8 @@ export default {
 };
 </script>
 <style scoped>
+.tip{overflow: auto;height:100%;}
+
 .goResult {
   font-size: 0.8rem;
   margin: 0.1rem 1.1rem;

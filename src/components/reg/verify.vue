@@ -20,7 +20,7 @@
 <script>
 export default {
   data() {
-    return { phone: "", code: "", warn: false, pFlag: true };
+    return { phone: "", code: "", warn: false, pFlag: true ,next:false};
   },
   methods: {
     getCode() {
@@ -55,7 +55,7 @@ export default {
           )
           .then(response => {
             if (response.data.code == 200) {
-              return true;
+              this.next=true;
             } else {
               this.pFlag = false;
               this.warn = true;

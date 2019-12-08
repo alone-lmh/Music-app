@@ -45,4 +45,6 @@ export default {
   margin: 0.1rem 1.1rem;
   color: blue;
 }
+.searchResult{overflow: auto;height:100%;}
+.searchResult .van-list{overflow: auto;height:100%;}
 </style>

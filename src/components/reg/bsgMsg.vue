@@ -9,22 +9,22 @@
     </van-cell-group>
     <br />
     <van-popup class="regModelVer" v-model="warn" round :style="{ width: '80%'}">
-      <P v-show="pFlag">用户名应由字母或汉字组成的3-10位字符</P>
+      <P v-show="pFlag">用户名应为5-13位字符</P>
       <p v-show="!pFlag">密码密码至少包含数字和英文，长度6-18</p>
     </van-popup>
     <van-popup v-model="fail" round :style="{ width: '80%'}">
-      注册失败，请重试
+      {{message}}
     </van-popup>
   </div>
 </template>
 <script>
 export default {
   data() {
-    return {fail:false, username: "", psw: "", pFlag: true, warn: false };
+    return {message:'', next:false,fail:false, username: "", psw: "", pFlag: true, warn: false };
   },
   methods: {
     register() {
-      if (!/^[A-Za-z_-\u2E80-\u9FFF]{3,10}$/.test(this.username)) {
+      if (!/^\S{6,13}$/.test(this.username)) {
         this.pFlag = true;
         this.warn = true;
       } else if (
@@ -37,8 +37,9 @@ export default {
       }else{
         this.$axios.get("http://121.41.30.226:3000/register/cellphone?phone="+this.$parent.phone+"&password="+this.psw+"&captcha="+this.$parent.code+"&nickname="+this.username).then((response)=>{
           if(response.data.code==200){
-            return true
+            this.next=true;
           }else{
+            this.message=response.data.message;
             this.fail=true;
           }
         })

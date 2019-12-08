@@ -121,17 +121,17 @@ export default {
     },
     back() {
       setTimeout(() => {
-        document.getElementById("listening").style.height = 0;
-        document.getElementById("top").style.height = 0;
+        document.getElementById("listening").style.position = "relative";
+        document.getElementById("listening").style.height = "auto";
+        document.getElementById("top").style.flex ="0 0 0";
       });
     },
     isPlaying() {
       setTimeout(() => {
-        document.getElementById("listening").style.zIndex = 1000;
-        document.getElementById("listening").style.background = "#fff";
         document.getElementById("listening").style.position = "fixed";
-        document.getElementById("listening").style.height = " 100%";
-        document.getElementById("top").style.height = "100%";
+        document.getElementById("listening").style.top =0;
+        document.getElementById("listening").style.height = "100%";
+        document.getElementById("top").style.flex ="1";
       });
     }
   }
@@ -146,9 +146,6 @@ export default {
 }
 
 .mp3Div {
-  position: fixed;
-  bottom: 0;
-  left: 0;
   width: 100%;
   height: 3rem;
   padding: 0.6rem 0;
