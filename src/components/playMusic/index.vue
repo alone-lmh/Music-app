@@ -36,7 +36,8 @@ export default {
       initNum: 0,
       show: false,
       timer: null,
-      showShade:false
+      showShade:false,
+      count:0
     };
   },
   props: ["musicId"],
@@ -102,7 +103,13 @@ export default {
     },
     showWords() {
       this.timer = setInterval(() => {
-        console.log(1)
+        if(document.getElementById("mp3").paused){
+          this.showShade=true;
+        }else{
+          this.showShade=false;
+          document.getElementById("smallImg").style.transform="rotate("+this.count+"deg)"
+          this.count++;
+        }
         let second = document.getElementById("mp3").currentTime;
         //   console.log(second)
         for (let i = 0; i < this.wordsTime.length; i++) {
@@ -151,6 +158,7 @@ export default {
 </script>
 <style scoped>
 #listening {
+  overflow: hidden;
   text-align: center;
   z-index: 1000;
   width: 100%;
