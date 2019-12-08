@@ -11,8 +11,16 @@
         id="smallImg"
         @click="timeOut"
       />
-      <div class="shade" v-show="showShade" @click="playMusic"><van-icon class="stop" name="play-circle-o" size="5em" color="rgba(255,255,255,0.5)"/></div>
-      <van-swipe style="height:5rem;" vertical :show-indicators="false" :initial-swipe="initNum" :touchable="false">
+      <div class="shade" v-show="showShade" @click="playMusic">
+        <van-icon class="stop" name="play-circle-o" size="5em" color="rgba(255,255,255,0.5)" />
+      </div>
+      <van-swipe
+        style="height:5rem;"
+        vertical
+        :show-indicators="false"
+        :initial-swipe="initNum"
+        :touchable="false"
+      >
         <van-swipe-item v-for="(item,i) in songWords" :key="i">{{item}}</van-swipe-item>
       </van-swipe>
     </div>
@@ -36,8 +44,8 @@ export default {
       initNum: 0,
       show: false,
       timer: null,
-      showShade:false,
-      count:0
+      showShade: false,
+      count: 0
     };
   },
   props: ["musicId"],
@@ -103,11 +111,12 @@ export default {
     },
     showWords() {
       this.timer = setInterval(() => {
-        if(document.getElementById("mp3").paused){
-          this.showShade=true;
-        }else{
-          this.showShade=false;
-          document.getElementById("smallImg").style.transform="rotate("+this.count+"deg)"
+        if (document.getElementById("mp3").paused) {
+          this.showShade = true;
+        } else {
+          this.showShade = false;
+          document.getElementById("smallImg").style.transform =
+            "rotate(" + this.count + "deg)";
           this.count++;
         }
         let second = document.getElementById("mp3").currentTime;
@@ -143,13 +152,14 @@ export default {
         document.getElementById("listening").style.height = "100%";
         document.getElementById("top").style.flex = "1";
       });
-    },timeOut(){
-      this.showShade=true;
+    },
+    timeOut() {
+      this.showShade = true;
       document.getElementById("mp3").pause();
       clearInterval(this.timer);
     },
-    playMusic(){
-      this.showShade=false;
+    playMusic() {
+      this.showShade = false;
       document.getElementById("mp3").play();
       clearInterval(this.timer);
       this.showWords();
@@ -167,14 +177,35 @@ export default {
   flex-direction: column;
   background: #fff;
 }
+#top {
+  position: relative;
+  width: 100%;
+}
 #smallImg {
   margin: 3rem 0 3rem;
 }
-.shade{position: absolute;top: 5.9em;
-    left: 3.7em;height:15rem;width:15rem;text-align: center;line-height: 15rem; border-radius: 50%;background:rgba(0,0,0,0.5);}
-.stop{line-height: 15rem;}
-.mp3Div {
-  width: 100%;background: #f1f3f4;
+.shade {
+  position: absolute;
+  top: 5.9em;
+  left: 50%;
+  margin-left: -7.5rem;
+  height: 15rem;
+  width: 15rem;
+  text-align: center;
+  line-height: 15rem;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
 }
-#mp3{display:block;width:80%;margin:0 auto;}
+.stop {
+  line-height: 15rem;
+}
+.mp3Div {
+  width: 100%;
+  background: #f1f3f4;
+}
+#mp3 {
+  display: block;
+  width: 80%;
+  margin: 0 auto;
+}
 </style>
