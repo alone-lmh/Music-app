@@ -4,13 +4,7 @@
     <van-cell-group>
       <van-field v-model="phone" label="手机号" placeholder="请输入手机号" required />
       <br />
-      <van-field
-        v-model="psw"
-        type="password"
-        label="密码"
-        placeholder="请输入密码"
-        required
-      />
+      <van-field v-model="psw" type="password" label="密码" placeholder="请输入密码" required />
     </van-cell-group>
     <br />
     <div class="switch">
@@ -31,10 +25,11 @@ export default {
       checked: true,
       phone: "",
       psw: "",
-      warn:false
+      warn: false
     };
   },
-  methods: {loginHandle(){
+  methods: {
+    loginHandle() {
       if (this.phone !== "" && this.psw !== "") {
         this.$axios
           .get(
@@ -46,15 +41,16 @@ export default {
           .then(response => {
             if (response.data.code == 200) {
               if (this.checked) {
-                localStorage.setItem("token",this.phone);
+                localStorage.setItem("token", this.phone);
+              } else {
+                sessionStorage.setItem("token", this.phone);
               }
-              sessionStorage.setItem("token",this.phone);
               this.$router.push({ path: "/" });
             } else {
               this.warn = true;
             }
           });
-      }else{
+      } else {
         this.warn = true;
       }
     }

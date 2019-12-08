@@ -2,6 +2,7 @@
   <div id="home">
     <div id="header">
       <van-nav-bar title="Music">
+        <van-icon name="bars" slot="left" class="user" @click="personal=true" />
         <van-icon name="search" slot="right" @click="searchHandle" class="search" />
       </van-nav-bar>
     </div>
@@ -26,6 +27,16 @@
         <listening v-if="listenFlag" :key="getId" :musicId="getId"></listening>
       </div>
     </div>
+    <van-popup
+      v-model="personal"
+      position="left"
+      get-container="body"
+      :style="{ width: '60%',height:'100%' }"
+    >
+      <van-tabbar v-model="active">
+        <van-tabbar-item icon="home-o" @click="logOut">退出登录</van-tabbar-item>
+      </van-tabbar>
+    </van-popup>
   </div>
 </template>
 
@@ -36,7 +47,7 @@ import RankingList from "./RankingList.vue";
 import SongList from "./SongList.vue";
 import Singer from "./Singer.vue";
 import Search from "./Search.vue";
-import { relative } from 'path';
+import { relative } from "path";
 
 export default {
   data() {
@@ -45,7 +56,8 @@ export default {
       active: 0,
       flag: true,
       getId: "",
-      listenFlag: false
+      listenFlag: false,
+      personal: false
     };
   },
   mounted() {
@@ -76,6 +88,10 @@ export default {
         document.getElementById("listening").style.height = "auto";
         document.getElementById("top").style.height = 0;
       });
+    },logOut(){
+      localStorage.removeItem("token");
+      sessionStorage.removeItem("token");
+      this.$router.push({path:'/Login'})
     }
   }
 };
@@ -103,8 +119,9 @@ export default {
   flex-direction: column;
 }
 
-.search {
-  font-size: 20px;
+.search,
+.user {
+  font-size: 1.5em;
 }
 
 .van-sticky--fixed {
