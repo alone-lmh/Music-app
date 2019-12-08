@@ -123,15 +123,15 @@ export default {
       setTimeout(() => {
         document.getElementById("listening").style.position = "relative";
         document.getElementById("listening").style.height = "auto";
-        document.getElementById("top").style.flex ="0 0 0";
+        document.getElementById("top").style.flex = "0 0 0";
       });
     },
     isPlaying() {
       setTimeout(() => {
         document.getElementById("listening").style.position = "fixed";
-        document.getElementById("listening").style.top =0;
+        document.getElementById("listening").style.top = 0;
         document.getElementById("listening").style.height = "100%";
-        document.getElementById("top").style.flex ="1";
+        document.getElementById("top").style.flex = "1";
       });
     }
   }
@@ -140,15 +140,18 @@ export default {
 <style scoped>
 #listening {
   text-align: center;
+  z-index: 1000;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
 }
 #smallImg {
   margin: 3rem 0 3rem;
 }
 
 .mp3Div {
-  width: 100%;
-  height: 3rem;
-  padding: 0.6rem 0;
-  background: rgba(241, 241, 241);
+  width: 100%;background: #f1f3f4;
 }
+#mp3{display:block;width:80%;margin:0 auto;}
 </style>
