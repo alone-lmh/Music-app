@@ -151,6 +151,7 @@ export default {
     playMusic(){
       this.showShade=false;
       document.getElementById("mp3").play();
+      clearInterval(this.timer);
       this.showWords();
     }
   }
