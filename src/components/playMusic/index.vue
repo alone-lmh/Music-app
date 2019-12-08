@@ -9,8 +9,10 @@
         height="15rem"
         :src="details.al.picUrl"
         id="smallImg"
+        @click="timeOut"
       />
-      <van-swipe style="height:5rem;" vertical :show-indicators="false" :initial-swipe="initNum">
+      <div class="shade" v-show="showShade" @click="playMusic"><van-icon class="stop" name="play-circle-o" size="5em" color="rgba(255,255,255,0.5)"/></div>
+      <van-swipe style="height:5rem;" vertical :show-indicators="false" :initial-swipe="initNum" :touchable="false">
         <van-swipe-item v-for="(item,i) in songWords" :key="i">{{item}}</van-swipe-item>
       </van-swipe>
     </div>
@@ -33,7 +35,8 @@ export default {
       wordsTime: [],
       initNum: 0,
       show: false,
-      timer: null
+      timer: null,
+      showShade:false
     };
   },
   props: ["musicId"],
@@ -99,7 +102,7 @@ export default {
     },
     showWords() {
       this.timer = setInterval(() => {
-        // console.log(1)
+        console.log(1)
         let second = document.getElementById("mp3").currentTime;
         //   console.log(second)
         for (let i = 0; i < this.wordsTime.length; i++) {
@@ -133,6 +136,15 @@ export default {
         document.getElementById("listening").style.height = "100%";
         document.getElementById("top").style.flex = "1";
       });
+    },timeOut(){
+      this.showShade=true;
+      document.getElementById("mp3").pause();
+      clearInterval(this.timer);
+    },
+    playMusic(){
+      this.showShade=false;
+      document.getElementById("mp3").play();
+      this.showWords();
     }
   }
 };
@@ -149,7 +161,9 @@ export default {
 #smallImg {
   margin: 3rem 0 3rem;
 }
-
+.shade{position: absolute;top: 5.9em;
+    left: 3.7em;height:15rem;width:15rem;text-align: center;line-height: 15rem; border-radius: 50%;background:rgba(0,0,0,0.5);}
+.stop{line-height: 15rem;}
 .mp3Div {
   width: 100%;background: #f1f3f4;
 }

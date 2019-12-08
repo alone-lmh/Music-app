@@ -88,10 +88,11 @@ export default {
         document.getElementById("listening").style.height = "auto";
         document.getElementById("top").style.height = 0;
       });
-    },logOut(){
+    },
+    logOut() {
       localStorage.removeItem("token");
       sessionStorage.removeItem("token");
-      this.$router.push({path:'/Login'})
+      this.$router.push({ path: "/Login" });
     }
   }
 };
