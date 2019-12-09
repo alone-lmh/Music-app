@@ -14,6 +14,7 @@
 import hotSearch from "../components/Search/hotSearch.vue";
 import tipSearch from "../components/Search/tipSearch.vue";
 import searchResult from "../components/Search/searchResult.vue";
+//hotFlag，tipFlag，searchFlag用于切换组件显示
 export default {
   data() {
     return {
@@ -24,14 +25,21 @@ export default {
       musicId: ""
     };
   },
+  components: {
+    hotSearch,
+    tipSearch,
+    searchResult
+  },
   methods: {
     onSearch() {
       this.hotFlag = false;
       this.tipFlag = false;
       this.searchFlag = true;
+      //调用子组件的方法，获取搜索到的歌曲列表
       this.$refs.getResult.getMusicList(this.value);
     },
     getKeyWords(i) {
+      //通过子组件向父组件提交的关键字进行搜索
       this.value = i;
       this.onSearch();
     },
@@ -44,26 +52,23 @@ export default {
         this.hotFlag = false;
         this.tipFlag = true;
         this.searchFlag = false;
+        //调用子组件的方法
         this.$refs.getFn.getTip(this.value);
       }
     },
     getMusicId(i) {
       this.musicId = i;
+      //向父组件提交音乐ID
       this.$emit("to-parent", i);
     }
-  },
-  components: {
-    hotSearch,
-    tipSearch,
-    searchResult
   }
 };
 </script>
 <style scoped>
-  .iptSearch{
-    flex:1;
-    overflow: auto;
-    display:flex;
-    flex-direction: column;
-  }
+.iptSearch {
+  flex: 1;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+}
 </style>

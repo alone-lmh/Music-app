@@ -12,21 +12,32 @@
     </van-cell-group>
     <br />
     <van-popup class="regModelVer" v-model="warn" round :style="{ width: '80%'}">
-      <P v-show="pFlag">请输入正确的手机号</P>
-      <p v-show="!pFlag">请输入正确的验证码</p>
+      <P v-show="pFlag&&!wrong">请输入正确的手机号</P>
+      <p v-show="!pFlag&&!wrong">请输入正确的验证码</p>
+      <p v-show="wrong">{{msg}}</p>
     </van-popup>
   </div>
 </template>
 <script>
+//wrong用于展示错误信息 warn用于判断是否显示弹出层  pFlag用于切换弹出层上的内容  next用于判断是否进入下一步
 export default {
   data() {
-    return { phone: "", code: "", warn: false, pFlag: true ,next:false};
+    return {
+      wrong: false,
+      msg: "",
+      phone: "",
+      code: "",
+      warn: false,
+      pFlag: true,
+      next: false
+    };
   },
   methods: {
     getCode() {
       if (!/^1[3456789]\d{9}$/.test(this.phone)) {
         this.pFlag = true;
         this.warn = true;
+        this.wrong = false;
       } else {
         this.$axios
           .get("http://121.41.30.226:3000/captcha/sent?phone=" + this.phone)
@@ -34,7 +45,13 @@ export default {
             if (response.data.code !== 200) {
               this.pFlag = true;
               this.warn = true;
+              this.wrong = false;
             }
+          })
+          .catch(error => {
+            this.wrong = true;
+            this.msg = error.response.data.message;
+            this.warn = true;
           });
       }
     },
@@ -42,9 +59,11 @@ export default {
       if (!/^1[3456789]\d{9}$/.test(this.phone)) {
         this.pFlag = true;
         this.warn = true;
+        this.wrong = false;
       } else if (!/^\d{4}$/.test(this.code)) {
         this.pFlag = false;
         this.warn = true;
+        this.wrong = false;
       } else {
         this.$axios
           .get(
@@ -55,11 +74,14 @@ export default {
           )
           .then(response => {
             if (response.data.code == 200) {
-              this.next=true;
-            } else {
-              this.pFlag = false;
-              this.warn = true;
+              this.next = true;
+              this.$emit("to-parent", this.next);
             }
+          })
+          .catch(error => {
+            this.wrong = true;
+            this.msg = error.response.data.message;
+            this.warn = true;
           });
       }
     }

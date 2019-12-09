@@ -17,13 +17,9 @@
 export default {
   data() {
     return {
-      keyWord: this.$route.query.keyword,
       result: [],
       getId:''
     };
-  },
-  mounted() {
-    this.getMusicList(this.keyWord);
   },
   methods: {
     getMusicList(i) {

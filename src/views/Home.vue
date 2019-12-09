@@ -48,7 +48,8 @@ import SongList from "./SongList.vue";
 import Singer from "./Singer.vue";
 import Search from "./Search.vue";
 import { relative } from "path";
-
+//flag:用于进行导航栏和搜索栏的切换   getId用于记录子组件向父组件提交的音乐ID
+//listenFlag用于显示音乐播放器    personal用于显示个人中心
 export default {
   data() {
     return {
@@ -61,7 +62,6 @@ export default {
     };
   },
   mounted() {
-    this.flag = localStorage.getItem("flag") == "false" ? false : true;
     this.container = this.$refs.container;
   },
   components: {

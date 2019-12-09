@@ -19,6 +19,7 @@
   </div>
 </template>
 <script>
+//checked用于记录是否自动登录  warn用于判断是否显示弹出层
 export default {
   data() {
     return {

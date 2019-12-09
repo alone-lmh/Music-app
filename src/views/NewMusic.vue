@@ -22,7 +22,6 @@
 export default {
   data() {
     return {
-      active: 1,
       images: [],
       list: [],
       getId: ""
@@ -37,6 +36,7 @@ export default {
       this.$axios
         .get("http://121.41.30.226:3000/banner?type=1")
         .then(response => {
+          //过滤掉没有歌曲信息的图片
           this.images = response.data.banners.filter((v, i) =>
             v.song ? true : false
           );
@@ -50,6 +50,7 @@ export default {
         });
     },
     getMusic(i) {
+      //向父元素提交音乐id
       this.getId = i;
       this.$emit("to-parent",i);
     }

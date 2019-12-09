@@ -34,6 +34,7 @@
   </div>
 </template>
 <script>
+//initNum设置歌初始的轮播位置   show用于判断是否可以播放歌曲  timer用于设置定时器  showShade用于展示图片上的遮罩层     count用于记录图片旋转的角度
 export default {
   data() {
     return {
@@ -70,39 +71,38 @@ export default {
       this.$axios
         .get("http://121.41.30.226:3000/lyric?id=" + i)
         .then(response => {
+          // 判断是否存在歌词
           if (
             response.data.lrc &&
             response.data.lrc.lyric !== "" &&
             response.data.lrc.lyric.includes("[") &&
             response.data.lrc.lyric.includes("]")
           ) {
-            //将获取到的时间数据转换为几分几秒，然后将它与当前播放时间进行对比来判断应该显示哪句歌词
+            //过滤数组中的空元素
             let arr = response.data.lrc.lyric.split("\n").filter((v, i) => {
               return v !== "";
             });
             // console.log(arr)
-            //去除中括号,并将其按照：分割为数组
+            //获取时间
             let arr0 = arr.map((v, i) => {
               return v.split("]")[0].split("[")[1];
             });
-
             arr0 = arr0.map((v, i) => {
               return v.split(":");
             });
-
             //转化为秒
             let timeArr = arr0.map((v, i) => {
               return v[0] * 60 + parseFloat(v[1]);
             });
 
-            //歌词
+            //获取歌词
             let musicWords = arr.map((v, i) => {
               return v.split("]")[1];
             });
             this.wordsTime = timeArr;
             this.songWords = musicWords;
           } else {
-            this.wordsTime = [600];
+            this.wordsTime = [1000];
             this.songWords = ["没有获取到歌曲信息~"];
           }
           // console.log(this.wordsTime)
@@ -110,6 +110,7 @@ export default {
         });
     },
     showWords() {
+      //设置定时器通过歌曲的播放时间判断应该显示哪句歌词
       this.timer = setInterval(() => {
         if (document.getElementById("mp3").paused) {
           this.showShade = true;
@@ -122,7 +123,14 @@ export default {
         let second = document.getElementById("mp3").currentTime;
         //   console.log(second)
         for (let i = 0; i < this.wordsTime.length; i++) {
-          if (second >= this.wordsTime[i] && second <= this.wordsTime[i + 1]) {
+          if (this.wordsTime[i + 1]) {
+            if (
+              second >= this.wordsTime[i] &&
+              second <= this.wordsTime[i + 1]
+            ) {
+              this.initNum = Number(i);
+            }
+          } else {
             this.initNum = Number(i);
           }
         }
@@ -146,6 +154,7 @@ export default {
       });
     },
     isPlaying() {
+      // 展示播放详情页
       setTimeout(() => {
         document.getElementById("listening").style.position = "fixed";
         document.getElementById("listening").style.top = 0;
