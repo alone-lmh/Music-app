@@ -24,7 +24,7 @@
         </van-tabs>
         <van-nav-bar v-show="!flag" title="搜索" left-text left-arrow @click-left="index" />
         <Search v-show="!flag" @to-parent="getMusicId"></Search>
-        <listening v-show="listenFlag" :key="getId" :musicId="getId"></listening>
+        <listening v-if="listenFlag" :key="getId" :musicId="getId"></listening>
       </div>
     </div>
     <van-popup

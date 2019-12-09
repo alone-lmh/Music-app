@@ -226,7 +226,6 @@ export default {
       this.nowTimeSecond = (this.value / 100) * this.totalTimeSecond;
       document.getElementById("mp3").currentTime = this.nowTimeSecond;
       this.intoMinutes(this.nowTimeSecond, "nowTime");
-      console.log(this.nowTime);
     },
     getList() {}
   }
