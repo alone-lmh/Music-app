@@ -1,5 +1,3 @@
 <template>
-    <div>
-        歌手
-    </div>
+  <div>歌手</div>
 </template>

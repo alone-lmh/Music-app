@@ -18,8 +18,7 @@
 import login from "../components/reg/login.vue";
 export default {
   data() {
-    return {
-    };
+    return {};
   },
   components: { login },
   methods: {

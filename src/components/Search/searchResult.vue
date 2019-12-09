@@ -18,7 +18,7 @@ export default {
   data() {
     return {
       result: [],
-      getId:''
+      getId: ""
     };
   },
   methods: {
@@ -28,9 +28,10 @@ export default {
         .then(response => {
           this.result = response.data.result.songs;
         });
-    },autoPlay(i){
-        this.getId=i;
-        this.$emit("toParent",i);
+    },
+    autoPlay(i) {
+      this.getId = i;
+      this.$emit("toParent", i);
     }
   }
 };
@@ -41,6 +42,12 @@ export default {
   margin: 0.1rem 1.1rem;
   color: blue;
 }
-.searchResult{overflow: auto;height:100%;}
-.searchResult .van-list{overflow: auto;height:100%;}
+.searchResult {
+  overflow: auto;
+  height: 100%;
+}
+.searchResult .van-list {
+  overflow: auto;
+  height: 100%;
+}
 </style>

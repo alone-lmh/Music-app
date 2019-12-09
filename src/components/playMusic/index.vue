@@ -24,9 +24,23 @@
         <van-swipe-item v-for="(item,i) in songWords" :key="i">{{item}}</van-swipe-item>
       </van-swipe>
     </div>
-    <div @click="isPlaying" class="mp3Div">
-      <audio id="mp3" :src="musicSrc" controls="controls" autoplay="false"></audio>
-    </div>
+    <van-card
+      :desc="details.ar[0].name"
+      :title="details.name"
+      :thumb="details.al.picUrl"
+      :centered="false"
+      @click="isPlaying"
+    >
+      <div slot="tags" class="custom">
+        <span class="nowTime">{{nowTime}}</span>
+        <van-slider v-model="value" class="slider" @change="onChange" />
+        <span class="totalTime">{{totalTime}}</span>
+        <van-icon name="play" v-show="showShade" class="playIcon" @click.stop="playMusic" />
+        <van-icon name="pause" v-show="!showShade" class="pauseIcon" @click.stop="timeOut" />
+        <van-icon name="wap-nav" class="listIcon" @click.stop="getList" />
+      </div>
+    </van-card>
+    <audio id="mp3" :src="musicSrc" controls="controls" autoplay loop></audio>
     <van-popup v-model="show" round closeable :style="{ width: '80%' }">
       <p>不好意思呢~ o(*￣▽￣*)o</p>
       <p>此歌曲我们还未获得播放版权</p>
@@ -34,11 +48,11 @@
   </div>
 </template>
 <script>
-//initNum设置歌初始的轮播位置   show用于判断是否可以播放歌曲  timer用于设置定时器  showShade用于展示图片上的遮罩层     count用于记录图片旋转的角度
+//initNum设置歌初始的轮播位置   show用于判断是否可以播放歌曲  timer用于设置定时器  showShade用于展示图片上的遮罩层     count用于记录图片旋转的角度 value用于展示歌词 nowTimeSecond当前播放时间（秒） totalTimeSecond歌曲总时长（秒）
 export default {
   data() {
     return {
-      details: { name: "", al: "" },
+      details: { name: "", al: "", ar: [{ name: "" }] },
       songWords: [],
       musicSrc: "",
       wordsTime: [],
@@ -46,7 +60,12 @@ export default {
       show: false,
       timer: null,
       showShade: false,
-      count: 0
+      count: 0,
+      value: 0,
+      nowTimeSecond: 0,
+      totalTimeSecond: 0,
+      nowTime: "0:00",
+      totalTime: "0:00"
     };
   },
   props: ["musicId"],
@@ -55,11 +74,32 @@ export default {
     this.getSongsDetail(this.musicId);
     this.getSongWords(this.musicId);
     this.getMusicSrc(this.musicId);
+    this.getTotalTime();
   },
   beforeDestroy() {
     clearInterval(this.timer);
   },
   methods: {
+    intoMinutes(time, result) {
+      //分钟
+      var minute = time / 60;
+      var minutes = parseInt(minute);
+      if (minutes < 10) {
+        minutes = minutes;
+      }
+      //秒
+      var second = time % 60;
+      var seconds = Math.round(second);
+      if (seconds < 10) {
+        seconds = "0" + seconds;
+      }
+      if (result == "nowTime") {
+        this.nowTime = minutes + ":" + seconds;
+      }
+      if (result == "totalTime") {
+        this.totalTime = minutes + ":" + seconds;
+      }
+    },
     getSongsDetail(i) {
       this.$axios
         .get("http://121.41.30.226:3000/song/detail?ids=" + i)
@@ -112,28 +152,28 @@ export default {
     showWords() {
       //设置定时器通过歌曲的播放时间判断应该显示哪句歌词
       this.timer = setInterval(() => {
-        if (document.getElementById("mp3").paused) {
-          this.showShade = true;
-        } else {
-          this.showShade = false;
+        //旋转图片
+        if (!document.getElementById("mp3").paused) {
           document.getElementById("smallImg").style.transform =
             "rotate(" + this.count + "deg)";
           this.count++;
         }
-        let second = document.getElementById("mp3").currentTime;
-        //   console.log(second)
+        //获取当前的播放时间
+        this.nowTimeSecond = document.getElementById("mp3").currentTime;
+        this.intoMinutes(this.nowTimeSecond, "nowTime");
+        //判断应该显示哪句歌词
         for (let i = 0; i < this.wordsTime.length; i++) {
           if (this.wordsTime[i + 1]) {
             if (
-              second >= this.wordsTime[i] &&
-              second <= this.wordsTime[i + 1]
+              this.nowTimeSecond >= this.wordsTime[i] &&
+              this.nowTimeSecond <= this.wordsTime[i + 1]
             ) {
               this.initNum = Number(i);
             }
-          } else {
-            this.initNum = Number(i);
           }
         }
+        //设置滑块的进度
+        this.value = (this.nowTimeSecond / this.totalTimeSecond) * 100;
       }, 100);
     },
     getMusicSrc(i) {
@@ -143,12 +183,20 @@ export default {
           this.musicSrc = response.data.data[0].url;
           if (!this.musicSrc) {
             this.show = true;
+          } else {
           }
         });
     },
+    getTotalTime() {
+      let audio = document.getElementById("mp3");
+      audio.oncanplay = () => {
+        this.totalTimeSecond = audio.duration;
+        this.intoMinutes(this.totalTimeSecond, "totalTime");
+      };
+    },
     back() {
       setTimeout(() => {
-        document.getElementById("listening").style.position = "relative";
+        document.getElementById("listening").style.position = "static";
         document.getElementById("listening").style.height = "auto";
         document.getElementById("top").style.flex = "0 0 0";
       });
@@ -172,13 +220,21 @@ export default {
       document.getElementById("mp3").play();
       clearInterval(this.timer);
       this.showWords();
-    }
+    },
+    onChange() {
+      this.playMusic();
+      this.nowTimeSecond = (this.value / 100) * this.totalTimeSecond;
+      document.getElementById("mp3").currentTime = this.nowTimeSecond;
+      this.intoMinutes(this.nowTimeSecond, "nowTime");
+      console.log(this.nowTime);
+    },
+    getList() {}
   }
 };
 </script>
 <style scoped>
 #listening {
-  overflow: hidden;
+  position: static;
   text-align: center;
   z-index: 1000;
   width: 100%;
@@ -189,6 +245,9 @@ export default {
 #top {
   position: relative;
   width: 100%;
+}
+#mp3 {
+  display: none;
 }
 #smallImg {
   margin: 3rem 0 3rem;
@@ -208,13 +267,39 @@ export default {
 .stop {
   line-height: 15rem;
 }
-.mp3Div {
-  width: 100%;
-  background: #f1f3f4;
+.custom {
+  display: flex;
 }
-#mp3 {
-  display: block;
-  width: 80%;
-  margin: 0 auto;
+
+.slider {
+  flex: 1;
+  margin: 0 1em;
+  align-self: center;
+}
+.playIcon,
+.listIcon,
+.pauseIcon {
+  font-size: 1.5em;
+}
+.playIcon,
+.listIcon,
+.pauseIcon {
+  margin-left: 0.5em;
+}
+.van-card__thumb {
+  width: 5em;
+  height: 5em;
+}
+.van-card {
+  position: relative;
+  box-sizing: border-box;
+  padding: 0.7em 1.2em;
+  color: #323233;
+  font-size: 0.8em;
+  background-color: #f7f8f8;
+  margin: 0;
+}
+.van-card__content {
+  min-height: 0;
 }
 </style>

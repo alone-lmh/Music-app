@@ -1,5 +1,3 @@
 <template>
-    <div>
-        歌单
-    </div>
+  <div>歌单</div>
 </template>

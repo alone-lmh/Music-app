@@ -24,7 +24,7 @@
         </van-tabs>
         <van-nav-bar v-show="!flag" title="搜索" left-text left-arrow @click-left="index" />
         <Search v-show="!flag" @to-parent="getMusicId"></Search>
-        <listening v-if="listenFlag" :key="getId" :musicId="getId"></listening>
+        <listening v-show="listenFlag" :key="getId" :musicId="getId"></listening>
       </div>
     </div>
     <van-popup
@@ -84,7 +84,7 @@ export default {
       this.getId = i;
       this.listenFlag = true;
       setTimeout(() => {
-        document.getElementById("listening").style.position = "relative";
+        document.getElementById("listening").style.position = "static";
         document.getElementById("listening").style.height = "auto";
         document.getElementById("top").style.height = 0;
       });

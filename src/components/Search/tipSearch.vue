@@ -34,13 +34,16 @@ export default {
         });
     },
     getMusic(i) {
-      this.$emit("to-parent",i)
+      this.$emit("to-parent", i);
     }
   }
 };
 </script>
 <style scoped>
-.tip{overflow: auto;height:100%;}
+.tip {
+  overflow: auto;
+  height: 100%;
+}
 
 .goResult {
   font-size: 0.8rem;

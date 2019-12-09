@@ -54,7 +54,7 @@ export default {
           .then(response => {
             if (response.data.code == 200) {
               this.next = true;
-              this.$emit("to-parent",this.next)
+              this.$emit("to-parent", this.next);
             }
           })
           .catch(error => {

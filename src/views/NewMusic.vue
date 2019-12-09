@@ -1,21 +1,21 @@
 <template>
   <div class="NewMusic">
-    <van-swipe >
+    <van-swipe>
       <van-swipe-item v-for="(image, index) in images" :key="index">
         <img :src="image.pic" @click="getMusic(image.song.id)" />
       </van-swipe-item>
     </van-swipe>
-      <van-list>
-        <van-cell
-          v-for="item in list"
-          :key="item.id"
-          :title="item.name"
-          :label="item.song.artists[0].name"
-          @click="getMusic(item.id)"
-        >
-          <van-icon slot="right-icon" name="music-o" style="line-height: inherit;" size="1.5em" />
-        </van-cell>
-      </van-list>
+    <van-list>
+      <van-cell
+        v-for="item in list"
+        :key="item.id"
+        :title="item.name"
+        :label="item.song.artists[0].name"
+        @click="getMusic(item.id)"
+      >
+        <van-icon slot="right-icon" name="music-o" style="line-height: inherit;" size="1.5em" />
+      </van-cell>
+    </van-list>
   </div>
 </template>
 <script>
@@ -52,7 +52,7 @@ export default {
     getMusic(i) {
       //向父元素提交音乐id
       this.getId = i;
-      this.$emit("to-parent",i);
+      this.$emit("to-parent", i);
     }
   }
 };
@@ -60,7 +60,7 @@ export default {
 <style scoped>
 .van-swipe img {
   width: 100%;
-  display:block;
+  display: block;
 }
 .van-tabs__content {
   flex: 1;

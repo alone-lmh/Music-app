@@ -1,5 +1,3 @@
 <template>
-    <div>
-        排行
-    </div>
+  <div>排行</div>
 </template>

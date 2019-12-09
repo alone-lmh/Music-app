@@ -82,17 +82,17 @@ export default {
       this.active++;
       if (this.active == 1) {
         //调用验证短信验证码的方法
-        this.next=false;
+        this.next = false;
         this.$refs.getVerify.phoneVerify();
       }
 
       if (this.active == 2) {
         //调用注册方法
-        this.next=false;
+        this.next = false;
         this.$refs.getBsg.register();
       }
       if (this.active == 3) {
-        this.next=false;
+        this.next = false;
         //调用登录的方法
         this.$refs.getFn.loginHandle();
         this.active = 2;

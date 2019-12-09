@@ -10,14 +10,12 @@ export default {
 };
 </script>
 <style  scoped>
-
 #app {
-  background:url("../public/bg.png");
-  background-size:100% 100%;
+  background: url("../public/bg.png");
+  background-size: 100% 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   user-select: none;
 }
-
 </style>
