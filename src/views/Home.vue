@@ -2,18 +2,8 @@
   <div id="home">
     <div id="header">
       <van-nav-bar title="Music">
-        <van-icon
-          name="bars"
-          slot="left"
-          class="user"
-          @click="personal = true"
-        />
-        <van-icon
-          name="search"
-          slot="right"
-          @click="searchHandle"
-          class="search"
-        />
+        <van-icon name="bars" slot="left" class="user" @click="isShowLeft=true" />
+        <van-icon name="search" slot="right" @click="searchHandle" class="search" />
       </van-nav-bar>
     </div>
     <div id="content">
@@ -32,13 +22,7 @@
             <Singer @to-parent="getChildData"></Singer>
           </van-tab>
         </van-tabs>
-        <van-nav-bar
-          v-show="!flag"
-          title="搜索"
-          left-text
-          left-arrow
-          @click-left="index"
-        />
+        <van-nav-bar v-show="!flag" title="搜索" left-text left-arrow @click-left="index" />
         <Search v-show="!flag" @to-parent="getChildData"></Search>
         <listening
           @to-parent="getChildData"
@@ -50,24 +34,15 @@
       </div>
     </div>
     <van-popup
-      v-model="personal"
+      v-model="isShowLeft"
       position="left"
       get-container="body"
-<<<<<<< HEAD
-      :style="{ width: '60%', height: '100%' }"
-    >
-      <van-tabbar v-model="active">
-        <van-tabbar-item icon="home-o" @click="logOut"
-          >退出登录</van-tabbar-item
-        >
-=======
       :style="{ width: '80%',height:'100%' }"
       class="leftPart"
     >
-      <mv :key="personal" :isplay="personal"></mv>
+      <mv></mv>
       <van-tabbar v-model="active" class="goBack">
         <van-tabbar-item icon="home-o" @click="logOut">退出登录</van-tabbar-item>
->>>>>>> dev
       </van-tabbar>
     </van-popup>
   </div>
@@ -83,7 +58,7 @@ import Search from "./Search.vue";
 import { relative } from "path";
 import mv from "../components/MV/mv.vue";
 //flag:用于进行导航栏和搜索栏的切换   getId用于记录子组件向父组件提交的音乐ID
-//listenFlag用于显示音乐播放器    personal用于显示侧边栏
+//listenFlag用于显示音乐播放器    isShowLeft用于显示侧边栏
 export default {
   data() {
     return {
@@ -92,7 +67,7 @@ export default {
       flag: true,
       getId: "",
       listenFlag: false,
-      personal: false,
+      isShowLeft: false,
       musicList: ""
     };
   },
@@ -140,7 +115,6 @@ export default {
   display: flex;
   flex-direction: column;
 }
-
 #content {
   flex: 1;
   overflow: auto;

@@ -1,19 +1,48 @@
 <template>
-  <div>
+  <div class="singer">
     <van-sidebar v-model="activeKey">
-      <van-sidebar-item
-        v-for="p in items"
-        :key="p.pst"
-        :title="p.text"
-      ></van-sidebar-item>
+      <van-sidebar-item v-for="p in items" :key="p.pst" :title="p.text" @click="getSinger(p.pst)" />
     </van-sidebar>
+    <div class="singerName">
+      <van-card
+        v-for="(item,i) in singerList"
+        :key="i"
+        :title="item.name"
+        :thumb="item.picUrl"
+        @click="getSingerMusic(item.id)"
+      />
+    </div>
+    <div class="songs" v-show="show">
+      <van-nav-bar :title="singerDetails.name" left-arrow @click-left="back" />
+      <van-image width="100%" height="10em" fit="cover" :src="singerDetails.picUrl" />
+      <van-collapse v-model="activeNames">
+        <van-collapse-item name="1" title="基本介绍">{{singerDetails.briefDesc}}</van-collapse-item>
+      </van-collapse>
+      <div style="background:rgba(0,0,0,0.1); padding:0.1em 1em;">歌曲列表:</div>
+      <van-cell-group style="flex:1;overflow:auto;">
+        <van-cell
+          v-for="(item,i) in songList"
+          :key="i"
+          :title="item.name"
+          @click="playMusic(item.id)"
+        >
+          <van-icon slot="right-icon" name="music-o" style="line-height: inherit;" size="1.5em" />
+        </van-cell>
+        <van-cell style="height:5.5em;line-height:5.5em;text-align:center" title="没有更多了~"></van-cell>
+      </van-cell-group>
+    </div>
   </div>
 </template>
 <script>
 export default {
   data() {
     return {
+      activeNames: ["0"],
       activeKey: 0,
+      singerList: [],
+      songList: [],
+      singerDetails: {},
+      show: false,
       items: [
         { text: "入驻歌手", pst: "5001" },
         { text: "华语男歌手", pst: "1001" },
@@ -34,11 +63,80 @@ export default {
       ]
     };
   },
+  mounted() {
+    this.getSinger(this.items[0].pst);
+  },
   methods: {
-    PST(index, event) {
-      console.log(index);
-      console.log(event);
+    getSinger(pst) {
+      this.$axios
+        .get("http://121.41.30.226:3000/artist/list?cat=" + pst)
+        .then(response => {
+          this.singerList = response.data.artists;
+        });
+    },
+    getSingerMusic(id) {
+      this.show = true;
+      this.$axios
+        .get("http://121.41.30.226:3000/artists?id=" + id)
+        .then(response => {
+          this.songList = response.data.hotSongs;
+          this.singerDetails = response.data.artist;
+        });
+    },
+    back() {
+      this.show = false;
+    },
+    playMusic(id) {
+      this.$emit("to-parent", id, this.songList);
     }
   }
 };
 </script>
+<style scoped>
+.singer {
+  overflow: auto;
+  height: 100%;
+  display: flex;
+}
+.singer .van-sidebar {
+  width: 7.3em;
+  overflow: auto;
+  height: 100%;
+}
+.singerName {
+  flex: 1;
+  text-align: center;
+  height: 100%;
+  overflow: auto;
+}
+.singerName .van-card {
+  background: #fff;
+  border-bottom: 1px #eee solid;
+  padding: 0 2em;
+  height: 5em;
+}
+.singerName .van-card__header,
+.singerName .van-card__content
+ {
+  max-height: 5em;
+}
+.singerName .van-card__thumb,.singerName .van-image__img,.singerName .van-image{
+  width: 5em;
+  max-height: 5em;
+}
+.singerName .van-card__title {
+  line-height: 5em;
+  max-height: 5em;
+  font-size: 1.1em;
+}
+.songs {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  z-index: 10;
+  position: fixed;
+}
+</style>

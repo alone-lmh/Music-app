@@ -89,12 +89,12 @@ export default {
 </script>
 <style scoped>
 .SongList {
+  height:100%;
   width: 100%;
-  overflow: hidden;
+  overflow:auto;
 }
 .Img-content {
-  padding: 0.5rem 0;
-  margin: 0 1rem;
+  padding: 0.5rem 1rem;
   position: relative;
   height: 7rem;
   border-bottom: 1px solid #f1f1f1;

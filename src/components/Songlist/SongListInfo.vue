@@ -1,15 +1,8 @@
 <template>
   <div id="SongListInfo">
-    <van-list
-      v-model="loading"
-      :finished="finished"
-      finished-text="没有更多了"
-      @load="onLoad"
-    >
+    <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
       <div class="ImgTop">
-        <div
-          style="height:13rem;overflow:hidden;position:fixed;top:0;z-index:2; "
-        >
+        <div style="height:13rem;overflow:hidden;">
           <van-image cover :src="imgurl" class="ImgBgd" />
         </div>
         <van-sticky class="Info-top">
@@ -22,7 +15,7 @@
         </van-sticky>
       </div>
       <div class="ImgBtm">
-        <div class="ImgBtmTag" style="padding: 0.6rem 0.6rem 0 1rem;">
+        <div class="ImgBtmTag" style="padding: 0.6rem;">
           标签:
           <van-tag
             round
@@ -32,19 +25,20 @@
             v-for="item in tags"
             :key="item"
             style="margin:0 0.6rem;"
-            >{{ item }}</van-tag
-          >
+          >{{ item }}</van-tag>
         </div>
         <van-collapse v-model="activeNames">
-          <van-collapse-item title="简介：" name="1">{{
+          <van-collapse-item title="简介：" name="1">
+            {{
             description
-          }}</van-collapse-item>
+            }}
+          </van-collapse-item>
         </van-collapse>
       </div>
       <div class="SongLists">
         <h3>歌曲列表</h3>
-        <div>
-          <a
+        <div style="flex:1;overflow:auto;">
+          <div
             v-for="(item, num) in list"
             :key="item.id"
             @click="getInfoid(item.id, list)"
@@ -52,25 +46,21 @@
           >
             <div class="snum">{{ num + 1 }}</div>
             <div style="float:left;flex:1;" class="bord">
-              <div style="width:18.325rem;float:left;padding:6px 0;">
-                <p style="font-size:1.06rem;line-height:1.55rem;">
-                  {{ item.name }}
-                </p>
-                <p style="font-size:0.75rem;color:#888;line-height:1.1rem;">
-                  {{ item.ar[0].name }}-{{ item.al.name }}
-                </p>
+              <div style="float:left;padding:6px 0;max-width:18rem;">
+                <p style="font-size:1.06rem;line-height:1.55rem;">{{ item.name }}</p>
+                <p
+                  style="font-size:0.75rem;color:#888;line-height:1.1rem;"
+                >{{ item.ar[0].name }}-{{ item.al.name }}</p>
               </div>
-              <div
-                style="float:right;margin-right:10px;line-height:3.4rem;font-size:1.375rem;"
-              >
+              <div style="float:right;margin-right:10px;line-height:3.4rem;font-size:1.375rem;">
                 <van-icon name="music-o" />
               </div>
             </div>
-          </a>
+          </div>
+          <div style="height:5em;line-height:5.5em;text-align:center">没有更多了~</div>
         </div>
       </div>
     </van-list>
-    <div style="height:5rem;width:auto;"></div>
   </div>
 </template>
 <script>
@@ -130,16 +120,20 @@ export default {
   z-index: 99;
   width: 100%;
   height: 100%;
+  background: #fff;
   position: fixed;
   top: 0;
   left: 0;
   overflow-y: auto;
 }
+.van-list {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
 .ImgTop {
-  height: 18rem;
   position: relative;
   overflow: hidden;
-  /* background: red; */
 }
 .ImgBgd > img {
   height: auto;
@@ -153,10 +147,15 @@ export default {
 .ImgBtm {
   min-height: 5rem;
   width: 100%;
-  margin-top: -5rem;
   background: #fff;
   font-size: 0.75rem;
   color: #666;
+}
+.SongLists {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  overflow: auto;
 }
 .van-nav-bar .van-icon {
   color: #fff;
@@ -197,7 +196,6 @@ h3 {
 }
 p {
   margin: 0;
-  width: 18.325rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
