@@ -37,10 +37,10 @@
         <span class="totalTime">{{totalTime}}</span>
         <van-icon name="play" v-show="showShade" class="playIcon" @click.stop="playMusic" />
         <van-icon name="pause" v-show="!showShade" class="pauseIcon" @click.stop="timeOut" />
-        <van-icon name="wap-nav" class="listIcon" @click.stop="getList" />
+        <span class="nextMusic" @click.stop="nextMusic">👉</span>
       </div>
     </van-card>
-    <audio id="mp3" :src="musicSrc" controls="controls" autoplay loop></audio>
+    <audio id="mp3" :src="musicSrc" controls="controls" autoplay></audio>
     <van-popup v-model="show" round closeable :style="{ width: '80%' }">
       <p>不好意思呢~ o(*￣▽￣*)o</p>
       <p>此歌曲我们还未获得播放版权</p>
@@ -70,6 +70,7 @@ export default {
   },
   props: ["musicId"],
   mounted() {
+    clearInterval(this.timer);
     this.showWords();
     this.getSongsDetail(this.musicId);
     this.getSongWords(this.musicId);
@@ -125,28 +126,44 @@ export default {
             // console.log(arr)
             //获取时间
             let arr0 = arr.map((v, i) => {
-              return v.split("]")[0].split("[")[1];
+              return v.slice(v.lastIndexOf("[") + 1, v.lastIndexOf("]"));
             });
-            arr0 = arr0.map((v, i) => {
-              return v.split(":");
-            });
-            //转化为秒
-            let timeArr = arr0.map((v, i) => {
-              return v[0] * 60 + parseFloat(v[1]);
+            let arr1 = arr.map((v, i) => {
+              return v.split("]")[0].slice(1);
             });
 
+            let getSecond = function(arr) {
+              arr = arr.map((v, i) => {
+                return v.split(":");
+              });
+              //转化为秒
+              arr = arr.map((v, i) => {
+                return v[0] * 60 + parseFloat(v[1]);
+              });
+              return arr;
+            };
+            arr0 = getSecond(arr0);
+            arr1 = getSecond(arr1);
             //获取歌词
             let musicWords = arr.map((v, i) => {
-              return v.split("]")[1];
+              return v.slice(v.lastIndexOf("]") + 1);
             });
-            this.wordsTime = timeArr;
-            this.songWords = musicWords;
+            let obj0 = {};
+            let obj1 = {};
+            for (let i = 0; i < arr0.length; i++) {
+              obj0[arr0[i]] = musicWords[i];
+              obj1[arr1[i]] = musicWords[i];
+            }
+            Object.assign(obj0, obj1);
+            // console.log(obj0)
+            this.wordsTime = Object.keys(obj0);
+            this.songWords = Object.values(obj0);
           } else {
             this.wordsTime = [1000];
             this.songWords = ["没有获取到歌曲信息~"];
           }
-          // console.log(this.wordsTime)
-          // console.log(this.songWords)
+          console.log(this.wordsTime);
+          console.log(this.songWords);
         });
     },
     showWords() {
@@ -162,13 +179,13 @@ export default {
         this.nowTimeSecond = document.getElementById("mp3").currentTime;
         this.intoMinutes(this.nowTimeSecond, "nowTime");
         //判断应该显示哪句歌词
-        for (let i = 0; i < this.wordsTime.length; i++) {
-          if (this.wordsTime[i + 1]) {
+        for (let i = 0; i < this.songWords.length; i++) {
+          if (this.songWords[i + 1]) {
             if (
               this.nowTimeSecond >= this.wordsTime[i] &&
               this.nowTimeSecond <= this.wordsTime[i + 1]
             ) {
-              this.initNum = Number(i);
+              this.initNum = i;
             }
           }
         }
@@ -227,7 +244,7 @@ export default {
       document.getElementById("mp3").currentTime = this.nowTimeSecond;
       this.intoMinutes(this.nowTimeSecond, "nowTime");
     },
-    getList() {}
+    nextMusic() {}
   }
 };
 </script>
@@ -276,12 +293,15 @@ export default {
   align-self: center;
 }
 .playIcon,
-.listIcon,
+.nextMusic,
 .pauseIcon {
   font-size: 1.5em;
 }
+.nextMusic {
+  line-height: 0.6em;
+}
 .playIcon,
-.listIcon,
+.nextMusic,
 .pauseIcon {
   margin-left: 0.5em;
 }
