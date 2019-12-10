@@ -22,7 +22,8 @@ export default {
       hotFlag: true,
       tipFlag: false,
       searchFlag: false,
-      musicId: ""
+      musicId: "",
+      list:''
     };
   },
   components: {
@@ -56,10 +57,11 @@ export default {
         this.$refs.getFn.getTip(this.value);
       }
     },
-    getMusicId(i) {
+    getMusicId(i,list) {
       this.musicId = i;
+      this.list=list;
       //向父组件提交音乐ID
-      this.$emit("to-parent", i);
+      this.$emit("to-parent", i,list);
     }
   }
 };

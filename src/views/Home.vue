@@ -10,21 +10,21 @@
       <div class="navList" ref="container">
         <van-tabs v-model="active" v-show="flag" swipeable replace>
           <van-tab title="新歌">
-            <NewMusic @to-parent="getMusicId"></NewMusic>
+            <NewMusic @to-parent="getChildData"></NewMusic>
           </van-tab>
           <van-tab title="排行">
-            <RankingList @to-parent="getMusicId"></RankingList>
+            <RankingList @to-parent="getChildData"></RankingList>
           </van-tab>
           <van-tab title="歌单">
-            <SongList @to-parent="getMusicId"></SongList>
+            <SongList @to-parent="getChildData"></SongList>
           </van-tab>
           <van-tab title="歌手">
-            <Singer @to-parent="getMusicId"></Singer>
+            <Singer @to-parent="getChildData"></Singer>
           </van-tab>
         </van-tabs>
         <van-nav-bar v-show="!flag" title="搜索" left-text left-arrow @click-left="index" />
-        <Search v-show="!flag" @to-parent="getMusicId"></Search>
-        <listening v-if="listenFlag" :key="getId" :musicId="getId"></listening>
+        <Search v-show="!flag" @to-parent="getChildData"></Search>
+        <listening @to-parent="getChildData" v-if="listenFlag" :musicId="getId" :key="getId" :list="musicList"></listening>
       </div>
     </div>
     <van-popup
@@ -58,7 +58,8 @@ export default {
       flag: true,
       getId: "",
       listenFlag: false,
-      personal: false
+      personal: false,
+      musicList:''
     };
   },
   mounted() {
@@ -80,8 +81,9 @@ export default {
       this.flag = true;
       this.active = 0;
     },
-    getMusicId(i) {
-      this.getId = i;
+    getChildData(id,list) {
+      this.getId = id;
+      this.musicList=list;
       this.listenFlag = true;
       setTimeout(() => {
         document.getElementById("listening").style.position = "static";

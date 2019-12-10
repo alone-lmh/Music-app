@@ -24,22 +24,34 @@
         <van-swipe-item v-for="(item,i) in songWords" :key="i">{{item}}</van-swipe-item>
       </van-swipe>
     </div>
-    <van-card
-      :desc="details.ar[0].name"
-      :title="details.name"
-      :thumb="details.al.picUrl"
-      :centered="false"
-      @click="isPlaying"
-    >
-      <div slot="tags" class="custom">
-        <span class="nowTime">{{nowTime}}</span>
-        <van-slider v-model="value" class="slider" @change="onChange" />
-        <span class="totalTime">{{totalTime}}</span>
-        <van-icon name="play" v-show="showShade" class="playIcon" @click.stop="playMusic" />
-        <van-icon name="pause" v-show="!showShade" class="pauseIcon" @click.stop="timeOut" />
-        <span class="nextMusic" @click.stop="nextMusic">👉</span>
-      </div>
-    </van-card>
+    <div class="bottomMusic">
+      <van-card
+        :desc="details.ar[0].name"
+        :title="details.name"
+        :thumb="details.al.picUrl"
+        :centered="false"
+        @click="isPlaying"
+      >
+        <div slot="tags" class="custom">
+          <span class="nowTime">{{nowTime}}</span>
+          <van-slider v-model="value" class="slider" @change="onChange" />
+          <span class="totalTime">{{totalTime}}</span>
+          <van-icon name="play" v-show="showShade" class="playIcon" @click.stop="playMusic" />
+          <van-icon name="pause" v-show="!showShade" class="pauseIcon" @click.stop="timeOut" />
+          <van-icon name="weapp-nav" class="musicList" @click.stop="listFlag=!listFlag" />
+        </div>
+      </van-card>
+      <van-list class="tipMusicList" v-show="listFlag">
+        <van-cell
+          v-for="item in list"
+          :key="item.id"
+          :title="item.name"
+          @click="emitToParent(item.id)"
+        >
+          <van-icon slot="right-icon" name="music-o" style="line-height: inherit;" size="1.5em" />
+        </van-cell>
+      </van-list>
+    </div>
     <audio id="mp3" :src="musicSrc" controls="controls" autoplay></audio>
     <van-popup v-model="show" round closeable :style="{ width: '80%' }">
       <p>不好意思呢~ o(*￣▽￣*)o</p>
@@ -65,10 +77,11 @@ export default {
       nowTimeSecond: 0,
       totalTimeSecond: 0,
       nowTime: "0:00",
-      totalTime: "0:00"
+      totalTime: "0:00",
+      listFlag: false,
     };
   },
-  props: ["musicId"],
+  props: ["musicId","list"],
   mounted() {
     clearInterval(this.timer);
     this.showWords();
@@ -162,8 +175,8 @@ export default {
             this.wordsTime = [1000];
             this.songWords = ["没有获取到歌曲信息~"];
           }
-          console.log(this.wordsTime);
-          console.log(this.songWords);
+          // console.log(this.wordsTime);
+          // console.log(this.songWords);
         });
     },
     showWords() {
@@ -244,7 +257,10 @@ export default {
       document.getElementById("mp3").currentTime = this.nowTimeSecond;
       this.intoMinutes(this.nowTimeSecond, "nowTime");
     },
-    nextMusic() {}
+    emitToParent(i,list) {
+      this.$emit("to-parent", i ,this.list);
+      this.listFlag=false;
+    }
   }
 };
 </script>
@@ -257,6 +273,16 @@ export default {
   display: flex;
   flex-direction: column;
   background: #fff;
+}
+.tipMusicList {
+  position: fixed;
+  max-height: 40%;
+  overflow: auto;
+  bottom: 5em;
+  text-align: left;
+  background: rgba(230, 230, 230, 0.7);
+  width: 100%;
+  border: 1px #ccc solid;
 }
 #top {
   position: relative;
@@ -293,15 +319,12 @@ export default {
   align-self: center;
 }
 .playIcon,
-.nextMusic,
+.musicList,
 .pauseIcon {
   font-size: 1.5em;
 }
-.nextMusic {
-  line-height: 0.6em;
-}
 .playIcon,
-.nextMusic,
+.musicList,
 .pauseIcon {
   margin-left: 0.5em;
 }
