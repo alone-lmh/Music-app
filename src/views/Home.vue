@@ -53,12 +53,21 @@
       v-model="personal"
       position="left"
       get-container="body"
+<<<<<<< HEAD
       :style="{ width: '60%', height: '100%' }"
     >
       <van-tabbar v-model="active">
         <van-tabbar-item icon="home-o" @click="logOut"
           >退出登录</van-tabbar-item
         >
+=======
+      :style="{ width: '80%',height:'100%' }"
+      class="leftPart"
+    >
+      <mv :key="personal" :isplay="personal"></mv>
+      <van-tabbar v-model="active" class="goBack">
+        <van-tabbar-item icon="home-o" @click="logOut">退出登录</van-tabbar-item>
+>>>>>>> dev
       </van-tabbar>
     </van-popup>
   </div>
@@ -72,8 +81,9 @@ import SongList from "./SongList.vue";
 import Singer from "./Singer.vue";
 import Search from "./Search.vue";
 import { relative } from "path";
+import mv from "../components/MV/mv.vue";
 //flag:用于进行导航栏和搜索栏的切换   getId用于记录子组件向父组件提交的音乐ID
-//listenFlag用于显示音乐播放器    personal用于显示个人中心
+//listenFlag用于显示音乐播放器    personal用于显示侧边栏
 export default {
   data() {
     return {
@@ -95,7 +105,8 @@ export default {
     SongList,
     Singer,
     Search,
-    listening
+    listening,
+    mv
   },
   methods: {
     searchHandle() {
@@ -145,12 +156,17 @@ export default {
   display: flex;
   flex-direction: column;
 }
-
+.leftPart {
+  display: flex;
+  flex-direction: column;
+}
 .search,
 .user {
   font-size: 1.5em;
 }
-
+.goBack {
+  position: relative;
+}
 .van-sticky--fixed {
   background: #fff;
 }
