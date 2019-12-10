@@ -7,7 +7,11 @@
       @load="onLoad"
     >
       <div class="ImgTop">
-        <van-image cover :src="imgurl" class="ImgBgd" />
+        <div
+          style="height:13rem;overflow:hidden;position:fixed;top:0;z-index:2; "
+        >
+          <van-image cover :src="imgurl" class="ImgBgd" />
+        </div>
         <van-sticky class="Info-top">
           <van-nav-bar
             :title="name"
@@ -43,7 +47,7 @@
           <a
             v-for="(item, num) in list"
             :key="item.id"
-            @click="getInfoid(item.id)"
+            @click="getInfoid(item.id, list)"
             style="display:flex;width:100%;height:3.4rem;position:relative"
           >
             <div class="snum">{{ num + 1 }}</div>
@@ -88,8 +92,8 @@ export default {
     onClickLeft() {
       this.$emit("getInfo", "false");
     },
-    getInfoid(id) {
-      this.$emit("getInfoid", id);
+    getInfoid(id, list) {
+      this.$emit("getInfoid", id, list);
     },
     setInfo: function(setInfoid) {
       this.$axios
@@ -135,15 +139,10 @@ export default {
   height: 18rem;
   position: relative;
   overflow: hidden;
+  /* background: red; */
 }
-.ImgBgd {
-  height: 13rem;
-  width: 100%;
-  position: fixed;
-  top: 0;
-  z-index: 1;
-  overflow: hidden;
-  background: url();
+.ImgBgd > img {
+  height: auto;
 }
 .Info-top {
   position: fixed;
@@ -166,16 +165,12 @@ export default {
 .van-nav-bar__title {
   color: #fff;
 }
-.van-image__img {
-  height: auto !important;
-}
 .snum {
   width: 2.5rem;
   line-height: 3.4rem;
   color: #999;
   text-align: center;
   font-size: 1.06rem;
-  margin-left: -8px;
   float: left;
 }
 .bord:after {
@@ -186,7 +181,7 @@ export default {
   right: 0;
   pointer-events: none;
   box-sizing: border-box;
-  width: 91%;
+  width: 90%;
   height: 100%;
   transform-origin: top left;
   border: 0 solid rgba(0, 0, 0, 0.1);

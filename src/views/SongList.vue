@@ -81,8 +81,8 @@ export default {
     IsInfo: function(string) {
       this.isInfo = string == "false" ? false : true;
     },
-    music_id: function(id) {
-      this.$emit("to-parent", id);
+    music_id: function(id, list) {
+      this.$emit("to-parent", id, list);
     }
   }
 };

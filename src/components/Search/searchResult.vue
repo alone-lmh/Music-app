@@ -31,7 +31,7 @@ export default {
     },
     autoPlay(i) {
       this.getId = i;
-      this.$emit("toParent", i);
+      this.$emit("toParent", i,this.result);
     }
   }
 };

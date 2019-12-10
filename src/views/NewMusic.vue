@@ -52,7 +52,7 @@ export default {
     getMusic(i) {
       //向父元素提交音乐id
       this.getId = i;
-      this.$emit("to-parent", i);
+      this.$emit("to-parent", i,this.list);
     }
   }
 };

@@ -2,40 +2,63 @@
   <div id="home">
     <div id="header">
       <van-nav-bar title="Music">
-        <van-icon name="bars" slot="left" class="user" @click="personal=true" />
-        <van-icon name="search" slot="right" @click="searchHandle" class="search" />
+        <van-icon
+          name="bars"
+          slot="left"
+          class="user"
+          @click="personal = true"
+        />
+        <van-icon
+          name="search"
+          slot="right"
+          @click="searchHandle"
+          class="search"
+        />
       </van-nav-bar>
     </div>
     <div id="content">
       <div class="navList" ref="container">
         <van-tabs v-model="active" v-show="flag" swipeable replace>
           <van-tab title="新歌">
-            <NewMusic @to-parent="getMusicId"></NewMusic>
+            <NewMusic @to-parent="getChildData"></NewMusic>
           </van-tab>
           <van-tab title="排行">
-            <RankingList @to-parent="getMusicId"></RankingList>
+            <RankingList @to-parent="getChildData"></RankingList>
           </van-tab>
           <van-tab title="歌单">
-            <SongList @to-parent="getMusicId"></SongList>
+            <SongList @to-parent="getChildData"></SongList>
           </van-tab>
           <van-tab title="歌手">
-            <Singer @to-parent="getMusicId"></Singer>
+            <Singer @to-parent="getChildData"></Singer>
           </van-tab>
         </van-tabs>
-        <van-nav-bar v-show="!flag" title="搜索" left-text left-arrow @click-left="index" />
-        <Search v-show="!flag" @to-parent="getMusicId"></Search>
-        
+        <van-nav-bar
+          v-show="!flag"
+          title="搜索"
+          left-text
+          left-arrow
+          @click-left="index"
+        />
+        <Search v-show="!flag" @to-parent="getChildData"></Search>
+        <listening
+          @to-parent="getChildData"
+          v-if="listenFlag"
+          :musicId="getId"
+          :key="getId"
+          :list="musicList"
+        ></listening>
       </div>
     </div>
-    <listening v-if="listenFlag" :key="getId" :musicId="getId"></listening>
     <van-popup
       v-model="personal"
       position="left"
       get-container="body"
-      :style="{ width: '60%',height:'100%' }"
+      :style="{ width: '60%', height: '100%' }"
     >
       <van-tabbar v-model="active">
-        <van-tabbar-item icon="home-o" @click="logOut">退出登录</van-tabbar-item>
+        <van-tabbar-item icon="home-o" @click="logOut"
+          >退出登录</van-tabbar-item
+        >
       </van-tabbar>
     </van-popup>
   </div>
@@ -59,7 +82,8 @@ export default {
       flag: true,
       getId: "",
       listenFlag: false,
-      personal: false
+      personal: false,
+      musicList: ""
     };
   },
   mounted() {
@@ -81,8 +105,9 @@ export default {
       this.flag = true;
       this.active = 0;
     },
-    getMusicId(i) {
-      this.getId = i;
+    getChildData(id, list) {
+      this.getId = id;
+      this.musicList = list;
       this.listenFlag = true;
       setTimeout(() => {
         document.getElementById("listening").style.position = "static";
