@@ -78,10 +78,10 @@ export default {
       totalTimeSecond: 0,
       nowTime: "0:00",
       totalTime: "0:00",
-      listFlag: false,
+      listFlag: false
     };
   },
-  props: ["musicId","list"],
+  props: ["musicId", "list"],
   mounted() {
     clearInterval(this.timer);
     this.showWords();
@@ -204,6 +204,16 @@ export default {
         }
         //设置滑块的进度
         this.value = (this.nowTimeSecond / this.totalTimeSecond) * 100;
+        //当歌曲播放完随机播放列表中的歌曲
+        if (this.nowTimeSecond !== 0) {
+          if (this.nowTimeSecond == this.totalTimeSecond) {
+            this.$emit(
+              "to-parent",
+              this.list[parseInt(Math.random() * this.list.length)].id,
+              this.list
+            );
+          }
+        }
       }, 100);
     },
     getMusicSrc(i) {
@@ -213,7 +223,6 @@ export default {
           this.musicSrc = response.data.data[0].url;
           if (!this.musicSrc) {
             this.show = true;
-          } else {
           }
         });
     },
@@ -257,9 +266,9 @@ export default {
       document.getElementById("mp3").currentTime = this.nowTimeSecond;
       this.intoMinutes(this.nowTimeSecond, "nowTime");
     },
-    emitToParent(i,list) {
-      this.$emit("to-parent", i ,this.list);
-      this.listFlag=false;
+    emitToParent(i, list) {
+      this.$emit("to-parent", i, this.list);
+      this.listFlag = false;
     }
   }
 };
