@@ -24,16 +24,24 @@
         </van-tabs>
         <van-nav-bar v-show="!flag" title="搜索" left-text left-arrow @click-left="index" />
         <Search v-show="!flag" @to-parent="getChildData"></Search>
-        <listening @to-parent="getChildData" v-if="listenFlag" :musicId="getId" :key="getId" :list="musicList"></listening>
+        <listening
+          @to-parent="getChildData"
+          v-if="listenFlag"
+          :musicId="getId"
+          :key="getId"
+          :list="musicList"
+        ></listening>
       </div>
     </div>
     <van-popup
       v-model="personal"
       position="left"
       get-container="body"
-      :style="{ width: '60%',height:'100%' }"
+      :style="{ width: '80%',height:'100%' }"
+      class="leftPart"
     >
-      <van-tabbar v-model="active">
+      <mv :key="personal" :isplay="personal"></mv>
+      <van-tabbar v-model="active" class="goBack">
         <van-tabbar-item icon="home-o" @click="logOut">退出登录</van-tabbar-item>
       </van-tabbar>
     </van-popup>
@@ -48,8 +56,9 @@ import SongList from "./SongList.vue";
 import Singer from "./Singer.vue";
 import Search from "./Search.vue";
 import { relative } from "path";
+import mv from "../components/MV/mv.vue";
 //flag:用于进行导航栏和搜索栏的切换   getId用于记录子组件向父组件提交的音乐ID
-//listenFlag用于显示音乐播放器    personal用于显示个人中心
+//listenFlag用于显示音乐播放器    personal用于显示侧边栏
 export default {
   data() {
     return {
@@ -59,7 +68,7 @@ export default {
       getId: "",
       listenFlag: false,
       personal: false,
-      musicList:''
+      musicList: ""
     };
   },
   mounted() {
@@ -71,7 +80,8 @@ export default {
     SongList,
     Singer,
     Search,
-    listening
+    listening,
+    mv
   },
   methods: {
     searchHandle() {
@@ -81,9 +91,9 @@ export default {
       this.flag = true;
       this.active = 0;
     },
-    getChildData(id,list) {
+    getChildData(id, list) {
       this.getId = id;
-      this.musicList=list;
+      this.musicList = list;
       this.listenFlag = true;
       setTimeout(() => {
         document.getElementById("listening").style.position = "static";
@@ -121,12 +131,17 @@ export default {
   display: flex;
   flex-direction: column;
 }
-
+.leftPart {
+  display: flex;
+  flex-direction: column;
+}
 .search,
 .user {
   font-size: 1.5em;
 }
-
+.goBack {
+  position: relative;
+}
 .van-sticky--fixed {
   background: #fff;
 }

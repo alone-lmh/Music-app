@@ -28,7 +28,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
  - Axios
  - animate
 
- ### 接口（来源： https://github.com/Binaryify/NeteaseCloudMusicApi ）：
+ ### 项目中使用到的接口（来源： https://github.com/Binaryify/NeteaseCloudMusicApi ）：
 
 ### banner( 轮播图 )接口
 
@@ -47,21 +47,76 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 - 调用例子 : /banner, /banner?type=2
 
+### 手机登录
+- 必选参数 : phone: 手机号码 password: 密码
+
+- 接口地址 : /login/cellphone
+
+- 可选参数 : countrycode: 国家码，用于国外手机号登陆，例如美国传入：1
+
+- 调用例子 : /login/cellphone?phone=xxx&password=yyy
+
+### 发送验证码
+- 说明 : 调用此接口 ,传入手机号码, 可发送验证码
+
+- 必选参数 : phone: 手机号码
+
+- 可选参数 : ctcode: 国家区号,默认86即中国
+
+- 接口地址 : /captcha/sent
+
+- 调用例子 : /captcha/sent?phone=13xxx
+
+
+### 验证验证码
+- 说明 : 调用此接口 ,传入手机号码和验证码, 可校验验证码是否正确
+
+- 必选参数 : 
+
+phone: 手机号码
+
+captcha: 验证码
+
+- 可选参数 :
+
+ctcode: 国家区号,默认86即中国
+
+- 接口地址 : /captcha/verify
+
+- 调用例子 : /captcha/verify?phone=13xxx&captcha=1597
+
+### 注册(修改密码)
+- 说明 : 调用此接口 ,传入手机号码和验证码,密码,昵称, 可注册网易云音乐账号(同时可修改密码)
+
+- 必选参数 :
+
+captcha: 验证码
+
+phone : 手机号码
+
+password: 密码
+
+nickname: 昵称
+
+- 接口地址 : /register/cellphone
+
+- 调用例子 : /register/cellphone?phone=13xxx&password=xxxxx&captcha=1234&nickname=binary1345
+
  ### 推荐新音乐：
 
- 接口地址 : /personalized/newsong
+ - 接口地址 : /personalized/newsong
 
 ### 所有榜单：
 
-说明 : 调用此接口,可获取所有榜单 接口地址 : /toplist
+- 说明 : 调用此接口,可获取所有榜单 接口地址 : /toplist
 
-调用例子 : /toplist
+- 调用例子 : /toplist
 
 ### 排行榜
 
-说明 : 调用此接口 , 传入数字 idx, 可获取不同排行榜
+- 说明 : 调用此接口 , 传入数字 idx, 可获取不同排行榜
 
-必选参数 : idx: 对象 key, 对应以下排行榜
+- 必选参数 : idx: 对象 key, 对应以下排行榜
 
 ```
 "0": 云音乐新歌榜,
@@ -137,26 +192,51 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 - 调用例子 : /top/list?idx=6
 
+### 获取精品歌单
+- 说明 : 调用此接口 , 可获取精品歌单
+
+- 可选参数 : cat: tag, 比如 " 华语 "、" 古风 " 、" 欧美 "、" 流行 ", 默认为 "全部",可从歌单分类接口获取(/playlist/catlist)
+
+limit: 取出歌单数量 , 默认为 20
+
+before: 分页参数,取上一页最后一个歌单的 updateTime 获取下一页数据
+
+- 接口地址 : /top/playlist/highquality
+
+- 调用例子 : http://localhost:3000/top/playlist/highquality?before=1503639064232&limit=3
+
 ### 所有榜单内容摘要
 
-说明 : 调用此接口,可获取所有榜单内容摘要 接口地址 : /toplist/detail
+- 说明 : 调用此接口,可获取所有榜单内容摘要 接口地址 : /toplist/detail
 
-调用例子 : /toplist/detail
+- 调用例子 : /toplist/detail
 
 ### 推荐歌单
 
-可选参数 : limit: 取出数量 , 默认为 30 (不支持 offset)
+- 可选参数 : limit: 取出数量 , 默认为 30 (不支持 offset)
 
-接口地址 : /personalized
+- 接口地址 : /personalized
 
-调用例子 : /personalized?limit=1
+- 调用例子 : /personalized?limit=1
+
+### 获取歌单详情
+- 说明 : 歌单能看到歌单名字 , 但看不到具体歌单内容 , 调用此接口 , 传入歌单 id, 可 以获取对应歌单内的所有的音乐，但是返回的trackIds是完整的，tracks 则是不完整的，可拿全部 trackIds 请求一次 song/detail 接口获取所有歌曲的详情 (https://github.com/Binaryify/NeteaseCloudMusicApi/issues/452)
+
+- 必选参数 : id : 歌单 id
+
+- 可选参数 : s : 歌单最近的 s 个收藏者
+
+- 接口地址 : /playlist/detail
+
+- 调用例子 : /playlist/detail?id=24381616
+
 
 ### 歌手分类列表
-说明 : 调用此接口,可获取歌手分类列表
+- 说明 : 调用此接口,可获取歌手分类列表
 
-必选参数 : cat : 即 category Code,歌手类型,默认 1001,返回华语男歌手数据
+- 必选参数 : cat : 即 category Code,歌手类型,默认 1001,返回华语男歌手数据
 
-可选参数 :
+- 可选参数 :
 
 limit : 返回数量 , 默认为 30
 
@@ -222,11 +302,6 @@ category Code 取值:
 
 调用例子 : /artists?id=6452
 
-### 默认搜索关键词
-
-说明 : 调用此接口 , 可获取默认搜索关键词
-
-接口地址 : /search/default
 
 ### 搜索建议
 说明 : 调用此接口 , 传入搜索关键词可获得搜索建议 , 搜索结果同时包含单曲 , 歌手 , 歌单 ,mv 信息
@@ -277,86 +352,3 @@ category Code 取值:
 
 调用例子 : /lyric?id=33894312
 
-### 手机登录
-
-必选参数 : phone: 手机号码 password: 密码
-
-接口地址 : /login/cellphone
-
-可选参数 : countrycode: 国家码，用于国外手机号登陆，例如美国传入：1
-
-调用例子 : /login/cellphone?phone=xxx&password=yyy
-
-### 发送验证码
-
-说明 : 调用此接口 ,传入手机号码, 可发送验证码
-
-必选参数 : phone: 手机号码
-
-可选参数 : ctcode: 国家区号,默认86即中国
-
-接口地址 : /captcha/sent
-
-调用例子 : /captcha/sent?phone=13xxx
-
-### 验证验证码
-
-说明 : 调用此接口 ,传入手机号码和验证码, 可校验验证码是否正确
-
-必选参数 : phone: 手机号码
-
-captcha: 验证码
-
-可选参数 :
-
-ctcode: 国家区号,默认86即中国
-
-接口地址 : /captcha/verify
-
-调用例子 : /captcha/verify?phone=13xxx&captcha=1597
-
-### 注册(修改密码)
-
-说明 : 调用此接口 ,传入手机号码和验证码,密码,昵称, 可注册网易云音乐账号(同时可修改密码)
-
-必选参数 :
-
-captcha: 验证码
-
-phone : 手机号码
-
-password: 密码
-
-nickname: 昵称
-
-接口地址 : /register/cellphone
-
-调用例子 : /register/cellphone?phone=13xxx&password=xxxxx&captcha=1234&nickname=binary1345
-
-### 检测手机号码是否已注册
-
-说明 : 调用此接口 ,可检测手机号码是否已注册 必选参数 : phone : 手机号码
-
-可选参数 : countrycode: 国家码，用于国外手机号，例如美国传入：1 接口地址 : /cellphone/existence/check
-
-调用例子 : /cellphone/existence/check?phone=13xxx
-
-### 初始化昵称
-
-说明 : 刚注册的账号(需登录),调用此接口 ,可初始化昵称 必选参数 : nickname : 昵称
-
-接口地址 : /activate/init/profile
-
-调用例子 : /activate/init/profile?nickname=testUser2019
-
-### 退出登录
-
-说明 : 调用此接口 , 可退出登录
-
-调用例子 : /logout
-
-### 登录状态
-
-说明 : 调用此接口,可获取登录状态
-
-接口地址 : /login/status 
