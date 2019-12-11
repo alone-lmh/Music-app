@@ -98,6 +98,7 @@ export default {
   position: relative;
   margin-top: -4rem;
 }
+#rankingList-2 .van-nav-bar__title,#rankingList-2 .van-icon-arrow-left{color:#fff}
 .van-nav-bar {
   width: 100%;
   line-height: 3rem;
