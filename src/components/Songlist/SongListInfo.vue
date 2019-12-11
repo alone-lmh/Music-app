@@ -9,7 +9,7 @@
           :title="name"
           left-arrow
           @click-left="onClickLeft"
-          style="background:rgba(150,150,150,0.3);"
+          style="background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0) );"
         />
       </van-sticky>
     </div>
@@ -118,6 +118,7 @@ export default {
   left: 0;
   overflow-y: auto;
 }
+[class*=van-hairline]::after{border:0}
 .van-list {
   height: 100%;
   display: flex;

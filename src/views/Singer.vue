@@ -15,7 +15,7 @@
       />
     </div>
     <div class="songs" v-show="show">
-      <van-nav-bar style="background:rgba(0,0,0,0.2);width:100%;position:fixed;" :title="singerDetails.name" left-arrow @click-left="back" />
+      <van-nav-bar style="border-bottom:0;background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0) );width:100%;position:fixed;" :title="singerDetails.name" left-arrow @click-left="back" />
       <van-image width="100%" height="15em" fit="cover" :src="singerDetails.picUrl" />
       <van-collapse v-model="activeNames">
         <van-collapse-item name="1" title="基本介绍">{{singerDetails.briefDesc}}</van-collapse-item>
@@ -50,6 +50,7 @@ export default {
   data() {
     return {
       showLoading: false,
+      showSongsLoading:false,
       isShow: false,
       error: false,
       getSongError: false,
@@ -156,6 +157,7 @@ export default {
   overflow: auto;
   height: 100%;
 }
+[class*=van-hairline]::after{border:0}
 .songs .van-nav-bar__title,.songs .van-icon-arrow-left{color:#fff}
 .singerName {
   flex: 1;
