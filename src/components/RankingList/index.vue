@@ -10,7 +10,11 @@
     <van-cell
       v-for="item in rr"
       :key="item.id"
+<<<<<<< HEAD
       :title="item.name" 
+=======
+      :title="item.name"
+>>>>>>> a53da11aeb288e38c2d6f0674d676fd61bef98ab
       :label="item.ar[0].name"
       @click="getMusic(item.id)"
     >
@@ -98,6 +102,10 @@ export default {
   position: relative;
   margin-top: -4rem;
 }
+<<<<<<< HEAD
+=======
+#rankingList-2 .van-nav-bar__title,#rankingList-2 .van-icon-arrow-left{color:#fff}
+>>>>>>> a53da11aeb288e38c2d6f0674d676fd61bef98ab
 .van-nav-bar {
   width: 100%;
   line-height: 3rem;
