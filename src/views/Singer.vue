@@ -35,7 +35,7 @@
           title="没有更多了~"
           v-show="isShow"
         ></van-cell>
-        <van-loading type="spinner" style="text-align:center;" v-show="showLoading" />
+        <van-loading type="spinner" style="text-align:center;" v-show="showSongsLoading" />
       </van-cell-group>
       <div
         style="text-align:center;color:#aaa;"
@@ -121,14 +121,14 @@ export default {
           .then(response => {
             this.songList = response.data.hotSongs;
             this.singerDetails = response.data.artist;
-            this.showLoading = false;
+            this.showSongsLoading = false;
             this.getSongError = false;
           })
           .catch(() => {
-            this.showLoading = false;
+            this.showSongsLoading = false;
             this.getSongError = true;
           });
-        this.showLoading = true;
+        this.showSongsLoading = true;
         this.isShow = false;
         this.songList = [];
         this.singerDetails = [];

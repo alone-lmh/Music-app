@@ -1,6 +1,16 @@
 <template>
   <div class="mv">
-    <van-list v-model="loading" :error.sync="error" error-text="请求失败，点击重新加载" :finished="finished" finished-text="没有更多了" @load="onLoad">
+    <form action="/">
+      <van-search placeholder="请输入搜索关键词" v-model="value" @search="onSearch" @input="clear" />
+    </form>
+    <van-list
+      v-model="loading"
+      :error.sync="error"
+      error-text="请求失败，点击重新加载"
+      :finished="finished"
+      finished-text="没有更多了"
+      @load="onLoad"
+    >
       <van-cell v-for="(item,i) in mv" :key="i" :title="item.name">
         <video class="vidio" :src="item.url" controls width="100%" :poster="item.imgUrl"></video>
       </van-cell>
@@ -12,6 +22,7 @@ export default {
   props: ["isplay"],
   data() {
     return {
+      value: "",
       mv: [],
       loading: false,
       finished: false,
@@ -57,6 +68,7 @@ export default {
       this.$axios
         .get("http://121.41.30.226:3000/mv/url?id=" + id)
         .then(response => {
+          this.error = false;
           this.mv.push({
             name: name,
             url: response.data.data.url,
@@ -66,6 +78,34 @@ export default {
         .catch(() => {
           this.error = true;
         });
+    },
+    onSearch() {
+      this.$axios
+        .get(
+          "http://121.41.30.226:3000/search/multimatch?keywords=" + this.value
+        )
+        .then(response => {
+          this.mv = [];
+          this.error = false;
+          for (let i = 0; i < response.data.result.mv.length; i++) {
+            this.getMvUrl(
+              response.data.result.mv[i].id,
+              response.data.result.mv[i].name,
+              response.data.result.mv[i].cover
+            );
+          }
+        })
+        .catch(() => {
+          this.error = true;
+        });
+    },
+    clear() {
+      if (this.value == "") {
+        this.mv = [];
+        this.page=0;
+        this.getMvId();
+        console.log(this.page)
+      }
     }
   }
 };
