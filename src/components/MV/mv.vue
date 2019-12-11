@@ -3,6 +3,8 @@
     <form action="/">
       <van-search placeholder="请输入搜索关键词" v-model="value" @search="onSearch" @input="clear" />
     </form>
+      <van-loading type="spinner" style="text-align:center;" v-show="showLoading" />
+    <div style="text-align:center;color:#aaa;" v-show="showError" >数据加载失败，请重试~</div>
     <van-list
       v-model="loading"
       :error.sync="error"
@@ -26,6 +28,8 @@ export default {
       mv: [],
       loading: false,
       finished: false,
+      showLoading:false,
+      showError:false,
       error: false,
       page: 0,
       limit: 5
@@ -82,29 +86,34 @@ export default {
     onSearch() {
       this.$axios
         .get(
-          "http://121.41.30.226:3000/search/multimatch?keywords=" + this.value
+          "http://121.41.30.226:3000/search?keywords=" +
+            this.value +
+            "&type=1004"
         )
         .then(response => {
           this.mv = [];
           this.error = false;
-          for (let i = 0; i < response.data.result.mv.length; i++) {
+          this.showLoading=false;
+          this.showError=false;
+          for (let i = 0; i < response.data.result.mvs.length; i++) {
             this.getMvUrl(
-              response.data.result.mv[i].id,
-              response.data.result.mv[i].name,
-              response.data.result.mv[i].cover
+              response.data.result.mvs[i].id,
+              response.data.result.mvs[i].name,
+              response.data.result.mvs[i].cover
             );
           }
-        })
-        .catch(() => {
-          this.error = true;
+        }).catch(()=>{
+          this.showError=true;
+          this.showLoading=false;
         });
+        this.showLoading=true;
+        this.showError=false;
     },
     clear() {
       if (this.value == "") {
         this.mv = [];
-        this.page=0;
+        this.page = 0;
         this.getMvId();
-        console.log(this.page)
       }
     }
   }
