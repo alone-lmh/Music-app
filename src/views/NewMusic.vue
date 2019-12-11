@@ -19,7 +19,7 @@
       </van-cell>
     </van-list>
   </div>
-</template>
+</template> 
 <script>
 export default {
   data() {
