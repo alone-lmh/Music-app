@@ -1,81 +1,81 @@
 <template>
   <div id="SongListInfo">
-    <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-      <div class="ImgTop">
-        <div style="height:13rem;overflow:hidden;">
-          <van-image cover :src="imgurl" class="ImgBgd" />
-        </div>
-        <van-sticky class="Info-top">
-          <van-nav-bar
-            :title="name"
-            left-arrow
-            @click-left="onClickLeft"
-            style="background:rgba(150,150,150,0.3);"
-          />
-        </van-sticky>
+    <div class="ImgTop">
+      <div style="height:13rem;overflow:hidden;">
+        <van-image cover :src="imgurl" class="ImgBgd" />
       </div>
-      <div class="ImgBtm">
-        <div class="ImgBtmTag" style="padding: 0.6rem;">
-          标签:
-          <van-tag
-            round
-            color="#666"
-            plain
-            size="0.6rem"
-            v-for="item in tags"
-            :key="item"
-            style="margin:0 0.6rem;"
-          >{{ item }}</van-tag>
-        </div>
-        <van-collapse v-model="activeNames">
-          <van-collapse-item title="简介：" name="1">
-            {{
-            description
-            }}
-          </van-collapse-item>
-        </van-collapse>
+      <van-sticky class="Info-top">
+        <van-nav-bar
+          :title="name"
+          left-arrow
+          @click-left="onClickLeft"
+          style="background:rgba(150,150,150,0.3);"
+        />
+      </van-sticky>
+    </div>
+    <div class="ImgBtm">
+      <div class="ImgBtmTag" style="padding: 0.6rem;">
+        标签:
+        <van-tag
+          round
+          color="#666"
+          plain
+          size="0.6rem"
+          v-for="item in tags"
+          :key="item"
+          style="margin:0 0.6rem;"
+        >{{ item }}</van-tag>
       </div>
-      <div class="SongLists">
-        <h3>歌曲列表</h3>
-        <div style="flex:1;overflow:auto;">
-          <div
-            v-for="(item, num) in list"
-            :key="item.id"
-            @click="getInfoid(item.id, list)"
-            style="display:flex;width:100%;height:3.4rem;position:relative"
-          >
-            <div class="snum">{{ num + 1 }}</div>
-            <div style="float:left;flex:1;" class="bord">
-              <div style="float:left;padding:6px 0;max-width:18rem;">
-                <p style="font-size:1.06rem;line-height:1.55rem;">{{ item.name }}</p>
-                <p
-                  style="font-size:0.75rem;color:#888;line-height:1.1rem;"
-                >{{ item.ar[0].name }}-{{ item.al.name }}</p>
-              </div>
-              <div style="float:right;margin-right:10px;line-height:3.4rem;font-size:1.375rem;">
-                <van-icon name="music-o" />
-              </div>
+      <van-collapse v-model="activeNames">
+        <van-collapse-item title="简介：" name="1">
+          {{
+          description
+          }}
+        </van-collapse-item>
+      </van-collapse>
+    </div>
+    <div class="SongLists">
+      <h3>歌曲列表</h3>
+      <div style="flex:1;overflow:auto;">
+        <div
+          v-for="(item, num) in list"
+          :key="item.id"
+          @click="getInfoid(item.id, list)"
+          style="display:flex;width:100%;height:3.4rem;position:relative"
+        >
+          <div class="snum">{{ num + 1 }}</div>
+          <div style="float:left;flex:1;" class="bord">
+            <div style="float:left;padding:6px 0;max-width:18rem;">
+              <p style="font-size:1.06rem;line-height:1.55rem;">{{ item.name }}</p>
+              <p
+                style="font-size:0.75rem;color:#888;line-height:1.1rem;"
+              >{{ item.ar[0].name }}-{{ item.al.name }}</p>
+            </div>
+            <div style="float:right;margin-right:10px;line-height:3.4rem;font-size:1.375rem;">
+              <van-icon name="music-o" />
             </div>
           </div>
-          <div style="height:5em;line-height:5.5em;text-align:center">没有更多了~</div>
         </div>
+        <van-loading type="spinner" style="text-align:center;" v-show="showLoading" />
+        <div style="text-align:center;color:#aaa;" v-show="error">数据加载失败，请返回重新进入~</div>
+        <div style="height:5em;line-height:5.5em;text-align:center" v-show="showEnd">没有更多了~</div>
       </div>
-    </van-list>
+    </div>
   </div>
 </template>
 <script>
 export default {
   data() {
     return {
+      error:false,
+      showLoading:false,
+      showEnd:false,
       list: [],
       imgurl: "",
       name: "",
       tags: [],
       activeNames: ["0"],
-      description: "",
-      num: [],
-      loading: false,
-      finished: false
+      description: ""
     };
   },
   methods: {
@@ -83,34 +83,26 @@ export default {
       this.$emit("getInfo", "false");
     },
     getInfoid(id, list) {
+      this.showEnd=true;
       this.$emit("getInfoid", id, list);
     },
     setInfo: function(setInfoid) {
       this.$axios
         .get("http://121.41.30.226:3000/playlist/detail?id=" + setInfoid)
         .then(response => {
-          // console.log(response.data.playlist.coverImgUrl);
+          this.error=false;
+          this.showLoading=false;
           this.list = response.data.playlist.tracks;
           this.name = response.data.playlist.name;
           this.tags = response.data.playlist.tags;
           this.description = response.data.playlist.description;
           this.imgurl = response.data.playlist.coverImgUrl;
+        }).catch(()=>{
+          this.error=true;
+          this.showLoading=false;
         });
-    },
-    onLoad() {
-      // 异步更新数据
-      setTimeout(() => {
-        for (let i = 0; i < 10; i++) {
-          this.num.push(this.num.length + 1);
-        }
-        // 加载状态结束
-        this.loading = false;
-
-        // 数据全部加载完成
-        if (this.num.length >= 10) {
-          this.finished = true;
-        }
-      }, 500);
+        this.error=false;
+        this.showLoading=true;
     }
   }
 };

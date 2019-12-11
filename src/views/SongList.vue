@@ -1,33 +1,17 @@
 <template>
   <div class="SongList">
-    <van-list
-      v-model="loading"
-      :finished="finished"
-      finished-text="没有更多了"
-      @load="onLoad"
-      v-show="!isInfo"
-    >
-      <van-cell
-        v-for="item in list"
-        :key="item.id"
-        @click="setInfo(item.id)"
-        class="Img-content"
-      >
-        <div class="Img">
-          <img :src="item.coverImgUrl" />
-        </div>
-        <div class="Img-right">
-          <p>{{ item.name }}</p>
-          <p>by&nbsp;{{ item.creator.nickname }}</p>
-        </div>
-      </van-cell>
-    </van-list>
-    <SongListInfo
-      v-show="isInfo"
-      ref="Infoid"
-      v-on:getInfo="IsInfo"
-      v-on:getInfoid="music_id"
-    ></SongListInfo>
+    <div style="text-align:center;color:#aaa;" v-show="error" @click="reload">加载失败点击重试~</div>
+    <van-loading type="spinner" style="text-align:center;" v-show="showLoading" />
+    <van-cell v-for="item in list" :key="item.id" @click="setInfo(item.id)" class="Img-content">
+      <div class="Img">
+        <img :src="item.coverImgUrl" />
+      </div>
+      <div class="Img-right">
+        <p>{{ item.name }}</p>
+        <p>by&nbsp;{{ item.creator.nickname }}</p>
+      </div>
+    </van-cell>
+    <SongListInfo v-show="isInfo" ref="Infoid" v-on:getInfo="IsInfo" v-on:getInfoid="music_id"></SongListInfo>
   </div>
 </template>
 <script>
@@ -35,10 +19,9 @@ import SongListInfo from "../components/Songlist/SongListInfo.vue";
 export default {
   data() {
     return {
+      showLoading:false,
+      error: false,
       list: [],
-      num: [],
-      loading: false,
-      finished: false,
       isInfo: false
     };
   },
@@ -49,28 +32,25 @@ export default {
     SongListInfo
   },
   methods: {
-    onLoad() {
-      // 异步更新数据
+    reload() {
+      this.error = false;
       setTimeout(() => {
-        for (let i = 0; i < 10; i++) {
-          this.num.push(this.num.length + 1);
-        }
-        // 加载状态结束
-        this.loading = false;
-
-        // 数据全部加载完成
-        if (this.num.length >= 10) {
-          this.finished = true;
-        }
-      }, 500);
+        this.getSongList();
+      }, 100);
     },
     getSongList() {
       this.$axios
         .get("http://121.41.30.226:3000/top/playlist/catlist")
         .then(response => {
-          //   console.log(response.data.playlists);
+          this.error = false;
+          this.showLoading=false;
           this.list = response.data.playlists;
+        })
+        .catch(() => {
+          this.showLoading=false;
+          this.error = true;
         });
+        this.showLoading=true;
     },
     setInfo(id) {
       this.isInfo = true;
@@ -89,9 +69,9 @@ export default {
 </script>
 <style scoped>
 .SongList {
-  height:100%;
+  height: 100%;
   width: 100%;
-  overflow:auto;
+  overflow: auto;
 }
 .Img-content {
   padding: 0.5rem 1rem;

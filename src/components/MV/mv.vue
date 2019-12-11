@@ -9,6 +9,7 @@
 </template>
 <script>
 export default {
+  props: ["isplay"],
   data() {
     return {
       mv: [],

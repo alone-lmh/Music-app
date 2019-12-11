@@ -4,6 +4,8 @@
       <van-sidebar-item v-for="p in items" :key="p.pst" :title="p.text" @click="getSinger(p.pst)" />
     </van-sidebar>
     <div class="singerName">
+      <van-loading type="spinner" style="text-align:center;" v-show="showLoading" />
+      <div style="text-align:center;color:#aaa;" v-show="error" @click="reload">加载失败点击重试~</div>
       <van-card
         v-for="(item,i) in singerList"
         :key="i"
@@ -13,8 +15,8 @@
       />
     </div>
     <div class="songs" v-show="show">
-      <van-nav-bar :title="singerDetails.name" left-arrow @click-left="back" />
-      <van-image width="100%" height="10em" fit="cover" :src="singerDetails.picUrl" />
+      <van-nav-bar style="background:rgba(0,0,0,0.2);width:100%;position:fixed;" :title="singerDetails.name" left-arrow @click-left="back" />
+      <van-image width="100%" height="15em" fit="cover" :src="singerDetails.picUrl" />
       <van-collapse v-model="activeNames">
         <van-collapse-item name="1" title="基本介绍">{{singerDetails.briefDesc}}</van-collapse-item>
       </van-collapse>
@@ -28,8 +30,18 @@
         >
           <van-icon slot="right-icon" name="music-o" style="line-height: inherit;" size="1.5em" />
         </van-cell>
-        <van-cell style="height:5.5em;line-height:5.5em;text-align:center" title="没有更多了~"></van-cell>
+        <van-cell
+          style="height:5.5em;line-height:5.5em;text-align:center"
+          title="没有更多了~"
+          v-show="isShow"
+        ></van-cell>
+        <van-loading type="spinner" style="text-align:center;" v-show="showLoading" />
       </van-cell-group>
+      <div
+        style="text-align:center;color:#aaa;"
+        v-show="getSongError"
+        @click="reloadSongs"
+      >加载失败点击重试~</div>
     </div>
   </div>
 </template>
@@ -37,6 +49,10 @@
 export default {
   data() {
     return {
+      showLoading: false,
+      isShow: false,
+      error: false,
+      getSongError: false,
       activeNames: ["0"],
       activeKey: 0,
       singerList: [],
@@ -60,33 +76,70 @@ export default {
         { text: "其他男歌手", pst: "4001" },
         { text: "其他女歌手", pst: "4002" },
         { text: "其他组合/乐队", pst: "4003" }
-      ]
+      ],
+      nowPst: 5001,
+      singerId: ""
     };
   },
   mounted() {
-    this.getSinger(this.items[0].pst);
+    this.getSinger(this.nowPst);
   },
   methods: {
+    reload() {
+      this.error = false;
+      setTimeout(() => {
+        this.getSinger(this.nowPst);
+      }, 100);
+    },
+    reloadSongs() {
+      this.getSongError = false;
+      setTimeout(() => {
+        this.getSingerMusic(this.singerId);
+      }, 100);
+    },
     getSinger(pst) {
+      this.nowPst = pst;
       this.$axios
         .get("http://121.41.30.226:3000/artist/list?cat=" + pst)
         .then(response => {
+          this.error = false;
+          this.showLoading = false;
           this.singerList = response.data.artists;
+        })
+        .catch(() => {
+          this.showLoading = false;
+          this.error = true;
         });
+        this.showLoading = true;
+        this.singerList=[];
     },
     getSingerMusic(id) {
-      this.show = true;
-      this.$axios
-        .get("http://121.41.30.226:3000/artists?id=" + id)
-        .then(response => {
-          this.songList = response.data.hotSongs;
-          this.singerDetails = response.data.artist;
-        });
+      this.singerId = id;
+      setTimeout(() => {
+        this.$axios
+          .get("http://121.41.30.226:3000/artists?id=" + id)
+          .then(response => {
+            this.songList = response.data.hotSongs;
+            this.singerDetails = response.data.artist;
+            this.showLoading = false;
+            this.getSongError = false;
+          })
+          .catch(() => {
+            this.showLoading = false;
+            this.getSongError = true;
+          });
+        this.showLoading = true;
+        this.isShow = false;
+        this.songList = [];
+        this.singerDetails = [];
+        this.show = true;
+      });
     },
     back() {
       this.show = false;
     },
     playMusic(id) {
+      this.isShow = true;
       this.$emit("to-parent", id, this.songList);
     }
   }
@@ -103,6 +156,7 @@ export default {
   overflow: auto;
   height: 100%;
 }
+.songs .van-nav-bar__title,.songs .van-icon-arrow-left{color:#fff}
 .singerName {
   flex: 1;
   text-align: center;
@@ -116,11 +170,13 @@ export default {
   height: 5em;
 }
 .singerName .van-card__header,
-.singerName .van-card__content
- {
+.singerName .van-card__content {
   max-height: 5em;
+  min-height: 5em;
 }
-.singerName .van-card__thumb,.singerName .van-image__img,.singerName .van-image{
+.singerName .van-card__thumb,
+.singerName .van-image__img,
+.singerName .van-image {
   width: 5em;
   max-height: 5em;
 }
@@ -133,10 +189,9 @@ export default {
   width: 100%;
   height: 100%;
   top: 0;
-  display: flex;
-  flex-direction: column;
   background: #fff;
   z-index: 10;
   position: fixed;
+  overflow: auto
 }
 </style>

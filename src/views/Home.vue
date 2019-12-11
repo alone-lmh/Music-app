@@ -40,7 +40,7 @@
       :style="{ width: '80%',height:'100%' }"
       class="leftPart"
     >
-      <mv></mv>
+      <mv :pause="isShowLeft" :key="isShowLeft"></mv>
       <van-tabbar v-model="active" class="goBack">
         <van-tabbar-item icon="home-o" @click="logOut">退出登录</van-tabbar-item>
       </van-tabbar>

@@ -1,5 +1,6 @@
 <template>
   <div class="searchResult">
+    <div style="text-align:center;color:#aaa;" v-show="error" >数据加载失败，请重试~</div>
     <van-list>
       <van-cell
         v-for="item in result"
@@ -17,6 +18,7 @@
 export default {
   data() {
     return {
+     error:false,
       result: [],
       getId: ""
     };
@@ -26,7 +28,10 @@ export default {
       this.$axios
         .get("http://121.41.30.226:3000/search?limit=100&keywords=" + i)
         .then(response => {
+          this.error=false;
           this.result = response.data.result.songs;
+        }).catch(()=>{
+          this.error=true;
         });
     },
     autoPlay(i) {

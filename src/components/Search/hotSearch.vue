@@ -1,6 +1,7 @@
 <template>
   <div class="hotSearch">
     <p>热门搜索</p>
+    <div style="text-align:center;color:#aaa;font-size:0.7em;" v-show="error" @click="reload">数据加载失败，点击重试~</div>
     <div>
       <van-tag
         plain
@@ -17,6 +18,7 @@
 export default {
   data() {
     return {
+      error: false,
       hotWords: []
     };
   },
@@ -24,10 +26,22 @@ export default {
     this.getHotSearch();
   },
   methods: {
+    reload() {
+      this.error = false;
+      setTimeout(() => {
+        this.getHotSearch();
+      }, 100);
+    },
     getHotSearch() {
-      this.$axios.get("http://121.41.30.226:3000/search/hot").then(response => {
-        this.hotWords = response.data.result.hots;
-      });
+      this.$axios
+        .get("http://121.41.30.226:3000/search/hot")
+        .then(response => {
+          this.hotWords = response.data.result.hots;
+          this.error = false;
+        })
+        .catch(() => {
+          this.error = true;
+        });
     },
     getMusic(i) {
       this.$emit("to-parent", i);
