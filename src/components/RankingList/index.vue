@@ -30,7 +30,7 @@ export default {
   data() {
     return {
       error: false,
-      isShow:false,
+      isShow: true,
       showLoading: false,
       rrr: [],
       rr: [],
@@ -53,7 +53,6 @@ export default {
       this.isgg = true;
     },
     getMusic(i) {
-      this.isShow=true;
       this.$emit("to-parent", i, this.rr);
     }
   },
@@ -65,6 +64,7 @@ export default {
       .get("http://121.41.30.226:3000/top/list?idx=" + this.index)
       .then(res => {
         this.error = false;
+        this.isShow = true;
         this.showLoading = false;
         this.rrr = res.data.playlist;
         this.rr = res.data.playlist.tracks;
@@ -72,8 +72,10 @@ export default {
       .catch(() => {
         this.showLoading = false;
         this.error = true;
+        this.isShow = false;
       });
     this.showLoading = true;
+    this.isShow = false;
   }
 };
 </script>
@@ -98,7 +100,10 @@ export default {
   position: relative;
   margin-top: -4rem;
 }
-#rankingList-2 .van-nav-bar__title,#rankingList-2 .van-icon-arrow-left{color:#fff}
+#rankingList-2 .van-nav-bar__title,
+#rankingList-2 .van-icon-arrow-left {
+  color: #fff;
+}
 .van-nav-bar {
   width: 100%;
   line-height: 3rem;

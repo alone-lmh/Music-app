@@ -5,6 +5,8 @@
         <img :src="image.pic" @click="getMusic(image.song.id)" />
       </van-swipe-item>
     </van-swipe>
+    <van-loading type="spinner" style="text-align:center;" v-show="showLoading" />
+    <div style="text-align:center;color:#aaa;" v-show="error" @click="reload">数据加载失败，点击重试~</div>
     <van-list>
       <van-cell
         v-for="item in list"
@@ -16,8 +18,6 @@
         <van-icon slot="right-icon" name="music-o" style="line-height: inherit;" size="1.5em" />
       </van-cell>
     </van-list>
-    <van-loading type="spinner" style="text-align:center;" v-show="showLoading" />
-    <div style="text-align:center;color:#aaa;" v-show="error" @click="reload">加载失败点击重试~</div>
   </div>
 </template>
 <script>
@@ -27,21 +27,23 @@ export default {
       images: [],
       list: [],
       getId: "",
-      error: false,
-      showLoading:false
+      showLoading: false,
+      bannerError: false,
+      listError: false,
+      error: false
     };
   },
-  created() {
+  mounted() {
     this.getBannerImgs();
     this.getNewMusic();
   },
   methods: {
     reload() {
-      this.error = false;
+      this.error=false;
       setTimeout(() => {
         this.getBannerImgs();
         this.getNewMusic();
-      },100);
+      }, 500);
     },
     getBannerImgs() {
       this.$axios
@@ -51,23 +53,32 @@ export default {
           this.images = response.data.banners.filter((v, i) =>
             v.song ? true : false
           );
-          this.showLoading=false;
+          this.showLoading = false;
+          this.bannerError = false;
+          this.error=this.bannerError||this.listError;
         })
         .catch(() => {
-          this.showLoading=false;
-          this.error = true;
+          this.showLoading = false;
+          this.bannerError = true;
+          this.error=this.bannerError||this.listError;
         });
-        this.showLoading=true;
+      this.showLoading = true;
     },
     getNewMusic() {
       this.$axios
         .get("http://121.41.30.226:3000/personalized/newsong")
         .then(response => {
           this.list = response.data.result;
+          this.showLoading = false;
+          this.listError = false;
+          this.error=this.bannerError||this.listError;
         })
         .catch(() => {
-          this.error = true;
+          this.showLoading = false;
+          this.listError = true;
+          this.error=this.bannerError||this.listError;
         });
+      this.showLoading = true;
     },
     getMusic(i) {
       //向父元素提交音乐id

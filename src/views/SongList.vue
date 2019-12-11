@@ -36,7 +36,7 @@ export default {
       this.error = false;
       setTimeout(() => {
         this.getSongList();
-      }, 100);
+      }, 500);
     },
     getSongList() {
       this.$axios

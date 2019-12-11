@@ -43,7 +43,7 @@ export default {
       this.error = false;
       setTimeout(() => {
         this.getRankingList();
-      },100);
+      },500);
     },
     ph(i) {
       this.isgg = true;

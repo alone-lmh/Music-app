@@ -58,7 +58,7 @@
         </div>
         <van-loading type="spinner" style="text-align:center;" v-show="showLoading" />
         <div style="text-align:center;color:#aaa;" v-show="error">数据加载失败，请返回重新进入~</div>
-        <div style="height:5em;line-height:5.5em;text-align:center" v-show="showEnd">没有更多了~</div>
+        <div style="height:5.5em;line-height:5.5em;text-align:center" v-show="showEnd">没有更多了~</div>
       </div>
     </div>
   </div>
@@ -69,7 +69,7 @@ export default {
     return {
       error:false,
       showLoading:false,
-      showEnd:false,
+      showEnd:true,
       list: [],
       imgurl: "",
       name: "",
@@ -83,7 +83,6 @@ export default {
       this.$emit("getInfo", "false");
     },
     getInfoid(id, list) {
-      this.showEnd=true;
       this.$emit("getInfoid", id, list);
     },
     setInfo: function(setInfoid) {
@@ -92,6 +91,7 @@ export default {
         .then(response => {
           this.error=false;
           this.showLoading=false;
+          this.showEnd=true;
           this.list = response.data.playlist.tracks;
           this.name = response.data.playlist.name;
           this.tags = response.data.playlist.tags;
@@ -100,7 +100,9 @@ export default {
         }).catch(()=>{
           this.error=true;
           this.showLoading=false;
+          this.showEnd=false;
         });
+        this.showEnd=false;
         this.error=false;
         this.showLoading=true;
     }

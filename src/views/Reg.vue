@@ -48,14 +48,15 @@ export default {
   },
   methods: {
     isNext(i) {
-      this.next = i;
-      if (this.active == 1) {
+      this.next = i ;
+      if (this.active == 0) {
         if (this.next) {
           this.verifyFlag = false;
           this.bsgMsgFlag = true;
           this.loginFlag = false;
           this.phone = this.$refs.getVerify.phone;
           this.code = this.$refs.getVerify.code;
+          this.active=1;
           document.querySelector(".next .van-button__text").innerText = "注册";
         } else {
           this.verifyFlag = true;
@@ -63,12 +64,12 @@ export default {
           this.loginFlag = false;
           this.active = 0;
         }
-      }
-      if (this.active == 2) {
+      }else if (this.active == 1) {
         if (this.next) {
           this.verifyFlag = false;
           this.bsgMsgFlag = false;
           this.loginFlag = true;
+          this.active=2;
           document.querySelector(".next .van-button__text").innerText = "登录";
         } else {
           this.verifyFlag = false;
@@ -79,19 +80,17 @@ export default {
       }
     },
     nextType() {
-      this.active++;
-      if (this.active == 1) {
+      if (this.active == 0) {
         //调用验证短信验证码的方法
         this.next = false;
         this.$refs.getVerify.phoneVerify();
       }
-
-      if (this.active == 2) {
+      if (this.active == 1) {
         //调用注册方法
         this.next = false;
         this.$refs.getBsg.register();
       }
-      if (this.active == 3) {
+      if (this.active == 2) {
         this.next = false;
         //调用登录的方法
         this.$refs.getFn.loginHandle();

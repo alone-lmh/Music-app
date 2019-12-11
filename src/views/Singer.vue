@@ -51,7 +51,7 @@ export default {
     return {
       showLoading: false,
       showSongsLoading:false,
-      isShow: false,
+      isShow: true,
       error: false,
       getSongError: false,
       activeNames: ["0"],
@@ -90,13 +90,13 @@ export default {
       this.error = false;
       setTimeout(() => {
         this.getSinger(this.nowPst);
-      }, 100);
+      }, 500);
     },
     reloadSongs() {
       this.getSongError = false;
       setTimeout(() => {
         this.getSingerMusic(this.singerId);
-      }, 100);
+      }, 500);
     },
     getSinger(pst) {
       this.nowPst = pst;
@@ -124,8 +124,10 @@ export default {
             this.singerDetails = response.data.artist;
             this.showSongsLoading = false;
             this.getSongError = false;
+            this.isShow = true;
           })
           .catch(() => {
+            this.isShow = false;
             this.showSongsLoading = false;
             this.getSongError = true;
           });

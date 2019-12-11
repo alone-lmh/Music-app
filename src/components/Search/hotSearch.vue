@@ -30,7 +30,7 @@ export default {
       this.error = false;
       setTimeout(() => {
         this.getHotSearch();
-      }, 100);
+      }, 500);
     },
     getHotSearch() {
       this.$axios
