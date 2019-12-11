@@ -43,29 +43,25 @@ export default {
       this.error = false;
       setTimeout(() => {
         this.getRankingList();
-      }, 100);
+      },100);
     },
     ph(i) {
       this.isgg = true;
       this.coverImgUrl = i;
     },
     getRankingList() {
-      axios
-        .get("http://121.41.30.226:3000/toplist")
-        .then(res => {
-          this.list = res.data.list;
-          this.error = false;
-          this.showLoading = false;
-        })
-        .catch(() => {
-          this.error = true;
-          this.showLoading = false;
-        });
-      this.error = false;
-      this.showLoading = true;
+      axios.get("http://121.41.30.226:3000/toplist").then(res => {
+        this.list = res.data.list;
+        this.error=false;
+        this.showLoading=false;
+      }).catch(()=>{
+        this.error=true;
+        this.showLoading=false;
+      });
+      this.error=false;
+      this.showLoading=true;
     },
     getMusic(i, list) {
-      console.log(i);
       this.getId = i;
       this.$emit("to-parent", i, list);
     },

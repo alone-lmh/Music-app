@@ -41,7 +41,6 @@
           <van-icon name="weapp-nav" class="musicList" @click.stop="listFlag=!listFlag" />
         </div>
       </van-card>
-      <div class="tipShade" @click="listFlag=!listFlag" v-show="listFlag">
       <van-list class="tipMusicList" v-show="listFlag">
         <van-cell
           v-for="item in list"
@@ -52,26 +51,17 @@
           <van-icon slot="right-icon" name="music-o" style="line-height: inherit;" size="1.5em" />
         </van-cell>
       </van-list>
-      </div>
     </div>
-    <audio id="mp3" :src="musicSrc" controls="controls" autoplay></audio>
-    <van-popup v-model="show" round closeable :style="{ width: '80%' }">
-      <p>不好意思呢~ o(*￣▽￣*)o</p>
-      <p>此歌曲我们还未获得播放版权</p>
-    </van-popup>
   </div>
 </template>
 <script>
-//initNum设置歌初始的轮播位置   show用于判断是否可以播放歌曲  timer用于设置定时器  showShade用于展示图片上的遮罩层     count用于记录图片旋转的角度 value用于展示歌词 nowTimeSecond当前播放时间（秒） totalTimeSecond歌曲总时长（秒）
+//initNum设置歌词初始的轮播位置  timer用于设置定时器  showShade用于展示图片上的遮罩层     count用于记录图片旋转的角度 value用于记录滑块位置  nowTimeSecond当前播放时间（秒） totalTimeSecond歌曲总时长（秒）
 export default {
   data() {
     return {
       details: { name: "", al: "", ar: [{ name: "" }] },
       songWords: [],
-      musicSrc: "",
-      wordsTime: [],
       initNum: 0,
-      show: false,
       timer: null,
       showShade: false,
       count: 0,
@@ -89,33 +79,11 @@ export default {
     this.showWords();
     this.getSongsDetail(this.musicId);
     this.getSongWords(this.musicId);
-    this.getMusicSrc(this.musicId);
-    this.getTotalTime();
   },
   beforeDestroy() {
     clearInterval(this.timer);
   },
   methods: {
-    intoMinutes(time, result) {
-      //分钟
-      var minute = time / 60;
-      var minutes = parseInt(minute);
-      if (minutes < 10) {
-        minutes = minutes;
-      }
-      //秒
-      var second = time % 60;
-      var seconds = Math.round(second);
-      if (seconds < 10) {
-        seconds = "0" + seconds;
-      }
-      if (result == "nowTime") {
-        this.nowTime = minutes + ":" + seconds;
-      }
-      if (result == "totalTime") {
-        this.totalTime = minutes + ":" + seconds;
-      }
-    },
     getSongsDetail(i) {
       this.$axios
         .get("http://121.41.30.226:3000/song/detail?ids=" + i)
@@ -138,7 +106,6 @@ export default {
             let arr = response.data.lrc.lyric.split("\n").filter((v, i) => {
               return v !== "";
             });
-            // console.log(arr)
             //获取时间
             let arr0 = arr.map((v, i) => {
               return v.slice(v.lastIndexOf("[") + 1, v.lastIndexOf("]"));
@@ -146,7 +113,7 @@ export default {
             let arr1 = arr.map((v, i) => {
               return v.split("]")[0].slice(1);
             });
-
+            //这种处理方法是因为有的歌词形式为[01:1.10][03:3.01]年少有为
             let getSecond = function(arr) {
               arr = arr.map((v, i) => {
                 return v.split(":");
@@ -170,15 +137,12 @@ export default {
               obj1[arr1[i]] = musicWords[i];
             }
             Object.assign(obj0, obj1);
-            // console.log(obj0)
             this.wordsTime = Object.keys(obj0);
             this.songWords = Object.values(obj0);
           } else {
             this.wordsTime = [1000];
             this.songWords = ["没有获取到歌曲信息~"];
           }
-          // console.log(this.wordsTime);
-          // console.log(this.songWords);
         });
     },
     showWords() {
@@ -190,9 +154,6 @@ export default {
             "rotate(" + this.count + "deg)";
           this.count++;
         }
-        //获取当前的播放时间
-        this.nowTimeSecond = document.getElementById("mp3").currentTime;
-        this.intoMinutes(this.nowTimeSecond, "nowTime");
         //判断应该显示哪句歌词
         for (let i = 0; i < this.songWords.length; i++) {
           if (this.songWords[i + 1]) {
@@ -228,27 +189,11 @@ export default {
           }
         });
     },
-    getTotalTime() {
-      let audio = document.getElementById("mp3");
-      audio.oncanplay = () => {
-        this.totalTimeSecond = audio.duration;
-        this.intoMinutes(this.totalTimeSecond, "totalTime");
-      };
-    },
     back() {
       setTimeout(() => {
         document.getElementById("listening").style.position = "static";
         document.getElementById("listening").style.height = "auto";
         document.getElementById("top").style.flex = "0 0 0";
-      });
-    },
-    isPlaying() {
-      // 展示播放详情页
-      setTimeout(() => {
-        document.getElementById("listening").style.position = "fixed";
-        document.getElementById("listening").style.top = 0;
-        document.getElementById("listening").style.height = "100%";
-        document.getElementById("top").style.flex = "1";
       });
     },
     timeOut() {
@@ -291,7 +236,7 @@ export default {
   overflow: auto;
   bottom: 5em;
   text-align: left;
-  background: rgba(230, 230, 230, 0.8);
+  background: rgba(230, 230, 230, 0.7);
   width: 100%;
   border: 1px #ccc solid;
 }
@@ -302,12 +247,6 @@ export default {
 #mp3 {
   display: none;
 }
-.tipShade{    position: fixed;
-    height: calc(100% - 5em);
-    top: 0;
-    z-index: 1;
-    width: 100%;
-    background: rgba(0,0,0,0.5);}
 #smallImg {
   margin: 3rem 0 3rem;
 }

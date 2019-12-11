@@ -19,7 +19,7 @@
     <van-loading type="spinner" style="text-align:center;" v-show="showLoading" />
     <div style="text-align:center;color:#aaa;" v-show="error" @click="reload">加载失败点击重试~</div>
   </div>
-</template>
+</template> 
 <script>
 export default {
   data() {
