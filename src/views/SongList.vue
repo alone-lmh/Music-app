@@ -16,6 +16,7 @@
 </template>
 <script>
 import SongListInfo from "../components/Songlist/SongListInfo.vue";
+//isInfo控制子组件的显示
 export default {
   data() {
     return {
@@ -53,6 +54,7 @@ export default {
         this.showLoading=true;
     },
     setInfo(id) {
+      // 点击歌单列表调用子组件方法，获取歌曲列表
       this.isInfo = true;
       if (id) {
         this.$refs.Infoid.setInfo(id);

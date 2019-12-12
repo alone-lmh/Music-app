@@ -20,6 +20,7 @@
   </div>
 </template>
 <script>
+//value储存输入框中的文字 
 export default {
   props: ["isplay"],
   data() {

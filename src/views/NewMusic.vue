@@ -19,7 +19,7 @@
       </van-cell>
     </van-list>
   </div>
-</template> 
+</template>
 <script>
 export default {
   data() {
@@ -39,6 +39,7 @@ export default {
   },
   methods: {
     reload() {
+      //数据加载失败
       this.error=false;
       setTimeout(() => {
         this.getBannerImgs();
@@ -81,7 +82,7 @@ export default {
       this.showLoading = true;
     },
     getMusic(i) {
-      //向父元素提交音乐id
+      //向父元素提交音乐id和当前歌曲列表
       this.getId = i;
       this.$emit("to-parent", i, this.list);
     }

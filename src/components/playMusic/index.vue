@@ -62,7 +62,7 @@
   </div>
 </template>
 <script>
-//initNum设置歌初始的轮播位置   show用于判断是否可以播放歌曲  timer用于设置定时器  showShade用于展示图片上的遮罩层     count用于记录图片旋转的角度 value用于展示歌词 nowTimeSecond当前播放时间（秒） totalTimeSecond歌曲总时长（秒）
+//initNum设置歌词初始的轮播位置 listFlag用于切换歌词列表的显示  show用于判断是否可以播放歌曲  timer用于设置定时器  showShade用于展示图片上的遮罩层     count用于记录图片旋转的角度 value用于记录滑块位置 nowTimeSecond当前播放时间（秒） totalTimeSecond歌曲总时长（秒）
 export default {
   data() {
     return {

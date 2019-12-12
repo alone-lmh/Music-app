@@ -3,16 +3,12 @@ import Vuex from 'vuex'
 import axios from 'axios'
 import App from './App.vue'
 import router from './router'
-import './back.js'
-// import store from './store'
+import './utils/back.js'
+
 import Vant from 'vant';
 import 'vant/lib/index.css';
-import {
-  Dialog
-} from 'vant';
-import {
-  Switch
-} from 'vant';
+import { Dialog } from 'vant';
+import { Switch } from 'vant';
 
 Vue.use(Switch);
 Vue.use(Dialog);

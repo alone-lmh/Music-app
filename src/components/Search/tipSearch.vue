@@ -17,7 +17,6 @@ export default {
   props: ["m"],
   data() {
     return {
-      flag: true,
       tipWords: []
     };
   },

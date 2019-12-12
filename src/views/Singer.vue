@@ -46,6 +46,7 @@
   </div>
 </template>
 <script>
+//isShow歌曲列表数据加载完后显示 songs用于判断是否显示歌曲列表页
 export default {
   data() {
     return {
@@ -142,7 +143,6 @@ export default {
       this.show = false;
     },
     playMusic(id) {
-      this.isShow = true;
       this.$emit("to-parent", id, this.songList);
     }
   }

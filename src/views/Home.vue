@@ -58,7 +58,7 @@ import Search from "./Search.vue";
 import { relative } from "path";
 import mv from "../components/MV/mv.vue";
 //flag:用于进行导航栏和搜索栏的切换   getId用于记录子组件向父组件提交的音乐ID
-//listenFlag用于显示音乐播放器    isShowLeft用于显示侧边栏
+//listenFlag用于显示音乐播放器    isShowLeft用于显示侧边栏 musicLis用于储存歌曲列表当点击播放的时候向播放组件传递
 export default {
   data() {
     return {
@@ -92,6 +92,7 @@ export default {
       this.active = 0;
     },
     getChildData(id, list) {
+      // 获取子组件传递的参数（音乐id，当前播放列表）
       this.getId = id;
       this.musicList = list;
       this.listenFlag = true;
