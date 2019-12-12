@@ -3,8 +3,8 @@
     <form action="/">
       <van-search placeholder="请输入搜索关键词" v-model="value" @search="onSearch" @input="clear" />
     </form>
-      <van-loading type="spinner" style="text-align:center;" v-show="showLoading" />
-    <div style="text-align:center;color:#aaa;" v-show="showError" >数据加载失败，请重试~</div>
+    <van-loading type="spinner" style="text-align:center;" v-show="showLoading" />
+    <div style="text-align:center;color:#aaa;" v-show="showError">数据加载失败，请重试~</div>
     <van-list
       v-model="loading"
       :error.sync="error"
@@ -28,8 +28,8 @@ export default {
       mv: [],
       loading: false,
       finished: false,
-      showLoading:false,
-      showError:false,
+      showLoading: false,
+      showError: false,
       error: false,
       page: 0,
       limit: 5
@@ -93,8 +93,8 @@ export default {
         .then(response => {
           this.mv = [];
           this.error = false;
-          this.showLoading=false;
-          this.showError=false;
+          this.showLoading = false;
+          this.showError = false;
           for (let i = 0; i < response.data.result.mvs.length; i++) {
             this.getMvUrl(
               response.data.result.mvs[i].id,
@@ -102,12 +102,13 @@ export default {
               response.data.result.mvs[i].cover
             );
           }
-        }).catch(()=>{
-          this.showError=true;
-          this.showLoading=false;
+        })
+        .catch(() => {
+          this.showError = true;
+          this.showLoading = false;
         });
-        this.showLoading=true;
-        this.showError=false;
+      this.showLoading = true;
+      this.showError = false;
     },
     clear() {
       if (this.value == "") {

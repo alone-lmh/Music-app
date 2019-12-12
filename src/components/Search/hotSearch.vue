@@ -1,7 +1,11 @@
 <template>
   <div class="hotSearch">
     <p>热门搜索</p>
-    <div style="text-align:center;color:#aaa;font-size:0.7em;" v-show="error" @click="reload">数据加载失败，点击重试~</div>
+    <div
+      style="text-align:center;color:#aaa;font-size:0.7em;"
+      v-show="error"
+      @click="reload"
+    >数据加载失败，点击重试~</div>
     <div>
       <van-tag
         plain
@@ -61,6 +65,7 @@ export default {
   color: #666;
 }
 .van-tag {
-  margin: 0.1rem 0.3rem;
+  margin-left: 0.8rem;
+  padding: 0.3em 0.6em;
 }
 </style>

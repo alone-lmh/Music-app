@@ -102,9 +102,17 @@ export default {
       });
     },
     logOut() {
-      localStorage.removeItem("token");
-      sessionStorage.removeItem("token");
-      this.$router.push({ path: "/Login" });
+      this.$dialog
+        .confirm({
+          title: "提示",
+          message: "您点击了退出登录按钮，是否退出登录？"
+        })
+        .then(() => {
+          localStorage.removeItem("token");
+          sessionStorage.removeItem("token");
+          this.$router.push({ path: "/Login" });
+        })
+        .catch(() => {});
     }
   }
 };
@@ -125,6 +133,7 @@ export default {
   display: flex;
   flex-direction: column;
 }
+.van-nav-bar__arrow{font-size: 1.3em;}
 .van-tabs[data-v-fae5bece] {
   height: 100%;
   display: flex;

@@ -6,12 +6,15 @@ import router from './router'
 // import store from './store'
 import Vant from 'vant';
 import 'vant/lib/index.css';
-
+import {
+  Dialog
+} from 'vant';
 import {
   Switch
 } from 'vant';
 
 Vue.use(Switch);
+Vue.use(Dialog);
 Vue.use(Vant);
 Vue.use(Vuex);
 

@@ -2,7 +2,7 @@
   <div id="SongListInfo">
     <div class="ImgTop">
       <div style="height:13rem;overflow:hidden;">
-        <van-image cover :src="imgurl" class="ImgBgd" />
+        <van-image cover :src="imgurl" class="ImgBgd" width="100%"/>
       </div>
       <van-sticky class="Info-top">
         <van-nav-bar
@@ -132,6 +132,9 @@ export default {
 }
 .ImgBgd > img {
   height: auto;
+}
+.ImgBgd .van-image__error{
+  display:none!important;
 }
 .Info-top {
   position: fixed;
