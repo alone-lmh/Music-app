@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import axios from 'axios'
 import App from './App.vue'
 import router from './router'
+import './back.js'
 // import store from './store'
 import Vant from 'vant';
 import 'vant/lib/index.css';
