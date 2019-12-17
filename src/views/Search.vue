@@ -14,7 +14,7 @@
 import hotSearch from "../components/Search/hotSearch.vue";
 import tipSearch from "../components/Search/tipSearch.vue";
 import searchResult from "../components/Search/searchResult.vue";
-//hotFlag，tipFlag，searchFlag用于切换组件显示 value用于储存输入框中的文字
+//hotFlag，tipFlag，searchFlag用于切换组件显示
 export default {
   data() {
     return {
@@ -60,7 +60,7 @@ export default {
     getMusicId(i,list) {
       this.musicId = i;
       this.list=list;
-      //向父组件提交音乐ID和当前音乐列表
+      //向父组件提交音乐ID
       this.$emit("to-parent", i,list);
     }
   }

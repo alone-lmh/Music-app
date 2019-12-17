@@ -19,9 +19,8 @@
   </div>
 </template>
 <script>
-import axios from "axios";
+import {getRankingList} from "../services/API";
 import RankingList from "../components/RankingList/index.vue";
-//error用于判断数据是否加载失败   showLoading切换loading图的显示 list储存当前播放列表 isgg切换子页面的显示
 export default {
   data() {
     return {
@@ -32,6 +31,7 @@ export default {
       coverImgUrl: ""
     };
   },
+
   mounted() {
     this.getRankingList();
   },
@@ -46,12 +46,11 @@ export default {
       },500);
     },
     ph(i) {
-      //显示排行榜详情页
       this.isgg = true;
       this.coverImgUrl = i;
     },
     getRankingList() {
-      axios.get("http://121.41.30.226:3000/toplist").then(res => {
+      getRankingList().then(res => {
         this.list = res.data.list;
         this.error=false;
         this.showLoading=false;
@@ -67,7 +66,6 @@ export default {
       this.$emit("to-parent", i, list);
     },
     isShow(i) {
-      //获取子组件提交的数据，用于切换子组件显示隐藏
       this.isgg = i == false ? false : true;
     }
   }

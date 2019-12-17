@@ -62,7 +62,8 @@
   </div>
 </template>
 <script>
-//initNum设置歌词初始的轮播位置 listFlag用于切换歌词列表的显示  show用于判断是否可以播放歌曲  timer用于设置定时器  showShade用于展示图片上的遮罩层     count用于记录图片旋转的角度 value用于记录滑块位置 nowTimeSecond当前播放时间（秒） totalTimeSecond歌曲总时长（秒）
+import {getSongsDetail,getSongWords,getMusicSrc} from "../../services/API"
+//initNum设置歌初始的轮播位置   show用于判断是否可以播放歌曲  timer用于设置定时器  showShade用于展示图片上的遮罩层     count用于记录图片旋转的角度 value用于展示歌词 nowTimeSecond当前播放时间（秒） totalTimeSecond歌曲总时长（秒）
 export default {
   data() {
     return {
@@ -117,16 +118,12 @@ export default {
       }
     },
     getSongsDetail(i) {
-      this.$axios
-        .get("http://121.41.30.226:3000/song/detail?ids=" + i)
-        .then(response => {
+      getSongsDetail(i).then(response => {
           this.details = response.data.songs[0];
         });
     },
     getSongWords(i) {
-      this.$axios
-        .get("http://121.41.30.226:3000/lyric?id=" + i)
-        .then(response => {
+      getSongWords(i).then(response => {
           // 判断是否存在歌词
           if (
             response.data.lrc &&
@@ -219,9 +216,7 @@ export default {
       }, 100);
     },
     getMusicSrc(i) {
-      this.$axios
-        .get("http://121.41.30.226:3000/song/url?id=" + i)
-        .then(response => {
+      getMusicSrc(i).then(response => {
           this.musicSrc = response.data.data[0].url;
           if (!this.musicSrc) {
             this.show = true;

@@ -46,7 +46,7 @@
   </div>
 </template>
 <script>
-//isShow歌曲列表数据加载完后显示 songs用于判断是否显示歌曲列表页
+import {getSinger,getSingerMusic} from "../services/API"
 export default {
   data() {
     return {
@@ -101,9 +101,7 @@ export default {
     },
     getSinger(pst) {
       this.nowPst = pst;
-      this.$axios
-        .get("http://121.41.30.226:3000/artist/list?cat=" + pst)
-        .then(response => {
+      getSinger(pst).then(response => {
           this.error = false;
           this.showLoading = false;
           this.singerList = response.data.artists;
@@ -118,9 +116,7 @@ export default {
     getSingerMusic(id) {
       this.singerId = id;
       setTimeout(() => {
-        this.$axios
-          .get("http://121.41.30.226:3000/artists?id=" + id)
-          .then(response => {
+        getSingerMusic(id).then(response => {
             this.songList = response.data.hotSongs;
             this.singerDetails = response.data.artist;
             this.showSongsLoading = false;
@@ -143,6 +139,7 @@ export default {
       this.show = false;
     },
     playMusic(id) {
+      this.isShow = true;
       this.$emit("to-parent", id, this.songList);
     }
   }

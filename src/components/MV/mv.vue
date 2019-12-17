@@ -20,7 +20,7 @@
   </div>
 </template>
 <script>
-//value储存输入框中的文字 
+import {getAllMv,getMvUrl,getSearchMvResult} from "../../services/API"
 export default {
   props: ["isplay"],
   data() {
@@ -38,14 +38,7 @@ export default {
   },
   methods: {
     getMvId() {
-      this.$axios
-        .get(
-          "http://121.41.30.226:3000/mv/all?offset=" +
-            this.page * this.limit +
-            "&limit=" +
-            this.limit
-        )
-        .then(response => {
+      getAllMv({page:this.page,limit:this.limit}).then(response => {
           for (let i = 0; i < response.data.data.length; i++) {
             this.getMvUrl(
               response.data.data[i].id,
@@ -70,9 +63,7 @@ export default {
       }, 500);
     },
     getMvUrl(id, name, imgUrl) {
-      this.$axios
-        .get("http://121.41.30.226:3000/mv/url?id=" + id)
-        .then(response => {
+      getMvUrl(id).then(response => {
           this.error = false;
           this.mv.push({
             name: name,
@@ -85,13 +76,7 @@ export default {
         });
     },
     onSearch() {
-      this.$axios
-        .get(
-          "http://121.41.30.226:3000/search?keywords=" +
-            this.value +
-            "&type=1004"
-        )
-        .then(response => {
+      getSearchResult(this.value).then(response => {
           this.mv = [];
           this.error = false;
           this.showLoading = false;

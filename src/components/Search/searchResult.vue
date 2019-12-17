@@ -15,6 +15,7 @@
   </div>
 </template>
 <script>
+import {getSearchSongResult} from "../../services/API"
 export default {
   data() {
     return {
@@ -25,9 +26,7 @@ export default {
   },
   methods: {
     getMusicList(i) {
-      this.$axios
-        .get("http://121.41.30.226:3000/search?limit=100&keywords=" + i)
-        .then(response => {
+      getSearchSongResult(i).then(response => {
           this.error=false;
           this.result = response.data.result.songs;
         }).catch(()=>{

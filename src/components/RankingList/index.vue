@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import {getRankingDetails,getRankingSongsList} from "../../services/API";
 export default {
   data() {
     return {
@@ -57,12 +57,10 @@ export default {
     }
   },
   mounted() {
-    axios.get("http://121.41.30.226:3000/toplist/detail").then(res => {
+    getRankingDetails().then(res => {
       this.mm = res.data.list[this.index];
     });
-    axios
-      .get("http://121.41.30.226:3000/top/list?idx=" + this.index)
-      .then(res => {
+    getRankingSongsList(this.index).then(res => {
         this.error = false;
         this.isShow = true;
         this.showLoading = false;

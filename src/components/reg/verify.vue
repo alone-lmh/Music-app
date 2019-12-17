@@ -19,6 +19,7 @@
   </div>
 </template>
 <script>
+import {getCode,phoneVerify} from "../../services/API"
 //wrong用于展示错误信息 warn用于判断是否显示弹出层  pFlag用于切换弹出层上的内容  next用于判断是否进入下一步
 export default {
   data() {
@@ -39,9 +40,7 @@ export default {
         this.warn = true;
         this.wrong = false;
       } else {
-        this.$axios
-          .get("http://121.41.30.226:3000/captcha/sent?phone=" + this.phone)
-          .then(response => {
+        getCode(this.phone).then(response => {
             if (response.data.code !== 200) {
               this.pFlag = true;
               this.warn = true;
@@ -65,14 +64,7 @@ export default {
         this.warn = true;
         this.wrong = false;
       } else {
-        this.$axios
-          .get(
-            "http://121.41.30.226:3000/captcha/verify?phone=" +
-              this.phone +
-              "&captcha=" +
-              this.code
-          )
-          .then(response => {
+        phoneVerify({phone:this.phone,code:this.code}).then(response => {
             if (response.data.code == 200) {
               this.next = true;
               this.$emit("to-parent", this.next);

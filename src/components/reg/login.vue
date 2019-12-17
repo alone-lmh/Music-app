@@ -19,7 +19,8 @@
   </div>
 </template>
 <script>
-//checked用于记录是否自动登录  warn用于判断是否显示错误警告
+import {loginCheck} from "../../services/API"
+//checked用于记录是否自动登录  warn用于判断是否显示弹出层
 export default {
   data() {
     return {
@@ -32,14 +33,7 @@ export default {
   methods: {
     loginHandle() {
       if (this.phone !== "" && this.psw !== "") {
-        this.$axios
-          .get(
-            "http://121.41.30.226:3000/login/cellphone?phone=" +
-              this.phone +
-              "&password=" +
-              this.psw
-          )
-          .then(response => {
+        loginCheck({phone:this.phone,psw:this.psw}).then(response => {
             if (response.data.code == 200) {
               if (this.checked) {
                 localStorage.setItem("token", this.phone);

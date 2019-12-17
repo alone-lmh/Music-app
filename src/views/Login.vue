@@ -23,7 +23,6 @@ export default {
   components: { login },
   methods: {
     loginHandle() {
-      //点击登录的时候，调用子组件的登录功能
       this.$refs.getFn.loginHandle();
     }
   }

@@ -2,7 +2,7 @@
   <div id="SongListInfo">
     <div class="ImgTop">
       <div style="height:13rem;overflow:hidden;">
-        <van-image cover :src="imgurl" class="ImgBgd" width="100%"/>
+        <van-image cover :src="imgurl" class="ImgBgd" width="100%" />
       </div>
       <van-sticky class="Info-top">
         <van-nav-bar
@@ -24,13 +24,12 @@
           v-for="item in tags"
           :key="item"
           style="margin:0 0.6rem;"
-        >{{ item }}</van-tag>
+          >{{ item }}</van-tag
+        >
       </div>
       <van-collapse v-model="activeNames">
         <van-collapse-item title="简介：" name="1">
-          {{
-          description
-          }}
+          {{ description }}
         </van-collapse-item>
       </van-collapse>
     </div>
@@ -46,30 +45,46 @@
           <div class="snum">{{ num + 1 }}</div>
           <div style="float:left;flex:1;" class="bord">
             <div style="float:left;padding:6px 0;max-width:18rem;">
-              <p style="font-size:1.06rem;line-height:1.55rem;">{{ item.name }}</p>
-              <p
-                style="font-size:0.75rem;color:#888;line-height:1.1rem;"
-              >{{ item.ar[0].name }}-{{ item.al.name }}</p>
+              <p style="font-size:1.06rem;line-height:1.55rem;">
+                {{ item.name }}
+              </p>
+              <p style="font-size:0.75rem;color:#888;line-height:1.1rem;">
+                {{ item.ar[0].name }}-{{ item.al.name }}
+              </p>
             </div>
-            <div style="float:right;margin-right:10px;line-height:3.4rem;font-size:1.375rem;">
+            <div
+              style="float:right;margin-right:10px;line-height:3.4rem;font-size:1.375rem;"
+            >
               <van-icon name="music-o" />
             </div>
           </div>
         </div>
-        <van-loading type="spinner" style="text-align:center;" v-show="showLoading" />
-        <div style="text-align:center;color:#aaa;" v-show="error">数据加载失败，请返回重新进入~</div>
-        <div style="height:5.5em;line-height:5.5em;text-align:center" v-show="showEnd">没有更多了~</div>
+        <van-loading
+          type="spinner"
+          style="text-align:center;"
+          v-show="showLoading"
+        />
+        <div style="text-align:center;color:#aaa;" v-show="error">
+          数据加载失败，请返回重新进入~
+        </div>
+        <div
+          style="height:5.5em;line-height:5.5em;text-align:center"
+          v-show="showEnd"
+        >
+          没有更多了~
+        </div>
       </div>
     </div>
   </div>
 </template>
 <script>
+import { getSongListDetails } from "../../services/API";
 export default {
   data() {
     return {
-      error:false,
-      showLoading:false,
-      showEnd:true,
+      error: false,
+      showLoading: false,
+      showEnd: true,
       list: [],
       imgurl: "",
       name: "",
@@ -86,25 +101,25 @@ export default {
       this.$emit("getInfoid", id, list);
     },
     setInfo: function(setInfoid) {
-      this.$axios
-        .get("http://121.41.30.226:3000/playlist/detail?id=" + setInfoid)
+      getSongListDetails(setInfoid)
         .then(response => {
-          this.error=false;
-          this.showLoading=false;
-          this.showEnd=true;
+          this.error = false;
+          this.showLoading = false;
+          this.showEnd = true;
           this.list = response.data.playlist.tracks;
           this.name = response.data.playlist.name;
           this.tags = response.data.playlist.tags;
           this.description = response.data.playlist.description;
           this.imgurl = response.data.playlist.coverImgUrl;
-        }).catch(()=>{
-          this.error=true;
-          this.showLoading=false;
-          this.showEnd=false;
+        })
+        .catch(() => {
+          this.error = true;
+          this.showLoading = false;
+          this.showEnd = false;
         });
-        this.showEnd=false;
-        this.error=false;
-        this.showLoading=true;
+      this.showEnd = false;
+      this.error = false;
+      this.showLoading = true;
     }
   }
 };
@@ -120,7 +135,9 @@ export default {
   left: 0;
   overflow-y: auto;
 }
-[class*=van-hairline]::after{border:0}
+[class*="van-hairline"]::after {
+  border: 0;
+}
 .van-list {
   height: 100%;
   display: flex;
@@ -133,8 +150,8 @@ export default {
 .ImgBgd > img {
   height: auto;
 }
-.ImgBgd .van-image__error{
-  display:none!important;
+.ImgBgd .van-image__error {
+  display: none !important;
 }
 .Info-top {
   position: fixed;

@@ -26,7 +26,7 @@
 import verify from "../components/reg/verify.vue";
 import bsgMsg from "../components/reg/bsgMsg.vue";
 import login from "../components/reg/login.vue";
-//verifyFlag，bsgMsgFlag，loginFlag用于判断当前处于哪个步骤  next用于判断是否进入下一步 code储存验证码
+//verifyFlag，bsgMsgFlag，loginFlag用于判断当前处于哪个步骤  next用于判断是否进入下一步
 export default {
   data() {
     return {
@@ -48,7 +48,6 @@ export default {
   },
   methods: {
     isNext(i) {
-      //获取子组件中传递的参数（true判断是否进行下一步）
       this.next = i ;
       if (this.active == 0) {
         if (this.next) {
@@ -81,7 +80,6 @@ export default {
       }
     },
     nextType() {
-      //当点击下一步时，根据当前位置调用对应的子组件方法
       if (this.active == 0) {
         //调用验证短信验证码的方法
         this.next = false;

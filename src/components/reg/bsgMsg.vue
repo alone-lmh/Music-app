@@ -16,6 +16,7 @@
   </div>
 </template>
 <script>
+import { register} from "../../services/API"
 //message 用于展示注册失败时弹出层上的内容   next用于判断是否可以进行下一步  fail注册失败时展示   warn 用于正则不通过时展示 pFlag切换正则不通过时弹出层上的文本
 export default {
   data() {
@@ -40,17 +41,7 @@ export default {
         this.warn = true;
         this.pFlag = false;
       } else {
-        this.$axios
-          .get(
-            "http://121.41.30.226:3000/register/cellphone?phone=" +
-              this.$parent.phone +
-              "&password=" +
-              this.psw +
-              "&captcha=" +
-              this.$parent.code +
-              "&nickname=" +
-              this.username
-          )
+        register({phone:this.$parent.phone,psw:this.psw,code:this.$parent.code,username:this.username})
           .then(response => {
             if (response.data.code == 200) {
               this.next = true;

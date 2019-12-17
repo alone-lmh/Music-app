@@ -13,22 +13,18 @@
   </div>
 </template>
 <script>
+import {getSearchTip} from "../../services/API"
 export default {
   props: ["m"],
   data() {
     return {
+      flag: true,
       tipWords: []
     };
   },
   methods: {
     getTip(i) {
-      this.$axios
-        .get(
-          "http://121.41.30.226:3000/search/suggest?keywords=" +
-            i +
-            "&type=mobile"
-        )
-        .then(response => {
+     getSearchTip(i).then(response => {
           this.tipWords = response.data.result.allMatch;
         });
     },

@@ -19,6 +19,7 @@
   </div>
 </template>
 <script>
+import {getHotSearch} from "../../services/API"
 export default {
   data() {
     return {
@@ -37,9 +38,7 @@ export default {
       }, 500);
     },
     getHotSearch() {
-      this.$axios
-        .get("http://121.41.30.226:3000/search/hot")
-        .then(response => {
+      getHotSearch().then(response => {
           this.hotWords = response.data.result.hots;
           this.error = false;
         })
