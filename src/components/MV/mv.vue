@@ -76,7 +76,7 @@ export default {
         });
     },
     onSearch() {
-      getSearchResult(this.value).then(response => {
+      getSearchMvResult(this.value).then(response => {
           this.mv = [];
           this.error = false;
           this.showLoading = false;
