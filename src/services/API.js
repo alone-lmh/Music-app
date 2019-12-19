@@ -70,6 +70,11 @@ export function getMvUrl(id) {
   return get("/mv/url?id=" + id);
 }
 
+//获取视频的播放地址   注意：获取到视频播放地址之后要将地址后面的最后一个&往后的字符串截取掉
+export function getVideoUrl(id) {
+  return get("/video/url?id=" + id);
+}
+
 //热搜关键字
 export function getHotSearch() {
   return get("/search/hot");
@@ -83,6 +88,11 @@ export function getSearchTip(words) {
 //获取根据关键字搜索mv
 export function getSearchMvResult(words) {
   return get("/search?limit=100&keywords=" + words +"&type=1004");
+}
+
+//获取根据关键字搜索视频
+export function getSearchVideoResult(obj) {
+  return get("/search?keywords=" + obj.words +"&type=1014&offset=" + obj.page * obj.limit + "&limit=" + obj.limit);
 }
 
 //获取根据关键字搜索单曲

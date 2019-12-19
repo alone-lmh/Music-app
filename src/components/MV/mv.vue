@@ -1,10 +1,21 @@
 <template>
   <div class="mv">
     <form action="/">
-      <van-search placeholder="请输入搜索关键词" v-model="value" @search="onSearch" @input="clear" />
+      <van-search
+        placeholder="请输入搜索关键词"
+        v-model="value"
+        @search="onSearch"
+        @input="clear"
+      />
     </form>
-    <van-loading type="spinner" style="text-align:center;" v-show="showLoading" />
-    <div style="text-align:center;color:#aaa;" v-show="showError">数据加载失败，请重试~</div>
+    <van-loading
+      type="spinner"
+      style="text-align:center;"
+      v-show="showLoading"
+    />
+    <div style="text-align:center;color:#aaa;" v-show="showError">
+      数据加载失败，请重试~
+    </div>
     <van-list
       v-model="loading"
       :error.sync="error"
@@ -13,20 +24,43 @@
       finished-text="没有更多了"
       @load="onLoad"
     >
-      <van-cell v-for="(item,i) in mv" :key="i" :title="item.name">
-        <video class="vidio" :src="item.url" controls width="100%" :poster="item.imgUrl"></video>
+      <van-cell v-for="(item, i) in mv" :key="i" :title="item.name" v-show="isShow">
+        <video
+          class="vidio"
+          :src="item.url"
+          controls
+          width="100%"
+          :poster="item.imgUrl"
+        ></video>
+      </van-cell>
+      <van-cell v-for="(item, i) in Video" :key="i" :title="item.name" v-show="!isShow">
+        <video
+          class="vidio"
+          :src="item.url"
+          controls
+          width="100%"
+          :poster="item.imgUrl"
+          type="video/mp4"
+        ></video>
       </van-cell>
     </van-list>
   </div>
 </template>
 <script>
-import {getAllMv,getMvUrl,getSearchMvResult} from "../../services/API"
+import {
+  getAllMv,
+  getMvUrl,
+  getSearchVideoResult,
+  getVideoUrl
+} from "../../services/API";
 export default {
   props: ["isplay"],
   data() {
     return {
+      isShow:true,
       value: "",
       mv: [],
+      Video:[],
       loading: false,
       finished: false,
       showLoading: false,
@@ -38,7 +72,8 @@ export default {
   },
   methods: {
     getMvId() {
-      getAllMv({page:this.page,limit:this.limit}).then(response => {
+      getAllMv({ page: this.page, limit: this.limit })
+        .then(response => {
           for (let i = 0; i < response.data.data.length; i++) {
             this.getMvUrl(
               response.data.data[i].id,
@@ -55,15 +90,20 @@ export default {
       // 异步更新数据
       setTimeout(() => {
         for (let i = 0; i < 1; i++) {
+          if (this.value !== "") {
+            this.onSearch();
+          } else {
+            this.getMvId();
+          }
           this.page++;
-          this.getMvId();
         }
         // 加载状态结束
         this.loading = false;
       }, 500);
     },
     getMvUrl(id, name, imgUrl) {
-      getMvUrl(id).then(response => {
+      getMvUrl(id)
+        .then(response => {
           this.error = false;
           this.mv.push({
             name: name,
@@ -75,17 +115,43 @@ export default {
           this.error = true;
         });
     },
+    getVideoUrl(id, name, imgUrl) {
+      getVideoUrl(id)
+        .then(response => {
+          this.error = false;
+          this.Video.push({
+            name: name,
+            url: response.data.urls[0].url.slice(
+              0,
+              response.data.urls[0].url.lastIndexOf("&")
+            ),
+            imgUrl: imgUrl
+          });
+        })
+        .catch(() => {
+          this.Video.push({
+            name: name,
+            url: "",
+            imgUrl: imgUrl
+          });
+        });
+    },
     onSearch() {
-      getSearchMvResult(this.value).then(response => {
-          this.mv = [];
+      this.isShow=false;
+      getSearchVideoResult({
+        words: this.value,
+        page: this.page,
+        limit: this.limit
+      })
+        .then(response => {
           this.error = false;
           this.showLoading = false;
           this.showError = false;
-          for (let i = 0; i < response.data.result.mvs.length; i++) {
-            this.getMvUrl(
-              response.data.result.mvs[i].id,
-              response.data.result.mvs[i].name,
-              response.data.result.mvs[i].cover
+          for (let i = 0; i < response.data.result.videos.length; i++) {
+            this.getVideoUrl(
+              response.data.result.videos[i].vid,
+              response.data.result.videos[i].title,
+              response.data.result.videos[i].coverUrl
             );
           }
         })
@@ -98,15 +164,14 @@ export default {
     },
     clear() {
       if (this.value == "") {
-        this.mv = [];
-        this.page = 0;
-        this.getMvId();
+        this.Video=[];
+        this.isShow=true;
       }
     }
   }
 };
 </script>
-<style  scoped>
+<style scoped>
 .mv {
   text-align: center;
   border-bottom: 1px #ccc solid;
