@@ -96,8 +96,8 @@ export function getSearchVideoResult(obj) {
 }
 
 //获取根据关键字搜索单曲
-export function getSearchSongResult(words) {
-  return get("/search?limit=100&keywords=" + words );
+export function getSearchSongResult(obj) {
+  return get("/search?keywords="+ obj.words +"&offset=" + obj.page * obj.limit + "&limit=" + obj.limit );
 }
 
 //登录验证

@@ -6,7 +6,7 @@
     <div class="searchAbout">
       <hotSearch v-show="hotFlag" @to-parent="getKeyWords"></hotSearch>
       <tipSearch :m="value" v-show="tipFlag" ref="getFn" @to-parent="getKeyWords"></tipSearch>
-      <searchResult v-show="searchFlag" ref="getResult" @toParent="getMusicId"></searchResult>
+      <searchResult v-show="searchFlag" ref="getResult" @toParent="getMusicId" :m="value" :key="value"></searchResult>
     </div>
   </div>
 </template>
@@ -37,7 +37,7 @@ export default {
       this.tipFlag = false;
       this.searchFlag = true;
       //调用子组件的方法，获取搜索到的歌曲列表
-      this.$refs.getResult.getMusicList(this.value);
+      this.$refs.getResult.getMusicList();
     },
     getKeyWords(i) {
       //通过子组件向父组件提交的关键字进行搜索

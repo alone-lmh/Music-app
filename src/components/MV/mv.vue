@@ -90,12 +90,12 @@ export default {
       // 异步更新数据
       setTimeout(() => {
         for (let i = 0; i < 1; i++) {
+          this.page++;
           if (this.value !== "") {
             this.onSearch();
           } else {
             this.getMvId();
           }
-          this.page++;
         }
         // 加载状态结束
         this.loading = false;
