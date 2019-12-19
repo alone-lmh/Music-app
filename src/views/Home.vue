@@ -134,7 +134,9 @@ export default {
   flex-direction: column;
 }
 .van-nav-bar__arrow{font-size: 1.3em;}
-.van-tabs[data-v-fae5bece] {
+.van-tabs{
+  flex:1;
+  overflow: auto;
   height: 100%;
   display: flex;
   flex-direction: column;

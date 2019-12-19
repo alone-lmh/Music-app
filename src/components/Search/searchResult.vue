@@ -1,12 +1,14 @@
 <template>
   <div class="searchResult">
-    <div style="text-align:center;color:#aaa;" v-show="error">
+    <!-- <div style="text-align:center;color:#aaa;" v-show="error">
       数据加载失败，请重试~
-    </div>
+    </div> -->
     <van-list
       v-model="loading"
       :finished="finished"
       finished-text="没有更多了"
+      :error.sync="error"
+      error-text="请求失败，点击重新加载"
       @load="onLoad"
     >
       <van-cell
@@ -29,7 +31,7 @@
 <script>
 import { getSearchSongResult } from "../../services/API";
 export default {
-  props:["m"],
+  props: ["m"],
   data() {
     return {
       error: false,
@@ -38,40 +40,53 @@ export default {
       loading: false,
       finished: false,
       page: 0,
-      limit: 20
+      limit: 20,
+      words: ""
     };
   },
   mounted() {
-    this.result=[];
+    this.page = 0;
+    this.result = [];
   },
   methods: {
     onLoad() {
       // 异步更新数据
-      if (this.words !== "") {
-        setTimeout(() => {
-          for (let i = 0; i < 1; i++) {
-            this.page++;
-            this.getMusicList(this.words);
-          }
-          // 加载状态结束
-          this.loading = false;
-        }, 500);
-      }
+      setTimeout(() => {
+        for (let i = 0; i < 1; i++) {
+          this.getMusicList(this.words);
+          this.page++;
+        }
+        // 加载状态结束
+        this.loading = false;
+      }, 500);
     },
-    getMusicList() {
+    getMusicList(words) {
+      this.words = words;
       getSearchSongResult({
-        words: this.m,
+        words: this.m || this.words,
         page: this.page,
         limit: this.limit
       })
         .then(response => {
           this.error = false;
-          for (let i = 0; i < response.data.result.songs.length; i++) {
-            this.result.push(response.data.result.songs[i]);
+          if (response.data.result.songs) {
+            for (let i = 0; i < response.data.result.songs.length; i++) {
+              this.result.push(response.data.result.songs[i]);
+            }
+            if (
+              response.data.result.songs.length < 20 ||
+              response.data.result.songCount == 0
+            ) {
+              this.finished = true;
+            }
+          } else {
+            this.finished = true;
           }
         })
         .catch(() => {
-          this.error = true;
+          if (this.result >= 20) {
+            this.error = true;
+          }
         });
     },
     autoPlay(i) {

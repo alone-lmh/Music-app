@@ -1,12 +1,28 @@
 <template>
   <div class="search iptSearch">
     <form action="/">
-      <van-search placeholder="请输入搜索关键词" v-model="value" @search="onSearch()" @input="getTip" />
+      <van-search
+        placeholder="请输入搜索关键词"
+        v-model="value"
+        @search="onSearch()"
+        @input="getTip"
+      />
     </form>
     <div class="searchAbout">
       <hotSearch v-show="hotFlag" @to-parent="getKeyWords"></hotSearch>
-      <tipSearch :m="value" v-show="tipFlag" ref="getFn" @to-parent="getKeyWords"></tipSearch>
-      <searchResult v-show="searchFlag" ref="getResult" @toParent="getMusicId" :m="value" :key="value"></searchResult>
+      <tipSearch
+        :m="value"
+        v-show="tipFlag"
+        ref="getFn"
+        @to-parent="getKeyWords"
+      ></tipSearch>
+      <searchResult
+        v-show="searchFlag"
+        ref="getResult"
+        @toParent="getMusicId"
+        :m="value"
+        :key="value"
+      ></searchResult>
     </div>
   </div>
 </template>
@@ -23,7 +39,7 @@ export default {
       tipFlag: false,
       searchFlag: false,
       musicId: "",
-      list:''
+      list: ""
     };
   },
   components: {
@@ -37,7 +53,7 @@ export default {
       this.tipFlag = false;
       this.searchFlag = true;
       //调用子组件的方法，获取搜索到的歌曲列表
-      this.$refs.getResult.getMusicList();
+      this.$refs.getResult.getMusicList(this.value);
     },
     getKeyWords(i) {
       //通过子组件向父组件提交的关键字进行搜索
@@ -57,11 +73,11 @@ export default {
         this.$refs.getFn.getTip(this.value);
       }
     },
-    getMusicId(i,list) {
+    getMusicId(i, list) {
       this.musicId = i;
-      this.list=list;
+      this.list = list;
       //向父组件提交音乐ID
-      this.$emit("to-parent", i,list);
+      this.$emit("to-parent", i, list);
     }
   }
 };

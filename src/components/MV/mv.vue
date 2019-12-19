@@ -13,9 +13,6 @@
       style="text-align:center;"
       v-show="showLoading"
     />
-    <div style="text-align:center;color:#aaa;" v-show="showError">
-      数据加载失败，请重试~
-    </div>
     <van-list
       v-model="loading"
       :error.sync="error"
@@ -24,7 +21,12 @@
       finished-text="没有更多了"
       @load="onLoad"
     >
-      <van-cell v-for="(item, i) in mv" :key="i" :title="item.name" v-show="isShow">
+      <van-cell
+        v-for="(item, i) in mv"
+        :key="i"
+        :title="item.name"
+        v-show="isShow"
+      >
         <video
           class="vidio"
           :src="item.url"
@@ -33,7 +35,12 @@
           :poster="item.imgUrl"
         ></video>
       </van-cell>
-      <van-cell v-for="(item, i) in Video" :key="i" :title="item.name" v-show="!isShow">
+      <van-cell
+        v-for="(item, i) in Video"
+        :key="i"
+        :title="item.name"
+        v-show="!isShow"
+      >
         <video
           class="vidio"
           :src="item.url"
@@ -57,14 +64,13 @@ export default {
   props: ["isplay"],
   data() {
     return {
-      isShow:true,
+      isShow: true,
       value: "",
       mv: [],
-      Video:[],
+      Video: [],
       loading: false,
       finished: false,
       showLoading: false,
-      showError: false,
       error: false,
       page: 0,
       limit: 5
@@ -91,7 +97,7 @@ export default {
       setTimeout(() => {
         for (let i = 0; i < 1; i++) {
           this.page++;
-          if (this.value !== "") {
+          if (this.Video.length !== 0) {
             this.onSearch();
           } else {
             this.getMvId();
@@ -137,7 +143,7 @@ export default {
         });
     },
     onSearch() {
-      this.isShow=false;
+      this.isShow = false;
       getSearchVideoResult({
         words: this.value,
         page: this.page,
@@ -146,27 +152,30 @@ export default {
         .then(response => {
           this.error = false;
           this.showLoading = false;
-          this.showError = false;
-          for (let i = 0; i < response.data.result.videos.length; i++) {
-            this.getVideoUrl(
-              response.data.result.videos[i].vid,
-              response.data.result.videos[i].title,
-              response.data.result.videos[i].coverUrl
-            );
+          if (response.data.result.videos) {
+            for (let i = 0; i < response.data.result.videos.length; i++) {
+              this.getVideoUrl(
+                response.data.result.videos[i].vid,
+                response.data.result.videos[i].title,
+                response.data.result.videos[i].coverUrl
+              );
+            }
+            if (response.data.result.videos.length < 5) {
+              this.finished = true;
+            }
+          } else {
+            this.finished = true;
           }
         })
         .catch(() => {
-          this.showError = true;
           this.showLoading = false;
         });
       this.showLoading = true;
-      this.showError = false;
     },
     clear() {
-      if (this.value == "") {
-        this.Video=[];
-        this.isShow=true;
-      }
+      this.finished = false;
+      this.Video = [];
+      this.isShow = true;
     }
   }
 };
@@ -177,9 +186,14 @@ export default {
   border-bottom: 1px #ccc solid;
   flex: 1;
   overflow: auto;
+  display: flex;
+  flex-direction: column;
+}
+.mv form {
+  position: relative;
 }
 .mv .van-list {
-  height: 100%;
+  flex: 1;
   overflow: auto;
 }
 </style>
