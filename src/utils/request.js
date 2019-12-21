@@ -2,7 +2,7 @@ import axios from "axios";
 
 const instance=axios.create({
   timeout:5000,//设置超时时间
-  baseURL:"http://121.41.30.226:5115"//设置web服务器的跟地址
+  baseURL:"http://121.41.30.226:5112"//设置web服务器的跟地址
 })
 
 //config是配置信息

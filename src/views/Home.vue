@@ -2,8 +2,18 @@
   <div id="home">
     <div id="header">
       <van-nav-bar title="Music">
-        <van-icon name="bars" slot="left" class="user" @click="isShowLeft=true" />
-        <van-icon name="search" slot="right" @click="searchHandle" class="search" />
+        <van-icon
+          name="bars"
+          slot="left"
+          class="user"
+          @click="isShowLeft = true"
+        />
+        <van-icon
+          name="search"
+          slot="right"
+          @click="searchHandle"
+          class="search"
+        />
       </van-nav-bar>
     </div>
     <div id="content">
@@ -22,11 +32,17 @@
             <Singer @to-parent="getChildData"></Singer>
           </van-tab>
         </van-tabs>
-        <van-nav-bar v-show="!flag" title="搜索" left-text left-arrow @click-left="index" />
+        <van-nav-bar
+          v-show="!flag"
+          title="搜索"
+          left-text
+          left-arrow
+          @click-left="index"
+        />
         <Search v-show="!flag" @to-parent="getChildData"></Search>
         <listening
           @to-parent="getChildData"
-          v-if="listenFlag"
+          v-show="listenFlag"
           :musicId="getId"
           :key="getId"
           :list="musicList"
@@ -37,12 +53,14 @@
       v-model="isShowLeft"
       position="left"
       get-container="body"
-      :style="{ width: '80%',height:'100%' }"
+      :style="{ width: '80%', height: '100%' }"
       class="leftPart"
     >
       <mv :pause="isShowLeft" :key="isShowLeft"></mv>
       <van-tabbar v-model="active" class="goBack">
-        <van-tabbar-item icon="home-o" @click="logOut">退出登录</van-tabbar-item>
+        <van-tabbar-item icon="home-o" @click="logOut"
+          >退出登录</van-tabbar-item
+        >
       </van-tabbar>
     </van-popup>
   </div>
@@ -133,9 +151,11 @@ export default {
   display: flex;
   flex-direction: column;
 }
-.van-nav-bar__arrow{font-size: 1.3em;}
-.van-tabs{
-  flex:1;
+.van-nav-bar__arrow {
+  font-size: 1.3em;
+}
+.van-tabs {
+  flex: 1;
   overflow: auto;
   height: 100%;
   display: flex;
