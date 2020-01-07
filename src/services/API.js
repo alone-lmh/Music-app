@@ -117,5 +117,5 @@ export function phoneVerify(obj) {
 
 //注册账号（修改密码也是这个）
 export function register(obj) {
-  return get( "/register/cellphone?phone=" + obj.$parent.phone + "&password=" + obj.psw + "&captcha=" + obj.$parent.code + "&nickname=" + obj.username );
+  return get( "/register/cellphone?phone=" + obj.phone + "&password=" + obj.psw + "&captcha=" + obj.code + "&nickname=" + obj.username );
 }
